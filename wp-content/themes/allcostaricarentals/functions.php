@@ -49,6 +49,7 @@ if ( ! function_exists( 'allcostaricarentals_setup' ) ) :
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
 			'header' => esc_html__( 'Header', 'allcostaricarentals' ),
+			'footer' => esc_html__( 'Footer', 'allcostaricarentals' ),
 		) );
 
 		/*
@@ -114,7 +115,7 @@ function allcostaricarentals_widgets_init() {
 		'description'   => esc_html__( 'Add widgets here.', 'allcostaricarentals' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
-		'before_title'  => '<h2 class="widget-title">',
+		'before_title'  => '<h2 class="widget-title font-titles">',
 		'after_title'   => '</h2>',
 	) );
 }
@@ -143,7 +144,7 @@ function add_specific_menu_location_atts( $atts, $item, $args ) {
     // check if the item is in the primary menu
     // if( $args->theme_location == 'primary' ) {
       // add the desired attributes:
-      $atts['class'] = 'no-underline text-white'; // anchor
+      $atts['class'] = 'no-underline text-white px-4'; // anchor
    // }
     return $atts;
 }

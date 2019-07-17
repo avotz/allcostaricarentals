@@ -35,7 +35,17 @@
 					</nav>
 				</div>
 				<div class="footer-column w-full md:flex-1 text-center mb-8">
-					<nav class="footer-menu">
+					<?php
+					wp_nav_menu( array(
+						'theme_location' => 'footer',
+						'menu_id'        => 'footer-menu',
+						'container' => 'nav',
+						'container_class' => 'footer-menu',
+						'container_id' => '',
+						'menu_class' => 'footer-menu-ul list-reset uppercase',
+					) );
+					?>
+					<!-- <nav class="footer-menu">
 						<ul class="footer-menu-ul list-reset uppercase">
 							<li class="mb-4"><a href="#" class="no-underline text-white">Home</a></li>
 							<li class="mb-4"><a href="#" class="no-underline text-white">About Us</a></li>
@@ -43,7 +53,7 @@
 							<li class="mb-4"><a href="#" class="no-underline text-white">News</a></li>
 							<li class="mb-4"><a href="#" class="no-underline text-white">Contact Us</a></li>
 						</ul>
-					</nav>
+					</nav> -->
 				</div>
 				<div class="footer-column w-full md:flex-1 text-center md:text-right mb-8">
 					<h5 class="mb-6 text-lg">Follow Us</h5>

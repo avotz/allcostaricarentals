@@ -16,15 +16,32 @@ get_header();
 ?>
 
 <section class="homePage relative w-full h-screen">
-		<!-- <a href="#" class="logo absolute z-10 text-center">ALL COSTA RICA RENTALS<span class="text-base block font-normal">Condos, houses and villas in Costa Rica </span></a> -->
-		<div class="btn-menu absolute text-white z-10 cursor-pointer">
-			<i class="fas fa-bars"></i> Menu
+		<div class="flex items-center container mx-auto h-70 absolute z-10 left-0 right-0 pt-20">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">ALL COSTA RICA RENTALS</a>
+			
+			
+				
+			<?php
+				wp_nav_menu( array(
+					'theme_location' => 'header',
+					'menu_id'        => 'header-menu',
+					'container' => 'nav',
+					'container_class' => 'full-menu-nav ml-4 p-8 md:p-0 w-1/2',
+					'container_id' => '',
+					'menu_class' => 'full-menu-ul list-reset uppercase text-lg md:text-sm',
+				) );
+			?>
+				
+				
+				
+			
+			<ul class="bannerIcons z-10 list-reset absolute hidden md:flex ">
+				<li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-phone"></i> Call</a></li>
+				<!-- <li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-search"></i> Search</a></li> -->
+				<li class="px-2 py-2 m-2"><a href="<?php echo esc_url( home_url( '/contact-us' ) ); ?>" class="block text-white no-underline"><i class="fas fa-envelope"></i> Contact</a></li>
+			</ul>
+
 		</div>
-		<ul class="bannerIcons z-10 list-reset absolute flex ">
-			<li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-phone"></i> Call</a></li>
-			<li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-search"></i> Search</a></li>
-			<li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-envelope"></i> Cont</a></li>
-		</ul>
 		<div class="banner relative z-0">
 			<div class="banner-slider">
 				<div class="banner-slide w-full h-screen" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/pattern.png'), url('<?php echo get_template_directory_uri(); ?>/img/bg1.jpg')"></div>
@@ -44,7 +61,7 @@ get_header();
     <section class="content">
 		
 		<div class="welcome text-center mt-8 mb-8 container mx-auto">
-				<h2 class="text-4xl mb-8 font-titles font-light" data-aos="fade-in" data-aos-duration="3000">Condos and Houses </h2>
+				<h2 class="text-4xl mb-8 font-titles font-light" data-aos="fade-in" data-aos-duration="3000">Houses </h2>
 				<!-- <h3 data-aos="fade-in" data-aos-duration="3000" data-aos-delay="100" class="text-2xl mt-8">Condos and Houses </h3> -->
                 
                 <?php /*get_template_part( 'template-parts/featured-properties' );*/ 
@@ -52,10 +69,16 @@ get_header();
                     include( locate_template( 'template-parts/featured-properties.php', false, false ) ); 
                 ?>
 
+				<h2 class="text-4xl mb-8 font-titles font-light" data-aos="fade-in" data-aos-duration="3000">Condos </h2>
+				<!-- <h3 data-aos="fade-in" data-aos-duration="3000" data-aos-delay="100" class="text-2xl mt-8">Condos and Houses </h3> -->
+                <?php /*get_template_part( 'template-parts/featured-properties' );*/ 
+                     $categorySelected = 'condos';
+                    include( locate_template( 'template-parts/featured-properties.php', false, false ) ); 
+				?>
 				<h2 class="text-4xl mb-8 font-titles font-light" data-aos="fade-in" data-aos-duration="3000">Villas </h2>
 				<!-- <h3 data-aos="fade-in" data-aos-duration="3000" data-aos-delay="100" class="text-2xl mt-8">Condos and Houses </h3> -->
                 <?php /*get_template_part( 'template-parts/featured-properties' );*/ 
-                     $categorySelected = '';
+                     $categorySelected = 'villas';
                     include( locate_template( 'template-parts/featured-properties.php', false, false ) ); 
                 ?>
 			
@@ -64,50 +87,84 @@ get_header();
             <h2 class="text-4xl mt-4 mb-2 font-titles font-light text-center" data-aos="fade-in" data-aos-duration="3000">Experiences </h2>
 			<div class="items-center">
 				<div class="slider-experiences">
-					<div class="experiences-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/image-four-intense.jpg')">
-					</div>
-					<div class="experiences-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/atv-tour-1.jpg')">
-					</div>
-					<div class="experiences-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/horseback-r-1-1920x1080.jpg')">
-					</div>
-					<div class="experiences-slide" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/Akaka-6.jpg')">
-					</div>
+				<?php	
+						$args = array(
+						'post_type' => 'product',
+						//'order' => 'ASC',
+						'orderby' => array('menu_order' => 'ASC', 'title' => 'ASC'),
+						'posts_per_page' => 6,
+						'paged' => 1,
+						'tax_query' => array(
+								
+							array(
+								'taxonomy' => 'product_cat',
+								'field'    => 'slug',
+								'terms'    => 'tours',
+							),
+							
+
+						)
+					
+					);
+      
+
+					$items = new WP_Query($args);
+					// Pagination fix
+					$temp_query = $wp_query;
+					$wp_query   = NULL;
+					$wp_query   = $items;
+
+						if ($items->have_posts()) {
+							while ($items->have_posts()) {
+								$items->the_post();
+
+								?>
+								<?php if (has_post_thumbnail()) :
+
+								$id = get_post_thumbnail_id($post->ID);
+								$thumb_url = wp_get_attachment_image_src($id, 'item-banner', true);
+								?>
+
+								<?php endif; ?>
+								<div class="experiences-slide" style="background-image: url('<?php echo $thumb_url[0] ?>')">
+								</div>
+								
+							<?php
+
+
+						}
+					}
+					?>
+					
+					
 		
 				</div>
 				<div class="items absolute bottom-0 w-full">
 					<div class="slider-experiences-nav ">
-						<div class="experiences-nav-slide">
-							<a class="post px-4 py-2 block absolute" href="#">
-								<h3 class="text-white"><span>Lorem ipsum dolor, sit amet consectetur adipisicing</span></h3>
-								<span class="absolute icon"><i class="fas fa-plus"></i></span>
-								<p style="display: block;"></p>
-								<span class="details absolute uppercase">Lorem ipsum dolor</span>
-							</a>
-						</div>
-						<div class="experiences-nav-slide">
-							<a class="post px-4 py-2 block absolute" href="#">
-								<h3 class="text-white"><span>Lorem ipsum dolor, sit amet consectetur adipisicing</span></h3><span
-									class="absolute icon"><i class="fas fa-plus"></i></span>
-								<p style="display: block;"></p>
-								<span class="details absolute uppercase">Lorem ipsum dolor</span>
-							</a>
-						</div>
-						<div class="experiences-nav-slide">
-							<a class="post px-4 py-2 block absolute" href="#">
-								<h3 class="text-white"><span>Lorem ipsum dolor, sit amet consectetur adipisicing</span></h3><span
-									class="absolute icon"><i class="fas fa-plus"></i></span>
-								<p style="display: block;"></p>
-								<span class="details absolute uppercase">Lorem ipsum dolor</span>
-							</a>
-						</div>
-						<div class="experiences-nav-slide">
-							<a class="post px-4 py-2 block absolute" href="#">
-								<h3 class="text-white"><span>Lorem ipsum dolor, sit amet consectetur adipisicing</span></h3><span
-									class="absolute icon"><i class="fas fa-plus"></i></span>
-								<p style="display: block;"></p>
-								<span class="details absolute uppercase">Lorem ipsum dolor</span>
-							</a>
-						</div>
+					<?php 
+							if ($items->have_posts()) {
+							while ($items->have_posts()) {
+								$items->the_post();
+
+								?>
+								
+								<div class="experiences-nav-slide">
+									<a class="post px-4 py-2 block absolute" href="<?php the_permalink(); ?>">
+										<h3 class="text-white"><span><?php the_title(); ?></span></h3>
+										<span class="absolute icon"><i class="fas fa-plus"></i></span>
+										<p style="display: block;"></p>
+										<span class="details absolute uppercase">Lorem ipsum dolor</span>
+									</a>
+								</div>
+								
+							<?php
+
+
+						}
+					}
+					?>
+						
+						
 		
 					</div>
 		

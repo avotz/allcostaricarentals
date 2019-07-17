@@ -51,7 +51,11 @@ get_header(); ?>
 							's' => $q,
 							'tax_query' => array(
 								'relation' => 'AND',
-
+								array(
+									'taxonomy' => 'product_cat',
+									'field'    => 'slug',
+									'terms'    => 'properties',
+								),
 								array(
 									'taxonomy' => 'product_cat',
 									'field'    => 'slug',
@@ -75,7 +79,12 @@ get_header(); ?>
 							'paged' => $paged,
 							's' => $q,
 							'tax_query' => array(
-
+								'relation' => 'AND',
+								array(
+									'taxonomy' => 'product_cat',
+									'field'    => 'slug',
+									'terms'    => 'properties',
+								),
 								array(
 									'taxonomy' => 'product_cat',
 									'field'    => 'slug',
@@ -94,7 +103,12 @@ get_header(); ?>
 							'paged' => $paged,
 							's' => $q,
 							'tax_query' => array(
-
+								'relation' => 'AND',
+								array(
+									'taxonomy' => 'product_cat',
+									'field'    => 'slug',
+									'terms'    => 'properties',
+								),
 								array(
 									'taxonomy' => 'location',
 									'field'    => 'slug',
@@ -111,7 +125,17 @@ get_header(); ?>
 							'orderby' => array('menu_order' => 'ASC', 'title' => 'ASC'),
 							'posts_per_page' => 12,
 							'paged' => $paged,
-							's' => $q
+							's' => $q,
+							'tax_query' => array(
+								
+								array(
+									'taxonomy' => 'product_cat',
+									'field'    => 'slug',
+									'terms'    => 'properties',
+								),
+								
+
+							)
 
 
 						);

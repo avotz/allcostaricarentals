@@ -11,7 +11,12 @@
                 'paged' => 1,
                 
                 'tax_query' => array(
-
+                    'relation' => 'AND',
+                    array(
+                        'taxonomy' => 'product_cat',
+                        'field'    => 'slug',
+                        'terms'    => 'properties',
+                    ),
                     array(
                         'taxonomy' => 'product_cat',
                         'field'    => 'slug',
@@ -28,7 +33,17 @@
                 //'order' => 'ASC',
                 'orderby' => array('menu_order' => 'ASC', 'title' => 'ASC'),
                 'posts_per_page' => 8,
-                'paged' => 1
+                'paged' => 1,
+                'tax_query' => array(
+                   
+                    array(
+                        'taxonomy' => 'product_cat',
+                        'field'    => 'slug',
+                        'terms'    => 'properties',
+                    )
+                    
+
+                )
                
 
 
