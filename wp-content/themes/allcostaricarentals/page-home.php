@@ -121,69 +121,66 @@ get_header();
 		
 				<h2 class="text-4xl mb-8 font-sans events-h2 relative pt-4 uppercase">News </h2>
 				<div class="flex flex-wrap">
-					<div class="event w-full md:w-1/2 lg:w-1/3 px-5">
-						<div class="event-container h-full flex flex-col">
-							<a href="#" class="flex-auto">
-								<div class="event-img">
-									<img src="<?php echo get_template_directory_uri(); ?>/img/event.jpg">
-								</div>
-							</a>
-							<div class="event-content p-5">
-								<h3 class="text-2xl leading-none mb-4 uppercase font-titles ">Lorem ipsum dolor sit</h2>
-									<p class="leading-normal mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-										do eiusmod
-										tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										quis nostrud exercitation ullamco</p>
-									<p>
-										<a href="#"
-											class="inline-block px-4 py-3 uppercase bg-transparent font-bold  border-2 border-solid border-black hover:bg-black hover:text-white">Learn
-											More</a>
-									</p>
-							</div>
-						</div>
-					</div>
-					<div class="event w-full md:w-1/2 lg:w-1/3 px-5">
-						<div class="event-container h-full flex flex-col">
-							<a href="#" class="flex-auto">
-								<div class="event-img">
-									<img src="<?php echo get_template_directory_uri(); ?>/img/event.jpg">
-								</div>
-							</a>
-							<div class="event-content p-5">
-								<h3 class="text-2xl leading-none mb-4 uppercase font-titles">Lorem ipsum dolor sit</h2>
-									<p class="leading-normal mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-										do eiusmod
-										tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										quis nostrud exercitation ullamco</p>
-									<p>
-										<a href="#"
-											class="inline-block px-4 py-3 uppercase bg-transparent font-bold  border-2 border-solid border-black hover:bg-black hover:text-white">Learn
-											More</a>
-									</p>
-							</div>
-						</div>
-					</div>
-					<div class="event w-full md:w-1/2 lg:w-1/3 px-5">
-						<div class="event-container h-full flex flex-col">
-							<a href="#" class="flex-auto">
-								<div class="event-img">
-									<img src="<?php echo get_template_directory_uri(); ?>/img/event.jpg">
-								</div>
-							</a>
-							<div class="event-content p-5">
-								<h3 class="text-2xl leading-none mb-4 uppercase font-titles">Lorem ipsum dolor sit</h2>
-									<p class="leading-normal mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-										do eiusmod
-										tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										quis nostrud exercitation ullamco</p>
-									<p>
-										<a href="#"
-											class="inline-block px-4 py-3 uppercase bg-transparent font-bold  border-2 border-solid border-black hover:bg-black hover:text-white">Learn
-											More</a>
-									</p>
-							</div>
-						</div>
-					</div>
+				<?php	
+						$args = array(
+						'post_type' => 'post',
+						//'order' => 'ASC',
+						'orderby' => array('menu_order' => 'ASC', 'title' => 'ASC'),
+						'posts_per_page' => 3,
+						'paged' => 1
+					
+					);
+      
+
+					$items = new WP_Query($args);
+					// Pagination fix
+					$temp_query = $wp_query;
+					$wp_query   = NULL;
+					$wp_query   = $items;
+
+						if ($items->have_posts()) {
+							while ($items->have_posts()) {
+								$items->the_post();
+
+								?>
+								
+								<article class="event w-full md:w-1/2 lg:w-1/3 px-5">
+									<div class="event-container h-full flex flex-col">
+										<a href="<?php the_permalink(); ?>" class="flex-auto">
+											<div class="event-img">
+											<?php if (has_post_thumbnail()) :
+
+											$id = get_post_thumbnail_id($post->ID);
+											$thumb_url = wp_get_attachment_image_src($id, 'news-thumb', true);
+											?>
+
+
+
+											<?php endif; ?>
+											<img src="<?php echo $thumb_url[0] ?>" alt="<?php the_title(); ?>" title="<?php the_title(); ?>">
+											</div>
+										</a>
+										<div class="event-content p-5">
+											<h3 class="text-2xl leading-none mb-4 uppercase font-titles "><?php the_title(); ?></h2>
+												<div class="leading-normal mb-4"><?php the_excerpt(); ?></div>
+												<div>
+													<a href="<?php the_permalink(); ?>"
+														class="inline-block px-4 py-3 uppercase bg-transparent font-bold  border-2 border-solid border-black text-black hover:bg-black hover:text-white">Learn
+														More</a>
+												</div>
+										</div>
+									</div>
+								</article>
+							
+
+							<?php
+
+
+						}
+					}
+					?>
+					
+					
 		
 				</div>
 		

@@ -9,29 +9,36 @@
 
 get_header();
 ?>
+	<?php get_template_part( 'template-parts/page-header' ); ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+	<section class="content">
+		<div class="blog-container flex flex-wrap justify-between">
+			<div class="blog-info">
+				<?php
+				while ( have_posts() ) :
+					the_post();
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+					get_template_part( 'template-parts/content', get_post_type() );
 
-			get_template_part( 'template-parts/content', get_post_type() );
+					the_post_navigation();
 
-			the_post_navigation();
+					// If comments are open or we have at least one comment, load up the comment template.
+					if ( comments_open() || get_comments_number() ) :
+						comments_template();
+					endif;
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+				endwhile; // End of the loop.
+				?>
+			</div>
+			<div class="blog-sidebar">
+				<?php get_sidebar(); ?>
+			</div>
+		
+		</div>
 
-		endwhile; // End of the loop.
-		?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
+		
+	</section><!-- #primary -->
 
 <?php
-get_sidebar();
+//get_sidebar();
 get_footer();

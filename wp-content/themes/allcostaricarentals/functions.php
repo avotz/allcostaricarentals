@@ -44,6 +44,7 @@ if ( ! function_exists( 'allcostaricarentals_setup' ) ) :
 		add_theme_support( 'post-thumbnails' );
 		add_image_size('property-thumb', 640, 480, true);
 		add_image_size('item-banner', 1920, 1080, true);
+		add_image_size('news-thumb', 760, 507, true);
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(

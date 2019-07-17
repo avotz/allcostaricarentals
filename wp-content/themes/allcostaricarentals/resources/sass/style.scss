@@ -15,6 +15,7 @@ License URI:        http://opensource.org/licenses/MIT
 @tailwind components;
 @tailwind utilities;
 @import "slick";
+@import "basic";
 
 .font-titles{
 	font-family: 'Francois One', cursive;
@@ -571,3 +572,6 @@ License URI:        http://opensource.org/licenses/MIT
     	//height: 40px;
 	}
 }
+
+@import "wc";
+@import "blog";

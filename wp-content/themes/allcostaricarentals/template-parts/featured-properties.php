@@ -51,7 +51,7 @@
             <article class="tours-item">
                 <div class="entry-content grid-item">
                     <figure class="entry-thumbnail">
-                        <a href="<?php the_permalink(); ?>">
+                        <a href="<?php the_permalink(); ?>" class="block">
                             <div class="more-detail">More Details</div>
                             <?php if (has_post_thumbnail()) :
 
@@ -102,6 +102,7 @@
                         </div>
 
                     </div>
+                    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="absolute inset-0"></a>
                 </div>
             </article>
 
