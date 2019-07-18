@@ -17,8 +17,13 @@ get_header();
     <?php get_template_part( 'template-parts/page-header' ); ?>
     
     <section class="content">
-        <div class="container mx-auto">
-            <?php woocommerce_content(); ?>
+        <div class="container mx-auto px-4 md:px-0">
+            
+            <?php
+           
+                 woocommerce_content();
+              
+             ?>
         </div>
     </section>
 

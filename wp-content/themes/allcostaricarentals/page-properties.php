@@ -19,7 +19,7 @@ $q = get_query_var('q');
 get_header(); ?>
 <?php get_template_part( 'template-parts/page-header' ); ?>
 <section class="content">
-    <div class="welcome text-center mt-8 mb-8 container mx-auto">
+    <div class="welcome text-center mt-8 mb-8 container mx-auto px-4 md:px-0">
 		<?php
 		while (have_posts()) : the_post();
 

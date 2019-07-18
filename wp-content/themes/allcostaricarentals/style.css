@@ -8142,6 +8142,10 @@ iframe {
   font-family: "lato", sans-serif;
 }
 
+body.mobile .sticky-header {
+  top: 0 !important;
+}
+
 .sticky-header {
   background-color: #38b2ac;
   height: 70px;
@@ -8153,7 +8157,7 @@ iframe {
 
 .sticky-header .btn-menu {
   top: 25px;
-  left: 40px;
+  right: 40px;
 }
 
 .sticky-header .bannerIcons {
@@ -8171,9 +8175,17 @@ iframe {
   color: white;
 }
 
+.full-menu-nav {
+  top: 70px;
+}
+
 .full-menu-nav ul {
   flex-wrap: wrap;
   justify-content: start;
+}
+
+.full-menu-nav.open {
+  display: block !important;
 }
 
 @media screen and (min-width: 768px) {
@@ -8184,7 +8196,7 @@ iframe {
 
 .btn-menu {
   top: 66px;
-  left: 15px;
+  right: 15px;
 }
 
 .bannerIcons {
@@ -8522,13 +8534,13 @@ iframe {
   display: none;
 }
 
-.woocommerce-page .product {
+.woocommerce div.product {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt {
+.woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button {
   display: inline-block;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -8545,7 +8557,7 @@ iframe {
   border-radius: 0;
 }
 
-.woocommerce #respond input#submit.alt:hover, .woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover, .woocommerce input.button.alt:hover {
+.woocommerce #respond input#submit.alt:hover, .woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover, .woocommerce input.button.alt:hover, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover {
   background-color: transparent;
   color: #000;
   border-color: #000;
@@ -8559,6 +8571,82 @@ iframe {
 
 .wc-bookings-date-picker .ui-datepicker td.bookable a {
   background-color: #38b2ac !important;
+}
+
+.product_title.entry-title {
+  font-family: "Francois One", cursive;
+  font-size: 1.5rem;
+}
+
+.woocommerce div.product p.price, .woocommerce div.product span.price {
+  font-family: "Francois One", cursive;
+  font-size: 1.5rem;
+  color: #2c7a7b;
+}
+
+.woocommerce .products ul, .woocommerce ul.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.woocommerce ul.products li.product, .woocommerce-page ul.products li.product {
+  width: 100%;
+  margin-bottom: 1rem;
+  position: relative;
+  border: 1px solid #e6e6e6;
+  cursor: pointer;
+}
+
+.woocommerce ul.products li.product a {
+  position: relative;
+}
+
+.woocommerce ul.products li.product a img {
+  display: block;
+  height: 190px;
+  width: 100%;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-category__title, .woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce ul.products li.product h3 {
+  padding: 12px;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-category__title, .woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce ul.products li.product h3 {
+  color: #000;
+}
+
+.woocommerce ul.products li.product .price {
+  padding: 0 12px;
+  color: #000;
+}
+
+.woocommerce ul.products li.product .button {
+  margin: 0 12px;
+}
+
+@media screen and (min-width: 620px) {
+  .woocommerce ul.products li.product, .woocommerce-page ul.products li.product {
+    width: calc(50% - 15px);
+  }
+
+  .woocommerce ul.products li.product a img {
+    display: block;
+    height: 190px;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .woocommerce ul.products li.product, .woocommerce-page ul.products li.product {
+    width: calc(33% - 15px);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .woocommerce ul.products li.product, .woocommerce-page ul.products li.product {
+    width: calc(25% - 15px);
+  }
 }
 
 .blog-container {

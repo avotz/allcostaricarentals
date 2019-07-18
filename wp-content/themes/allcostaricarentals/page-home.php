@@ -16,30 +16,8 @@ get_header();
 ?>
 
 <section class="homePage relative w-full h-screen">
-		<div class="flex items-center container mx-auto h-70 absolute z-10 left-0 right-0 pt-20">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">ALL COSTA RICA RENTALS</a>
-			
-			
-				
-			<?php
-				wp_nav_menu( array(
-					'theme_location' => 'header',
-					'menu_id'        => 'header-menu',
-					'container' => 'nav',
-					'container_class' => 'full-menu-nav ml-4 p-8 md:p-0 w-1/2',
-					'container_id' => '',
-					'menu_class' => 'full-menu-ul list-reset uppercase text-lg md:text-sm',
-				) );
-			?>
-				
-				
-				
-			
-			<ul class="bannerIcons z-10 list-reset absolute hidden md:flex ">
-				<li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-phone"></i> Call</a></li>
-				<!-- <li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-search"></i> Search</a></li> -->
-				<li class="px-2 py-2 m-2"><a href="<?php echo esc_url( home_url( '/contact-us' ) ); ?>" class="block text-white no-underline"><i class="fas fa-envelope"></i> Contact</a></li>
-			</ul>
+		<div class="home-menu hidden md:flex items-center container mx-auto h-70 absolute z-10 left-0 right-0 pt-20">
+			<?php get_template_part( 'template-parts/menus' ); ?>
 
 		</div>
 		<div class="banner relative z-0">
@@ -60,7 +38,7 @@ get_header();
     </section>
     <section class="content">
 		
-		<div class="welcome text-center mt-8 mb-8 container mx-auto">
+		<div class="welcome text-center mt-8 mb-8 container mx-auto px-4 md:px-0">
 				<h2 class="text-4xl mb-8 font-titles font-light" data-aos="fade-in" data-aos-duration="3000">Houses </h2>
 				<!-- <h3 data-aos="fade-in" data-aos-duration="3000" data-aos-delay="100" class="text-2xl mt-8">Condos and Houses </h3> -->
                 
@@ -174,7 +152,7 @@ get_header();
 		</div>
 
 		<div class="events py-16">
-			<div class="container mx-auto ">
+			<div class="container mx-auto px-4 md:px-0">
 		
 				<h2 class="text-4xl mb-8 font-sans events-h2 relative pt-4 uppercase">News </h2>
 				<div class="flex flex-wrap">

@@ -14,7 +14,7 @@
 
 get_header();
 ?>
-
+	<?php get_template_part( 'template-parts/page-header' ); ?>
 	<section class="content">
 		<div class="blog-container flex flex-wrap justify-between">
 			<div class="blog-info">

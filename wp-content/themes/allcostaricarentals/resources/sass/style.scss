@@ -23,6 +23,12 @@ License URI:        http://opensource.org/licenses/MIT
 .font-lato{
 	font-family: 'lato', sans-serif;
 }
+body.mobile{
+	.sticky-header{
+		top:0 !important;
+		
+	}
+}
 .sticky-header{
 	@apply bg-teal-500;
 	height: 70px;
@@ -33,7 +39,7 @@ License URI:        http://opensource.org/licenses/MIT
 	
 	.btn-menu {
 	    top: 25px;
-	    left: 40px;
+	    right: 40px;
 	}
 	.bannerIcons{
 		top:10px;
@@ -60,10 +66,14 @@ License URI:        http://opensource.org/licenses/MIT
 }
 
 .full-menu-nav{
+	top: 70px;
 	ul{
 	
 		flex-wrap: wrap;
 		justify-content: start; 
+	}
+	&.open{
+		display: block !important;
 	}
 }
 
@@ -83,7 +93,7 @@ License URI:        http://opensource.org/licenses/MIT
 
 .btn-menu{
 	top:66px;
-	left:15px;
+	right:15px;
 }
 .bannerIcons{
 	top:50px;
