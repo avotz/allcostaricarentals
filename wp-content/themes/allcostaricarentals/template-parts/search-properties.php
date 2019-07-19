@@ -1,6 +1,7 @@
 <?php 
 $categories = get_terms(array(
-	'taxonomy' => 'product_cat',
+    'taxonomy' => 'product_cat',
+    'parent' => '20', //properties
 	'hide_empty' => false
 
 ));
@@ -52,16 +53,9 @@ $q = get_query_var('q');
             <div class="w-full xl:w-1/4 xl:flex-none relative">
                 <div
                     class="flex flex-col items-center justify-between xl:justify-center w-full h-60 xl:h-60 text-xs uppercase font-bold tracking-wide px-5">
-                    <label for="from">Guests</label>
-                    <select name="type" id="type" class="w-full h-10 px-2 text-lg ">
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
-                        <option value="">4</option>
-                        <option value="">5</option>
-                        <option value="">6</option>
-                        <option value="">7</option>
-                    </select>
+                    <label for="q">Keyword Search</label>
+                    <input type="text" name="q" class="w-full h-10 px-2 text-lg" placeholder="Casa, Villa..." value="<?php echo $q ?>"">
+                   
                 </div>
             </div>
             

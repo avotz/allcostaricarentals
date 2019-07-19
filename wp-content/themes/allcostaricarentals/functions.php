@@ -150,6 +150,12 @@ function add_specific_menu_location_atts( $atts, $item, $args ) {
 }
 add_filter( 'nav_menu_link_attributes', 'add_specific_menu_location_atts', 10, 3 );
 
+function add_query_vars_filter($vars)
+{
+	$vars[] = "q";
+	return $vars;
+}
+add_filter('query_vars', 'add_query_vars_filter');
 /**
  * Implement the Custom Header feature.
  */
