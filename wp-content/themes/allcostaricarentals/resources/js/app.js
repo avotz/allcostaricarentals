@@ -71,6 +71,17 @@ $('.slider-experiences-nav').slick({
 
 
 });
+$('.single-product .flex-control-thumbs').slick({
+    dots: false,
+    autoplay:true,
+    autoplaySpeed:5000,
+    speed: 500,
+    arrows: false,
+    cssEase: 'linear',
+    fade: true,
+    pauseOnHover: false
+});
+
 
 $('.slick-slide').mouseover(function () {
     $(this).click();
