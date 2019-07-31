@@ -58,12 +58,12 @@
 				<thead>
 					<tr>
 						<th class="sort" width="1%">&nbsp;</th>
-						<th><?php _e( 'Range type', 'woocommerce-bookings' ); ?></th>
-						<th><?php _e( 'Range', 'woocommerce-bookings' ); ?></th>
+						<th><?php esc_html_e( 'Range type', 'woocommerce-bookings' ); ?></th>
+						<th><?php esc_html_e( 'Range', 'woocommerce-bookings' ); ?></th>
 						<th></th>
 						<th></th>
-						<th><?php _e( 'Base cost', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Enter a cost for this rule. Applied to the booking as a whole.', 'woocommerce-bookings' ); ?>">[?]</a></th>
-						<th><?php _e( 'Block cost', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Enter a cost for this rule. Applied to each booking block.', 'woocommerce-bookings' ); ?>">[?]</a></th>
+						<th><?php esc_html_e( 'Base cost', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php esc_attr_e( 'Enter a cost for this rule. Applied to the booking as a whole.', 'woocommerce-bookings' ); ?>">[?]</a></th>
+						<th><?php esc_html_e( 'Block cost', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php esc_attr_e( 'Enter a cost for this rule. Applied to each booking block.', 'woocommerce-bookings' ); ?>">[?]</a></th>
 						<th class="remove" width="1%">&nbsp;</th>
 					</tr>
 				</thead>
@@ -72,11 +72,11 @@
 						<th colspan="9">
 							<a href="#" class="button add_row" data-row="<?php
 							ob_start();
-							include( 'html-booking-pricing-fields.php' );
+							include 'html-booking-pricing-fields.php';
 							$html = ob_get_clean();
 							echo esc_attr( $html );
-							?>"><?php _e( 'Add Range', 'woocommerce-bookings' ); ?></a>
-							<span class="description"><?php _e( 'All matching rules will be applied to the booking.', 'woocommerce-bookings' ); ?></span>
+							?>"><?php esc_html_e( 'Add Range', 'woocommerce-bookings' ); ?></a>
+							<span class="description"><?php esc_html_e( 'All matching rules will be applied to the booking.', 'woocommerce-bookings' ); ?></span>
 						</th>
 					</tr>
 				</tfoot>
@@ -85,7 +85,7 @@
 					$values = $bookable_product->get_pricing( 'edit' );
 					if ( ! empty( $values ) && is_array( $values ) ) {
 						foreach ( $values as $index => $pricing ) {
-							include( 'html-booking-pricing-fields.php' );
+							include 'html-booking-pricing-fields.php';
 
 							/**
 							 * Fired just after pricing fields are rendered.

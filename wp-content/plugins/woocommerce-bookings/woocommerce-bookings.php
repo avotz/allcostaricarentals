@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Bookings
  * Plugin URI: https://woocommerce.com/products/woocommerce-bookings/
  * Description: Setup bookable products such as for reservations, services and hires.
- * Version: 1.14.5
+ * Version: 1.15.0
  * Author: WooCommerce
  * Author URI: https://woocommerce.com
  * Text Domain: woocommerce-bookings
@@ -90,12 +90,18 @@ function woocommerce_bookings_activate() {
 
 if ( ! class_exists( 'WC_Bookings' ) ) :
 
-	define( 'WC_BOOKINGS_VERSION', '1.14.5' );
-	define( 'WC_BOOKINGS_DB_VERSION', '1.14.5' );
+	define( 'WC_BOOKINGS_VERSION', '1.15.0' );
 	define( 'WC_BOOKINGS_TEMPLATE_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/' );
 	define( 'WC_BOOKINGS_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 	define( 'WC_BOOKINGS_MAIN_FILE', __FILE__ );
 	define( 'WC_BOOKINGS_GUTENBERG_EXISTS', function_exists( 'register_block_type' ) ? true : false );
+	if ( ! defined( 'WC_BOOKINGS_CONNECT_WOOCOMMERCE_URL' ) ) {
+		define( 'WC_BOOKINGS_CONNECT_WOOCOMMERCE_URL', 'https://connect.woocommerce.com' );
+	}
+
+	if ( ! defined( 'WC_BOOKINGS_DEBUG' ) ) {
+		define( 'WC_BOOKINGS_DEBUG', false );
+	}
 
 	/**
 	 * WC Bookings class
@@ -129,7 +135,7 @@ if ( ! class_exists( 'WC_Bookings' ) ) :
 			 *
 			 * Large priority ensures this occurs after WooCommerce Admin has loaded.
 			 */
-			add_filter( 'plugins_loaded', array( $this, 'show_activation_notice' ), 100 );
+			add_action( 'plugins_loaded', array( $this, 'show_activation_notice' ), 100 );
 		}
 
 		/**
@@ -200,7 +206,6 @@ if ( ! class_exists( 'WC_Bookings' ) ) :
 			}
 		}
 
-
 		/**
 		 * Load Classes.
 		 *
@@ -220,6 +225,9 @@ if ( ! class_exists( 'WC_Bookings' ) ) :
 		 * Init all the classes.
 		 */
 		private function init() {
+			// Cache.
+			new WC_Bookings_Cache();
+
 			// Initialize.
 			new WC_Bookings_Init();
 			WC_Bookings_Timezone_Settings::instance();
@@ -233,7 +241,6 @@ if ( ! class_exists( 'WC_Bookings' ) ) :
 			new WC_Booking_Cron_Manager();
 			WC_Bookings_Google_Calendar_Connection::instance();
 			new WC_Booking_Coupon();
-
 
 			if ( class_exists( 'WC_Product_Addons' ) ) {
 				new WC_Bookings_Addons();
@@ -260,7 +267,6 @@ if ( ! class_exists( 'WC_Bookings' ) ) :
 				new WC_Booking_Products_Export();
 				new WC_Booking_Products_Import();
 			}
-
 		}
 
 		/**

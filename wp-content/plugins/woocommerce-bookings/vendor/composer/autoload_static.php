@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f
+class ComposerStaticInitf4d9280b95423f8740278d7b192cd807
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -496,6 +496,7 @@ class ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f
         'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
         'RRule\\RRule' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RRule.php',
         'RRule\\RRuleInterface' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RRuleInterface.php',
+        'RRule\\RRuleTrait' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RRuleTrait.php',
         'RRule\\RSet' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RSet.php',
         'RRule\\RfcParser' => __DIR__ . '/..' . '/rlanvin/php-rrule/src/RfcParser.php',
         'WC_Ajax_Compat' => __DIR__ . '/../..' . '/includes/compatibility/class-wc-ajax-compat.php',
@@ -523,8 +524,10 @@ class ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f
         'WC_Bookings_Admin_Add_Ons' => __DIR__ . '/../..' . '/includes/admin/class-wc-bookings-addons.php',
         'WC_Bookings_Ajax' => __DIR__ . '/../..' . '/includes/admin/class-wc-bookings-ajax.php',
         'WC_Bookings_CPT' => __DIR__ . '/../..' . '/includes/admin/class-wc-bookings-cpt.php',
+        'WC_Bookings_Cache' => __DIR__ . '/../..' . '/includes/class-wc-bookings-cache.php',
         'WC_Bookings_Calendar' => __DIR__ . '/../..' . '/includes/admin/class-wc-bookings-calendar.php',
         'WC_Bookings_Controller' => __DIR__ . '/../..' . '/includes/class-wc-bookings-controller.php',
+        'WC_Bookings_Cost_Calculation' => __DIR__ . '/../..' . '/includes/class-wc-bookings-cost-calculation.php',
         'WC_Bookings_Create' => __DIR__ . '/../..' . '/includes/admin/class-wc-bookings-create.php',
         'WC_Bookings_Customer_Meta_Box' => __DIR__ . '/../..' . '/includes/admin/class-wc-bookings-customer-meta-box.php',
         'WC_Bookings_Data' => __DIR__ . '/../..' . '/includes/compatibility/abstract-wc-bookings-data.php',
@@ -559,6 +562,7 @@ class ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f
         'WC_Email_Booking_Cancelled' => __DIR__ . '/../..' . '/includes/emails/class-wc-email-booking-cancelled.php',
         'WC_Email_Booking_Confirmed' => __DIR__ . '/../..' . '/includes/emails/class-wc-email-booking-confirmed.php',
         'WC_Email_Booking_Notification' => __DIR__ . '/../..' . '/includes/emails/class-wc-email-booking-notification.php',
+        'WC_Email_Booking_Pending_Confirmation' => __DIR__ . '/../..' . '/includes/emails/class-wc-email-booking-pending-confirmation.php',
         'WC_Email_Booking_Reminder' => __DIR__ . '/../..' . '/includes/emails/class-wc-email-booking-reminder.php',
         'WC_Email_New_Booking' => __DIR__ . '/../..' . '/includes/emails/class-wc-email-new-booking.php',
         'WC_Global_Availability' => __DIR__ . '/../..' . '/includes/data-objects/class-wc-global-availability.php',
@@ -603,10 +607,10 @@ class ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit20fad0cc4d5540c59db23627d1f8e87f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf4d9280b95423f8740278d7b192cd807::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf4d9280b95423f8740278d7b192cd807::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf4d9280b95423f8740278d7b192cd807::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitf4d9280b95423f8740278d7b192cd807::$classMap;
 
         }, null, ClassLoader::class);
     }

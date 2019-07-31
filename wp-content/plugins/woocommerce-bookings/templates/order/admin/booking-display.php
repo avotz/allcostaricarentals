@@ -19,7 +19,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 if ( $booking_ids ) {
@@ -30,7 +30,7 @@ if ( $booking_ids ) {
 			<strong class="wc-booking-summary-number">
 				<?php
 				/* translators: 1: booking id */
-				printf( __( 'Booking #%s', 'woocommerce-bookings' ), esc_html( $booking->get_id() ) );
+				echo esc_html( sprintf( __( 'Booking #%s', 'woocommerce-bookings' ), (string) $booking->get_id() ) );
 				?>
 				<span class="status-<?php echo esc_attr( $booking->get_status() ); ?>">
 					<?php echo esc_html( wc_bookings_get_status_label( $booking->get_status() ) ); ?>
@@ -39,11 +39,11 @@ if ( $booking_ids ) {
 			<?php wc_bookings_get_summary_list( $booking, true ); ?>
 			<div class="wc-booking-summary-actions">
 				<?php if ( in_array( $booking->get_status(), array( 'pending-confirmation' ) ) ) : ?>
-					<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=wc-booking-confirm&booking_id=' . $booking_id ), 'wc-booking-confirm' ); ?>"><?php _e( 'Confirm booking', 'woocommerce-bookings' ); ?></a>
+					<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-ajax.php?action=wc-booking-confirm&booking_id=' . $booking_id ), 'wc-booking-confirm' ) ); ?>"><?php esc_html_e( 'Confirm booking', 'woocommerce-bookings' ); ?></a>
 				<?php endif; ?>
 
 				<?php if ( $booking_id ) : ?>
-					<a href="<?php echo admin_url( 'post.php?post=' . absint( $booking_id ) . '&action=edit' ); ?>"><?php _e( 'View booking &rarr;', 'woocommerce-bookings' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'post.php?post=' . absint( $booking_id ) . '&action=edit' ) ); ?>"><?php esc_html_e( 'View booking &rarr;', 'woocommerce-bookings' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

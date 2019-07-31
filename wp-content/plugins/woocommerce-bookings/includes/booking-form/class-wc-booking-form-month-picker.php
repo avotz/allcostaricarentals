@@ -23,6 +23,7 @@ class WC_Booking_Form_Month_Picker extends WC_Booking_Form_Picker {
 		$this->args['min_date']              = $this->booking_form->product->get_min_date();
 		$this->args['max_date']              = $this->booking_form->product->get_max_date();
 		$this->args['default_availability']  = $this->booking_form->product->get_default_availability();
+		$this->args['display']               = $this->booking_form->product->get_calendar_display_mode();
 		$this->args['label']                 = $this->get_field_label( __( 'Month', 'woocommerce-bookings' ) );
 		$this->args['blocks']                = $this->get_booking_blocks();
 		$this->args['availability_rules']    = array();

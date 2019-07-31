@@ -58,9 +58,8 @@ class WC_Bookings_Create {
 				$bookable_product_id = absint( $_POST['bookable_product_id'] );
 				$booking_order       = wc_clean( $_POST['booking_order'] );
 				$product             = wc_get_product( $bookable_product_id );
-				$booking_form        = new WC_Booking_Form( $product );
-				$booking_data        = $booking_form->get_posted_data( $_POST );
-				$cost                = $booking_form->calculate_booking_cost( $_POST );
+				$booking_data        = wc_bookings_get_posted_data( $_POST, $product );
+				$cost                = WC_Bookings_Cost_Calculation::calculate_booking_cost( $booking_data, $product );
 				$booking_cost        = $cost && ! is_wp_error( $cost ) ? number_format( $cost, 2, '.', '' ) : 0;
 				$create_order        = false;
 				$order_id            = 0;
@@ -172,6 +171,8 @@ class WC_Bookings_Create {
 				$new_booking->set_order_item_id( $item_id );
 				$new_booking->set_status( $create_order ? 'unpaid' : 'confirmed' );
 				$new_booking->save();
+
+				do_action( 'woocommerce_bookings_created_manual_booking', $new_booking );
 
 				wp_safe_redirect( admin_url( 'post.php?post=' . ( $create_order ? $order_id : $new_booking->get_id() ) . '&action=edit' ) );
 				exit;

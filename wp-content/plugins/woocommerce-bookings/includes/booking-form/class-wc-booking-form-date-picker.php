@@ -29,6 +29,7 @@ class WC_Booking_Form_Date_Picker extends WC_Booking_Form_Picker {
 		$this->args['duration_unit']           = $this->booking_form->product->get_duration_unit();
 		$this->args['is_range_picker_enabled'] = $this->booking_form->product->is_range_picker_enabled();
 		$this->args['display']                 = $this->booking_form->product->get_calendar_display_mode();
+		$this->args['label']                   = $this->get_field_label( __( 'Date', 'woocommerce-bookings' ) );
 		$this->args['product_type']            = $this->booking_form->product->get_type();
 		$this->args['default_date']            = date( 'Y-m-d', $this->get_default_date() );
 	}

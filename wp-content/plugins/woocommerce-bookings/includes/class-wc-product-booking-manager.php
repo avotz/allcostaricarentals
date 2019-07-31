@@ -33,7 +33,7 @@ class WC_Product_Booking_Manager {
 
 			// TODO: Figure the most performant way.
 			if ( 'booking' === $product->get_type() ) {
-				$bookings = WC_Bookings_Controller::get_bookings_for_objects( $post_id );
+				$bookings = WC_Booking_Data_Store::get_bookings_for_objects( $post_id );
 
 				if ( 0 !== count( $bookings ) ) {
 					$message  = __( 'You cannot trash/delete a bookable product that has Bookings associated with it.', 'woocommerce-bookings' );
@@ -43,13 +43,13 @@ class WC_Product_Booking_Manager {
 					$message .= '<a href="https://docs.woocommerce.com/document/bookings-faq/">';
 					$message .= __( 'Please visit our Bookings FAQs for more information', 'woocommerce-bookings' );
 					$message .= '</a>.';
-					wp_die( $message );
+					wp_die( wp_kses_post( $message ) );
 				}
 			}
 		}
 
 		if ( 'bookable_resource' === $post_type ) {
-			$resources = WC_Bookings_Controller::get_bookings_for_objects( $post_id );
+			$resources = WC_Booking_Data_Store::get_bookings_for_objects( $post_id );
 
 			if ( 0 !== count( $resources ) ) {
 				$message  = __( 'You cannot trash/delete a resource that has Bookings associated with it.', 'woocommerce-bookings' );
@@ -59,12 +59,10 @@ class WC_Product_Booking_Manager {
 				$message .= '<a href="https://docs.woocommerce.com/document/bookings-faq/">';
 				$message .= __( 'Please visit our Bookings FAQs for more information', 'woocommerce-bookings' );
 				$message .= '</a>.';
-				wp_die( $message );
+				wp_die( wp_kses_post( $message ) );
 			}
 		}
 
-		delete_booking_slots_transient( $post_id );
-
-		return;
+		WC_Bookings_Cache::delete_booking_slots_transient( $post_id );
 	}
 }

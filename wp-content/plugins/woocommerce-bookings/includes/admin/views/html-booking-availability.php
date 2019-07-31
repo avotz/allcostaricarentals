@@ -26,30 +26,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		?>
 		<p class="form-field">
-			<label for="_wc_booking_min_date"><?php _e( 'Minimum block bookable', 'woocommerce-bookings' ); ?></label>
-			<input type="number" name="_wc_booking_min_date" id="_wc_booking_min_date" value="<?php echo $min_date; ?>" step="1" min="0" style="margin-right: 7px; width: 4em;">
+			<label for="_wc_booking_min_date"><?php esc_html_e( 'Minimum block bookable', 'woocommerce-bookings' ); ?></label>
+			<input type="number" name="_wc_booking_min_date" id="_wc_booking_min_date" value="<?php echo esc_attr( $min_date ); ?>" step="1" min="0" style="margin-right: 7px; width: 4em;">
 			<select name="_wc_booking_min_date_unit" id="_wc_booking_min_date_unit" class="short" style="margin-right: 7px;">
-				<option value="month" <?php selected( $min_date_unit, 'month' ); ?>><?php _e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
-				<option value="week" <?php selected( $min_date_unit, 'week' ); ?>><?php _e( 'Week(s)', 'woocommerce-bookings' ); ?></option>
-				<option value="day" <?php selected( $min_date_unit, 'day' ); ?>><?php _e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
-				<option value="hour" <?php selected( $min_date_unit, 'hour' ); ?>><?php _e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
-			</select> <?php _e( 'into the future', 'woocommerce-bookings' ); ?>
+				<option value="month" <?php selected( $min_date_unit, 'month' ); ?>><?php esc_html_e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
+				<option value="week" <?php selected( $min_date_unit, 'week' ); ?>><?php esc_html_e( 'Week(s)', 'woocommerce-bookings' ); ?></option>
+				<option value="day" <?php selected( $min_date_unit, 'day' ); ?>><?php esc_html_e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
+				<option value="hour" <?php selected( $min_date_unit, 'hour' ); ?>><?php esc_html_e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
+			</select> <?php esc_html_e( 'into the future', 'woocommerce-bookings' ); ?>
 		</p>
 		<p class="form-field">
-			<label for="_wc_booking_max_date"><?php _e( 'Maximum block bookable', 'woocommerce-bookings' ); ?></label>
-			<input type="number" name="_wc_booking_max_date" id="_wc_booking_max_date" value="<?php echo $max_date; ?>" step="1" min="1" style="margin-right: 7px; width: 4em;">
+			<label for="_wc_booking_max_date"><?php esc_html_e( 'Maximum block bookable', 'woocommerce-bookings' ); ?></label>
+			<input type="number" name="_wc_booking_max_date" id="_wc_booking_max_date" value="<?php echo esc_attr( $max_date ); ?>" step="1" min="1" style="margin-right: 7px; width: 4em;">
 			<select name="_wc_booking_max_date_unit" id="_wc_booking_max_date_unit" class="short" style="margin-right: 7px;">
-				<option value="month" <?php selected( $max_date_unit, 'month' ); ?>><?php _e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
-				<option value="week" <?php selected( $max_date_unit, 'week' ); ?>><?php _e( 'Week(s)', 'woocommerce-bookings' ); ?></option>
-				<option value="day" <?php selected( $max_date_unit, 'day' ); ?>><?php _e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
-				<option value="hour" <?php selected( $max_date_unit, 'hour' ); ?>><?php _e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
-			</select> <?php _e( 'into the future', 'woocommerce-bookings' ); ?>
+				<option value="month" <?php selected( $max_date_unit, 'month' ); ?>><?php esc_html_e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
+				<option value="week" <?php selected( $max_date_unit, 'week' ); ?>><?php esc_html_e( 'Week(s)', 'woocommerce-bookings' ); ?></option>
+				<option value="day" <?php selected( $max_date_unit, 'day' ); ?>><?php esc_html_e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
+				<option value="hour" <?php selected( $max_date_unit, 'hour' ); ?>><?php esc_html_e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
+			</select> <?php esc_html_e( 'into the future', 'woocommerce-bookings' ); ?>
 		</p>
 		<p class="form-field _wc_booking_buffer_period">
-			<label for="_wc_booking_buffer_period"><?php _e( 'Require a buffer period of', 'woocommerce-bookings' ); ?></label>
+			<label for="_wc_booking_buffer_period"><?php esc_html_e( 'Require a buffer period of', 'woocommerce-bookings' ); ?></label>
 			<input type="number" name="_wc_booking_buffer_period" id="_wc_booking_buffer_period" value="<?php echo esc_attr( $bookable_product->get_buffer_period( 'edit' ) ); ?>" step="1" min="0" style="margin-right: 7px; width: 4em;">
 			<span class='_wc_booking_buffer_period_unit'></span>
-			<?php _e( 'between bookings', 'woocommerce-bookings' ); ?>
+			<?php esc_html_e( 'between bookings', 'woocommerce-bookings' ); ?>
 		</p>
 		<?php
 
@@ -91,12 +91,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		);
 		?>
 		<p class="form-field _wc_booking_first_block_time_field">
-			<label for="_wc_booking_first_block_time"><?php _e( 'First block starts at...', 'woocommerce-bookings' ); ?></label>
-			<input type="time" name="_wc_booking_first_block_time" id="_wc_booking_first_block_time" value="<?php echo $bookable_product->get_first_block_time( 'edit' ); ?>" placeholder="HH:MM" />
+			<label for="_wc_booking_first_block_time"><?php esc_html_e( 'First block starts at...', 'woocommerce-bookings' ); ?></label>
+			<input type="time" name="_wc_booking_first_block_time" id="_wc_booking_first_block_time" value="<?php echo esc_attr( $bookable_product->get_first_block_time( 'edit' ) ); ?>" placeholder="HH:MM" />
 		</p>
 
 		<?php
-		$more_info_link = ' <a href="https://docs.woocommerce.com/document/creating-a-bookable-product/#section-12">' . esc_html( __( 'view our documentation here.', 'woocommerce-booking' ) )  . '</a>';
+		$more_info_link = ' <a href="https://docs.woocommerce.com/document/creating-a-bookable-product/#section-12">' . esc_html( __( 'view our documentation here.', 'woocommerce-booking' ) ) . '</a>';
 		woocommerce_wp_checkbox(
 			array(
 				'id'          => '_wc_booking_has_restricted_days',
@@ -127,8 +127,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				for ( $i = 0; $i < 7; $i++ ) {
 					?>
 						<td>
-							<label class="checkbox" for="_wc_booking_restricted_days[<?php echo $i; ?>]"><?php echo $weekdays[ $i ]; ?>&nbsp;</label>
-							<input type="checkbox" class="checkbox" name="_wc_booking_restricted_days[<?php echo $i; ?>]" id="_wc_booking_restricted_days[<?php echo $i; ?>]" value="<?php echo $i; ?>" <?php checked( $restricted_days[ $i ], $i ); ?>>
+							<label class="checkbox" for="_wc_booking_restricted_days[<?php echo esc_attr( $i ); ?>]"><?php echo esc_html( $weekdays[ $i ] ); ?>&nbsp;</label>
+							<input type="checkbox" class="checkbox" name="_wc_booking_restricted_days[<?php echo esc_attr( $i ); ?>]" id="_wc_booking_restricted_days[<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $i ); ?>" <?php checked( $restricted_days[ $i ], $i ); ?>>
 						</td>
 					<?php
 				}
@@ -150,7 +150,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<th><?php esc_html_e( 'Range', 'woocommerce-bookings' ); ?></th>
 						<th></th>
 						<th></th>
-						<th><?php esc_html_e( 'Bookable', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'If not bookable, users won\'t be able to choose this block for their booking.', 'woocommerce-bookings' ); ?>">[?]</a></th>
+						<th><?php esc_html_e( 'Bookable', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php esc_attr_e( 'If not bookable, users won\'t be able to choose this block for their booking.', 'woocommerce-bookings' ); ?>">[?]</a></th>
 						<th><?php esc_html_e( 'Priority', 'woocommerce-bookings' ); ?>&nbsp;<a class="tips" data-tip="<?php echo esc_attr( get_wc_booking_priority_explanation() ); ?>">[?]</a></th>
 						<th class="remove" width="1%">&nbsp;</th>
 					</tr>
@@ -160,10 +160,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<th colspan="6">
 							<a href="#" class="button add_row" data-row="<?php
 							ob_start();
-							include( 'html-booking-availability-fields.php' );
+							include 'html-booking-availability-fields.php';
 							$html = ob_get_clean();
 							echo esc_attr( $html );
-							?>"><?php _e( 'Add Range', 'woocommerce-bookings' ); ?></a>
+							?>"><?php esc_html_e( 'Add Range', 'woocommerce-bookings' ); ?></a>
 							<span class="description"><?php echo esc_html( get_wc_booking_rules_explanation() ); ?></span>
 						</th>
 					</tr>
@@ -173,7 +173,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					$values = $bookable_product->get_availability( 'edit' );
 					if ( ! empty( $values ) && is_array( $values ) ) {
 						foreach ( $values as $availability ) {
-							include( 'html-booking-availability-fields.php' );
+							include 'html-booking-availability-fields.php';
 						}
 					}
 					?>

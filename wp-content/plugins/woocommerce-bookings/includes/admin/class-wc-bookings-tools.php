@@ -25,7 +25,7 @@ class WC_Bookings_Tools {
 		$logger->add( self::$id, 'Called clean_person_types tool.' );
 
 		foreach ( $booking_products as $product ) {
-			$bookings = WC_Bookings_Controller::get_bookings_for_product( $product->get_id(), array() );
+			$bookings = WC_Booking_Data_Store::get_bookings_for_product( $product->get_id(), array() );
 
 			$used_types = array();
 

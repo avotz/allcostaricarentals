@@ -19,20 +19,20 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 ?>
-<h2><?php echo apply_filters( 'woocommerce_my_account_bookings_title', __( 'My Bookings', 'woocommerce-bookings' ) ); ?></h2>
+<h2><?php echo esc_html( apply_filters( 'woocommerce_my_account_bookings_title', __( 'My Bookings', 'woocommerce-bookings' ) ) ); ?></h2>
 
 <table class="shop_table my_account_bookings">
 	<thead>
 		<tr>
-			<th scope="col" class="booking-id"><?php _e( 'ID', 'woocommerce-bookings' ); ?></th>
-			<th scope="col" class="booked-product"><?php _e( 'Booked', 'woocommerce-bookings' ); ?></th>
-			<th scope="col" class="order-number"><?php _e( 'Order', 'woocommerce-bookings' ); ?></th>
-			<th scope="col" class="booking-start-date"><?php _e( 'Start Date', 'woocommerce-bookings' ); ?></th>
-			<th scope="col" class="booking-end-date"><?php _e( 'End Date', 'woocommerce-bookings' ); ?></th>
-			<th scope="col" class="booking-status"><?php _e( 'Status', 'woocommerce-bookings' ); ?></th>
+			<th scope="col" class="booking-id"><?php esc_html_e( 'ID', 'woocommerce-bookings' ); ?></th>
+			<th scope="col" class="booked-product"><?php esc_html_e( 'Booked', 'woocommerce-bookings' ); ?></th>
+			<th scope="col" class="order-number"><?php esc_html_e( 'Order', 'woocommerce-bookings' ); ?></th>
+			<th scope="col" class="booking-start-date"><?php esc_html_e( 'Start Date', 'woocommerce-bookings' ); ?></th>
+			<th scope="col" class="booking-end-date"><?php esc_html_e( 'End Date', 'woocommerce-bookings' ); ?></th>
+			<th scope="col" class="booking-status"><?php esc_html_e( 'Status', 'woocommerce-bookings' ); ?></th>
 			<th scope="col" class="booking-cancel"></th>
 		</tr>
 	</thead>
@@ -58,8 +58,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<td class="booking-end-date"><?php echo esc_html( $booking->get_end_date( null, null, wc_should_convert_timezone( $booking ) ) ); ?></td>
 				<td class="booking-status"><?php echo esc_html( wc_bookings_get_status_label( $booking->get_status() ) ); ?></td>
 				<td class="booking-cancel">
-					<?php if ( $booking->get_status() != 'cancelled' && $booking->get_status() != 'completed' && ! $booking->passed_cancel_day() ) : ?>
-					<a href="<?php echo esc_url( $booking->get_cancel_url() ); ?>" class="button cancel"><?php _e( 'Cancel', 'woocommerce-bookings' ); ?></a>
+					<?php if ( $booking->get_status() !== 'cancelled' && $booking->get_status() !== 'completed' && ! $booking->passed_cancel_day() ) : ?>
+					<a href="<?php echo esc_url( $booking->get_cancel_url() ); ?>" class="button cancel"><?php esc_html_e( 'Cancel', 'woocommerce-bookings' ); ?></a>
 					<?php endif ?>
 				</td>
 			</tr>

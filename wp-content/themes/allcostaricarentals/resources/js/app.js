@@ -2,10 +2,17 @@
 require('./config');
 const $ = require('jquery');
 require('slick-carousel');
+require('./vendor/jquery.magnific-popup.min.js');
 const hoverintent = require('hoverintent');
+const flatpickr = require("flatpickr");
+
 
 AOS.init({
     once: true,
+});
+
+flatpickr(".date",{
+    
 });
 
 $menu = document.querySelectorAll('.menu .menu-item-has-children'),
@@ -50,6 +57,7 @@ $('.slider-experiences').slick({
     prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
     nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>',
 });
+
 $('.slider-experiences-nav').slick({
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -85,6 +93,27 @@ $('.single-product .flex-control-thumbs').slick({
 
 $('.slick-slide').mouseover(function () {
     $(this).click();
+});
+
+$('.transfer-popup-link').magnificPopup({
+    type: 'inline',
+    midClick: true,
+    removalDelay: 500, //delay removal by X to allow out-animation
+    callbacks: {
+        beforeOpen: function () {
+
+            this.st.mainClass = 'mfp-zoom-out';
+            $('body').addClass('mfp-open');
+        },
+        beforeClose: function () {
+
+
+            $('body').removeClass('mfp-open');
+        }
+
+    }
+
+
 });
 
 

@@ -1,8 +1,34 @@
 # Changelog
 
-## Unreleased
+## [Unreleased]
 
-- n/a
+## [2.1.0] - 2019-05-30
+
+### Fixed
+
+- Fix locale format for i18n files without `intl` extension [#67](https://github.com/rlanvin/php-rrule/issues/67)
+
+### Added
+
+- Added new methods to `RSet`: `removeDate`, `clearDates`, `removeExDate` and `clearExDates` [#66](https://github.com/rlanvin/php-rrule/pull/66)
+
+## [2.0.0] - 2019-03-16
+
+- Add support for PHP 7.3
+
+## [2.0.0-rc1] - 2019-01-13
+
+- Rewrite the core algorithm to use a native PHP generator, drop compability with PHP < 5.6 [#43](https://github.com/rlanvin/php-rrule/issues/43)
+
+### Added
+
+- New option `custom_path` to `humanReadable()` to use custom translation files [#56](https://github.com/rlanvin/php-rrule/issues/56)
+- New helpers methods [#60](https://github.com/rlanvin/php-rrule/issues/60)
+  - `getOccurrencesBefore`
+  - `getOccurrencesAfter`
+  - `getNthOccurrencesBefore`
+  - `getNthOccurrencesAfter`
+  - `getNthOccurrencesFrom`
 
 ## [1.6.3] - 2019-01-13
 
@@ -151,7 +177,10 @@
 
 - First release, everything before that was unversioned (`dev-master` was used).
 
-[Unreleased]: https://github.com/rlanvin/php-rrule/compare/v1.6.3...HEAD
+[Unreleased]: https://github.com/rlanvin/php-rrule/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/rlanvin/php-rrule/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/rlanvin/php-rrule/compare/v2.0.0-rc1...v2.0.0
+[2.0.0-rc1]: https://github.com/rlanvin/php-rrule/compare/v1.6.3...v2.0.0-rc1
 [1.6.3]: https://github.com/rlanvin/php-rrule/compare/v1.6.2...v1.6.3
 [1.6.2]: https://github.com/rlanvin/php-rrule/compare/v1.6.1...v1.6.2
 [1.6.1]: https://github.com/rlanvin/php-rrule/compare/v1.6.0...v1.6.1

@@ -15,7 +15,9 @@ License URI:        http://opensource.org/licenses/MIT
 @tailwind components;
 @tailwind utilities;
 @import "slick";
+@import "../css/magnific-popup.css";
 @import "basic";
+@import '../css/flatpickr.css';
 
 .font-titles{
 	font-family: 'Francois One', cursive;
@@ -63,6 +65,7 @@ body.mobile{
 
 .logo{
 	color:white;
+	width: 90px;
 }
 
 .full-menu-nav{
@@ -452,6 +455,21 @@ body.mobile{
 		}
 	}
 }
-
+.btn-transfer{
+	position: fixed;
+	top:50%;
+	left:-37px;
+	transform: rotate(-90deg);
+	@apply bg-teal-500 text-white border-white;
+}
+.transfer-container{
+	iframe{
+		width: 100%;
+		height: 100%;
+	}
+	h2,h1{
+		font-family: 'Francois One', cursive;
+	}
+}
 @import "wc";
 @import "blog";

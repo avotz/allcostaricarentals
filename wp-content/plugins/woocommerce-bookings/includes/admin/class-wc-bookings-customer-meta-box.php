@@ -74,7 +74,7 @@ class WC_Bookings_Customer_Meta_Box {
 			</tr>
 			<tr>
 				<th><?php esc_html_e( 'Email:', 'woocommerce-bookings' ); ?></th>
-				<td><?php echo make_clickable( sanitize_email( $user->user_email ) ); ?></td>
+				<td><?php echo wp_kses_post( make_clickable( sanitize_email( $user->user_email ) ) ); ?></td>
 			</tr>
 			<tr class="view">
 				<th>&nbsp;</th>
@@ -95,7 +95,7 @@ class WC_Bookings_Customer_Meta_Box {
 			</tr>
 			<tr>
 				<th><?php esc_html_e( 'Email:', 'woocommerce-bookings' ); ?></th>
-				<td><?php echo make_clickable( sanitize_email( is_callable( array( $order, 'get_billing_email' ) ) ? $order->get_billing_email() : $order->billing_email ) ); ?></td>
+				<td><?php echo wp_kses_post( make_clickable( sanitize_email( is_callable( array( $order, 'get_billing_email' ) ) ? $order->get_billing_email() : $order->billing_email ) ) ); ?></td>
 			</tr>
 			<tr>
 				<th><?php esc_html_e( 'Phone:', 'woocommerce-bookings' ); ?></th>

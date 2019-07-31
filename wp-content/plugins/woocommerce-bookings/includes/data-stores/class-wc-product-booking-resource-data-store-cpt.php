@@ -21,7 +21,7 @@ class WC_Product_Booking_Resource_Data_Store_CPT extends WC_Data_Store_WP {
 		", $resource->get_id() ) ) );
 
 		foreach ( $product_ids as $product_id ) {
-			delete_booking_slots_transient( $product_id );
+			WC_Bookings_Cache::delete_booking_slots_transient( $product_id );
 		}
 	}
 

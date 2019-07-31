@@ -154,9 +154,9 @@ class WC_Bookings_REST_Products_Slots_Controller extends WC_REST_Controller {
 			return $product->get_id();
 		 }, $products ) );
 
-		$transient_name               = 'booking_slots_' . md5( http_build_query( array( $product_ids, $category_ids, $resource_ids, $min_date, $max_date, $page, $records_per_page ) ) );
-		$booking_slots_transient_keys = array_filter( (array) get_transient( 'booking_slots_transient_keys' ) );
-		$cached_availabilities        = get_transient( $transient_name );
+		$transient_name               = 'booking_slots_' . md5( http_build_query( array( $product_ids, $category_ids, $resource_ids, $get_past_times, $min_date, $max_date, $page, $records_per_page ) ) );
+		$booking_slots_transient_keys = array_filter( (array) WC_Bookings_Cache::get( 'booking_slots_transient_keys' ) );
+		$cached_availabilities        = WC_Bookings_Cache::get( $transient_name );
 
 		if ( $cached_availabilities ) {
 			$availability = wc_bookings_paginated_availability( $cached_availabilities, $page, $records_per_page );
@@ -173,7 +173,7 @@ class WC_Bookings_REST_Products_Slots_Controller extends WC_REST_Controller {
 
 		// Give array of keys a long ttl because if it expires we won't be able to flush the keys when needed.
 		// We can't use 0 to never expire because then WordPress will autoload the option on every page.
-		set_transient( 'booking_slots_transient_keys', $booking_slots_transient_keys, YEAR_IN_SECONDS );
+		WC_Bookings_Cache::set( 'booking_slots_transient_keys', $booking_slots_transient_keys, YEAR_IN_SECONDS );
 
 		// Calculate partially booked/fully booked/unavailable days for each product.
 		$booked_data = array_values( array_map( function( $bookable_product ) use ( $min_date, $max_date, $resource_ids, $get_past_times, $timezone ) {
@@ -196,7 +196,7 @@ class WC_Bookings_REST_Products_Slots_Controller extends WC_REST_Controller {
 			}
 
 			foreach ( $resources as $resource_id ) {
-				$blocks           = $bookable_product->get_blocks_in_range( $min_date, $max_date, array(), 0, array(), $get_past_times );
+				$blocks           = $bookable_product->get_blocks_in_range( $min_date, $max_date, array(), $resource_id, array(), $get_past_times );
 				$available_blocks = $bookable_product->get_time_slots( $blocks, $resource_id, $min_date, $max_date, true );
 				foreach ( $available_blocks as $timestamp => $data ) {
 					unset( $data['resources'] );
@@ -232,7 +232,7 @@ class WC_Bookings_REST_Products_Slots_Controller extends WC_REST_Controller {
 		} );
 
 		// This transient should be cleared when booking or products are added or updated but keep it short just in case.
-		set_transient( $transient_name, $cached_availabilities, HOUR_IN_SECONDS );
+		WC_Bookings_Cache::set( $transient_name, $cached_availabilities, HOUR_IN_SECONDS );
 
 		$availability =  wc_bookings_paginated_availability( $cached_availabilities, $page, $records_per_page );
 		return $this->transient_expand( $availability );

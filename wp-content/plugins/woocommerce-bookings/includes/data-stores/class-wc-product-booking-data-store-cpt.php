@@ -72,7 +72,7 @@ class WC_Product_Booking_Data_Store_CPT extends WC_Product_Data_Store_CPT {
 			update_post_meta( $product->get_id(), '_regular_price', '' );
 			update_post_meta( $product->get_id(), '_sale_price', '' );
 			update_post_meta( $product->get_id(), '_manage_stock', 'no' );
-			update_post_meta( $product->get_id(), '_price', wc_booking_calculated_base_cost( $product ) );
+			update_post_meta( $product->get_id(), '_price', WC_Bookings_Cost_Calculation::calculated_base_cost( $product ) );
 		} else {
 			$product->set_regular_price( '' );
 			$product->set_sale_price( '' );
@@ -80,7 +80,7 @@ class WC_Product_Booking_Data_Store_CPT extends WC_Product_Data_Store_CPT {
 			$product->set_stock_status( 'instock' );
 
 			// Set price so filters work.
-			$product->set_price( wc_booking_calculated_base_cost( $product ) );
+			$product->set_price( WC_Bookings_Cost_Calculation::calculated_base_cost( $product ) );
 		}
 	}
 
@@ -116,7 +116,7 @@ class WC_Product_Booking_Data_Store_CPT extends WC_Product_Data_Store_CPT {
 			parent::create( $product );
 		}
 		$this->force_meta_values( $product );
-		delete_booking_slots_transient( $product->get_id() );
+		WC_Bookings_Cache::delete_booking_slots_transient();
 	}
 
 	/**
@@ -147,7 +147,17 @@ class WC_Product_Booking_Data_Store_CPT extends WC_Product_Data_Store_CPT {
 		} else {
 			parent::update( $product );
 		}
-		delete_booking_slots_transient( $product->get_id() );
+		WC_Bookings_Cache::delete_booking_slots_transient( $product->get_id() );
+	}
+
+	/**
+	 * Method to delete a product from the database.
+	 * @param WC_Product
+	 * @param array $args Array of args to pass to the delete method.
+	 */
+	public function delete( &$product, $args = array() ) {
+		parent::delete( $product, $args );
+		WC_Bookings_Cache::delete_booking_slots_transient( $product->get_id() );
 	}
 
 	/**

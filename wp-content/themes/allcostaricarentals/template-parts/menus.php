@@ -1,4 +1,4 @@
-<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo pl-4 md:pl-0">ALL COSTA RICA RENTALS</a>
+<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo pl-4 md:pl-0"><img src="<?php echo get_template_directory_uri(); ?>/img/logo-icon-white.png" alt="All Costa Rica Rentals"></a>
 			
 			
 				

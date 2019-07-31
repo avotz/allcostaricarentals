@@ -21,7 +21,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 if ( $booking_ids ) {
@@ -32,7 +32,7 @@ if ( $booking_ids ) {
 			<strong class="wc-booking-summary-number">
 				<?php
 				/* translators: 1: booking id */
-				printf( __( 'Booking #%s', 'woocommerce-bookings' ), esc_html( $booking->get_id() ) );
+				echo esc_html( sprintf( __( 'Booking #%s', 'woocommerce-bookings' ), (string) $booking->get_id() ) );
 				?>
 				<span class="status-<?php echo esc_attr( $booking->get_status() ); ?>">
 					<?php echo esc_html( wc_bookings_get_status_label( $booking->get_status() ) ); ?>
@@ -41,7 +41,7 @@ if ( $booking_ids ) {
 			<?php wc_bookings_get_summary_list( $booking ); ?>
 			<div class="wc-booking-summary-actions">
 				<?php if ( $booking_id && function_exists( 'wc_get_endpoint_url' ) && wc_get_page_id( 'myaccount' ) && 0 !== $booking->get_customer_id() ) : ?>
-					<a href="<?php echo esc_url( wc_get_endpoint_url( $endpoint, '', wc_get_page_permalink( 'myaccount' ) ) ); ?>"><?php _e( 'View my bookings &rarr;', 'woocommerce-bookings' ); ?></a>
+					<a href="<?php echo esc_url( wc_get_endpoint_url( $endpoint, '', wc_get_page_permalink( 'myaccount' ) ) ); ?>"><?php esc_html_e( 'View my bookings &rarr;', 'woocommerce-bookings' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

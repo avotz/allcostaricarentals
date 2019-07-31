@@ -80,6 +80,8 @@ class WC_Bookings_Timezone_Settings extends WC_Settings_API {
 				$this->process_admin_options();
 
 			echo '<div class="updated"><p>' . esc_html__( 'Settings saved', 'woocommerce-bookings' ) . '</p></div>';
+
+			do_action( 'wc_bookings_timezone_settings_on_save', $this );
 		}
 	}
 
@@ -166,7 +168,7 @@ class WC_Bookings_Timezone_Settings extends WC_Settings_API {
 										value="<?php echo esc_attr( $option_value ); ?>"
 										type="radio"
 										<?php checked( $option_value, $current_value ); ?>
-									/> <?php echo $option_description; ?></label>
+									/> <?php echo wp_kses_post( $option_description ); ?></label>
 							</li>
 							<?php
 						}
@@ -175,7 +177,7 @@ class WC_Bookings_Timezone_Settings extends WC_Settings_API {
 					<?php
 						if ( array_key_exists( 'notice', $field ) && $field['notice']['display'] ) {
 					?>
-						<label class="wc_bookings_radio_custom_label_notice"><?php echo $field['notice']['text']; ?></label>
+						<label class="wc_bookings_radio_custom_label_notice"><?php echo wp_kses_post( $field['notice']['text'] ); ?></label>
 					<?php
 						}
 					?>

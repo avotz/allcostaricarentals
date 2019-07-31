@@ -115,6 +115,7 @@ if (
 			$availability->save();
 		}
 
+		do_action( 'wc_bookings_global_availability_on_save' );
 		echo '<div class="updated"><p>' . esc_html__( 'Settings saved', 'woocommerce-bookings' ) . '</p></div>';
 	}
 }

@@ -217,7 +217,7 @@ class WC_Booking_Order_Manager {
 		if ( version_compare( WC()->version, '2.6.0', '>=' ) ) {
 			$bookings_per_page = apply_filters( 'woocommerce_bookings_my_bookings_per_page', 10 );
 
-			$today_bookings = WC_Bookings_Controller::get_bookings_for_user( $user_id, apply_filters( 'woocommerce_bookings_my_bookings_today_query_args', array(
+			$today_bookings = WC_Booking_Data_Store::get_bookings_for_user( $user_id, apply_filters( 'woocommerce_bookings_my_bookings_today_query_args', array(
 				'order_by'       => apply_filters( 'woocommerce_bookings_my_bookings_today_order_by', 'start_date' ),
 				'order'          => 'ASC',
 				'date_after'     => current_time( 'timestamp' ),
@@ -226,7 +226,7 @@ class WC_Booking_Order_Manager {
 				'limit'          => $bookings_per_page,
 			) ) );
 
-			$past_bookings = WC_Bookings_Controller::get_bookings_for_user( $user_id, apply_filters( 'woocommerce_bookings_my_bookings_past_query_args', array(
+			$past_bookings = WC_Booking_Data_Store::get_bookings_for_user( $user_id, apply_filters( 'woocommerce_bookings_my_bookings_past_query_args', array(
 				'order_by'       => apply_filters( 'woocommerce_bookings_my_bookings_past_order_by', 'start_date' ),
 				'order'          => 'DESC',
 				'date_before'    => current_time( 'timestamp' ),
@@ -234,7 +234,7 @@ class WC_Booking_Order_Manager {
 				'limit'          => $bookings_per_page,
 			) ) );
 
-			$upcoming_bookings = WC_Bookings_Controller::get_bookings_for_user( $user_id, apply_filters( 'woocommerce_bookings_my_bookings_upcoming_query_args', array(
+			$upcoming_bookings = WC_Booking_Data_Store::get_bookings_for_user( $user_id, apply_filters( 'woocommerce_bookings_my_bookings_upcoming_query_args', array(
 				'order_by'       => apply_filters( 'woocommerce_bookings_my_bookings_upcoming_order_by', 'start_date' ),
 				'order'          => 'ASC',
 				'date_after'     => strtotime( 'tomorrow', current_time( 'timestamp' ) ),
@@ -271,7 +271,7 @@ class WC_Booking_Order_Manager {
 				) ),
 			'woocommerce-bookings/', WC_BOOKINGS_TEMPLATE_PATH );
 		} else {
-			$all_bookings = WC_Bookings_Controller::get_bookings_for_user( $user_id );
+			$all_bookings = WC_Booking_Data_Store::get_bookings_for_user( $user_id );
 
 			if ( ! empty( $all_bookings ) ) {
 				wc_get_template( 'myaccount/my-bookings.php', array( 'bookings' => $all_bookings ), 'woocommerce-bookings/', WC_BOOKINGS_TEMPLATE_PATH );

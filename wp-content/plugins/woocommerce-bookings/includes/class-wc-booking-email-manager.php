@@ -37,6 +37,10 @@ class WC_Booking_Email_Manager {
 			$emails['WC_Email_Booking_Confirmed'] = new WC_Email_Booking_Confirmed();
 		}
 
+		if ( ! isset( $emails['WC_Email_Booking_Pending_Confirmation'] ) ) {
+			$emails['WC_Email_Booking_Pending_Confirmation'] = new WC_Email_Booking_Pending_Confirmation();
+		}
+
 		if ( ! isset( $emails['WC_Email_Booking_Notification'] ) ) {
 			$emails['WC_Email_Booking_Notification'] = new WC_Email_Booking_Notification();
 		}
@@ -108,6 +112,9 @@ class WC_Booking_Email_Manager {
 
 			// Confirmed
 			'woocommerce_booking_confirmed',
+
+			// Pending Confirmation
+			'woocommerce_booking_pending-confirmation',
 
 			// Cancelled
 			'woocommerce_booking_pending-confirmation_to_cancelled',

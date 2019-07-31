@@ -117,7 +117,7 @@ class WC_Bookings_Menus {
 	 * Output the calendar page.
 	 */
 	public function calendar_page() {
-		require_once( 'class-wc-bookings-calendar.php' );
+		require_once 'class-wc-bookings-calendar.php';
 		$page = new WC_Bookings_Calendar();
 		$page->output();
 	}
@@ -144,7 +144,7 @@ class WC_Bookings_Menus {
 					throw new Exception( __( 'Please enter a subject', 'woocommerce-bookings' ) );
 				}
 
-				$bookings     = WC_Bookings_Controller::get_bookings_for_product( $notification_product_id );
+				$bookings     = WC_Booking_Data_Store::get_bookings_for_product( $notification_product_id );
 				$mailer       = WC()->mailer();
 				$notification = $mailer->emails['WC_Email_Booking_Notification'];
 
@@ -161,10 +161,12 @@ class WC_Bookings_Menus {
 					$notification->trigger( $booking->get_id(), $notification_subject, $notification_message, $attachments );
 				}
 
-				echo '<div class="updated fade"><p>' . __( 'Notification sent successfully', 'woocommerce-bookings' ) . '</p></div>';
+				do_action( 'wc_bookings_notification_sent', $bookings, $notification );
+
+				echo '<div class="updated fade"><p>' . esc_html__( 'Notification sent successfully', 'woocommerce-bookings' ) . '</p></div>';
 
 			} catch ( Exception $e ) {
-				echo '<div class="error"><p>' . $e->getMessage() . '</p></div>';
+				echo '<div class="error"><p>' . esc_html( $e->getMessage() ) . '</p></div>';
 			}
 		}
 

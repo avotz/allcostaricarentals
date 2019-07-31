@@ -1,5 +1,5 @@
 <div class="wrap woocommerce">
-	<h2><?php _e( 'Calendar', 'woocommerce-bookings' ); ?></h2>
+	<h2><?php esc_html_e( 'Calendar', 'woocommerce-bookings' ); ?></h2>
 
 	<form method="get" id="mainform" enctype="multipart/form-data" class="wc_bookings_calendar_form">
 		<input type="hidden" name="post_type" value="wc_booking" />
@@ -9,7 +9,7 @@
 		<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
 		<input type="hidden" name="tab" value="calendar" />
 
-		<?php include( 'html-calendar-nav.php' ); ?>
+		<?php require 'html-calendar-nav.php'; ?>
 
 		<?php if ( ! WC_BOOKINGS_GUTENBERG_EXISTS ) { ?>
 			<script type="text/javascript">
@@ -17,7 +17,7 @@
 				jQuery( function() {
 					jQuery( '.calendar_day' ).datepicker( {
 						dateFormat: 'yy-mm-dd',
-						firstDay: <?php echo get_option( 'start_of_week' ); ?>,
+						firstDay: <?php echo esc_attr( get_option( 'start_of_week' ) ); ?>,
 						monthNames: JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( array_values( $wp_locale->month )  ) ); ?>' ) ),
 						monthNamesShort: JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( array_values( $wp_locale->month_abbrev ) ) ); ?>' ) ),
 						dayNames: JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( array_values( $wp_locale->weekday ) ) ); ?>' ) ),
@@ -40,7 +40,7 @@
 			<thead>
 				<tr>
 					<?php for ( $ii = get_option( 'start_of_week', 1 ); $ii < get_option( 'start_of_week', 1 ) + 7; $ii ++ ) : ?>
-						<th><?php echo date_i18n( _x( 'D', 'date format', 'woocommerce-bookings' ), strtotime( "next sunday +{$ii} day" ) ); ?></th>
+						<th><?php echo esc_html( date_i18n( _x( 'D', 'date format', 'woocommerce-bookings' ), strtotime( "next sunday +{$ii} day" ) ) ); ?></th>
 					<?php endfor; ?>
 				</tr>
 			</thead>
@@ -66,13 +66,13 @@
 								echo ' wc-bookings-unavailable-day';
 							}
 							?>">
-								<a href="<?php echo admin_url( 'edit.php?post_type=wc_booking&page=booking_calendar&view=day&tab=calendar&calendar_day=' . date( 'Y-m-d', $timestamp ) );?>"<?php
+								<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wc_booking&page=booking_calendar&view=day&tab=calendar&calendar_day=' . date( 'Y-m-d', $timestamp ) ) ); ?>"<?php
 								echo ' class="day_link';
 								if ( $is_today ) {
 									echo ' current_day';
 								}
 								?>">
-									<?php echo date( 'j', $timestamp ); ?>
+									<?php echo esc_html( date( 'j', $timestamp ) ); ?>
 								</a>
 								<div class="bookings">
 									<ul>

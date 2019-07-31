@@ -15,7 +15,7 @@ class WC_Bookings_Addons {
 		add_filter( 'woocommerce_product_addon_cart_item_data', array( $this, 'addon_price' ), 20, 4 );
 		add_filter( 'woocommerce_bookings_calculated_booking_cost_success_output', array( $this, 'filter_output_cost' ), 10, 3 );
 		add_filter( 'woocommerce_product_addons_adjust_price', array( $this, 'adjust_price' ), 20, 2 );
-		add_filter( 'booking_form_calculated_booking_cost', array( $this, 'adjust_booking_cost' ), 10, 3 );
+		add_filter( 'woocommerce_bookings_calculated_booking_cost', array( $this, 'adjust_booking_cost' ), 10, 3 );
 	}
 
 	/**
@@ -49,12 +49,12 @@ class WC_Bookings_Addons {
 		?>
 		<tr class="<?php echo esc_attr( $css_classes ); ?>">
 			<td class="addon_wc_booking_person_qty_multiplier addon_required" width="50%">
-				<label for="addon_wc_booking_person_qty_multiplier_<?php echo $loop; ?>"><?php esc_html_e( 'Bookings: Multiply cost by person count', 'woocommerce-bookings' ); ?></label>
-				<input type="checkbox" id="addon_wc_booking_person_qty_multiplier_<?php echo $loop; ?>" name="addon_wc_booking_person_qty_multiplier[<?php echo $loop; ?>]" <?php checked( ! empty( $addon['wc_booking_person_qty_multiplier'] ), true ); ?> />
+				<label for="addon_wc_booking_person_qty_multiplier_<?php echo esc_attr( $loop ); ?>"><?php esc_html_e( 'Bookings: Multiply cost by person count', 'woocommerce-bookings' ); ?></label>
+				<input type="checkbox" id="addon_wc_booking_person_qty_multiplier_<?php echo esc_attr( $loop ); ?>" name="addon_wc_booking_person_qty_multiplier[<?php echo esc_attr( $loop ); ?>]" <?php checked( ! empty( $addon['wc_booking_person_qty_multiplier'] ), true ); ?> />
 			</td>
 			<td class="addon_wc_booking_block_qty_multiplier addon_required" width="50%">
-				<label for="addon_wc_booking_block_qty_multiplier_<?php echo $loop; ?>"><?php esc_html_e( 'Bookings: Multiply cost by block count', 'woocommerce-bookings' ); ?></label>
-				<input type="checkbox" id="addon_wc_booking_block_qty_multiplier_<?php echo $loop; ?>" name="addon_wc_booking_block_qty_multiplier[<?php echo $loop; ?>]" <?php checked( ! empty( $addon['wc_booking_block_qty_multiplier'] ), true ); ?> />
+				<label for="addon_wc_booking_block_qty_multiplier_<?php echo esc_attr( $loop ); ?>"><?php esc_html_e( 'Bookings: Multiply cost by block count', 'woocommerce-bookings' ); ?></label>
+				<input type="checkbox" id="addon_wc_booking_block_qty_multiplier_<?php echo esc_attr( $loop ); ?>" name="addon_wc_booking_block_qty_multiplier[<?php echo esc_attr( $loop ); ?>]" <?php checked( ! empty( $addon['wc_booking_block_qty_multiplier'] ), true ); ?> />
 			</td>
 		</tr>
 		<?php
@@ -62,13 +62,13 @@ class WC_Bookings_Addons {
 		?>
 		<div class="<?php echo esc_attr( $css_classes ); ?>">
 			<div class="addon_wc_booking_person_qty_multiplier">
-				<label for="addon_wc_booking_person_qty_multiplier_<?php echo $loop; ?>">
-				<input type="checkbox" id="addon_wc_booking_person_qty_multiplier_<?php echo $loop; ?>" name="addon_wc_booking_person_qty_multiplier[<?php echo $loop; ?>]" <?php checked( ! empty( $addon['wc_booking_person_qty_multiplier'] ), true ); ?> /> <?php esc_html_e( 'Bookings: Multiply cost by person count', 'woocommerce-bookings' ); ?></label>
+				<label for="addon_wc_booking_person_qty_multiplier_<?php echo esc_attr( $loop ); ?>">
+				<input type="checkbox" id="addon_wc_booking_person_qty_multiplier_<?php echo esc_attr( $loop ); ?>" name="addon_wc_booking_person_qty_multiplier[<?php echo esc_attr( $loop ); ?>]" <?php checked( ! empty( $addon['wc_booking_person_qty_multiplier'] ), true ); ?> /> <?php esc_html_e( 'Bookings: Multiply cost by person count', 'woocommerce-bookings' ); ?></label>
 			</div>
 
 			<div class="addon_wc_booking_block_qty_multiplier">
-				<label for="addon_wc_booking_block_qty_multiplier_<?php echo $loop; ?>">
-				<input type="checkbox" id="addon_wc_booking_block_qty_multiplier_<?php echo $loop; ?>" name="addon_wc_booking_block_qty_multiplier[<?php echo $loop; ?>]" <?php checked( ! empty( $addon['wc_booking_block_qty_multiplier'] ), true ); ?> /> <?php esc_html_e( 'Bookings: Multiply cost by block count', 'woocommerce-bookings' ); ?></label>
+				<label for="addon_wc_booking_block_qty_multiplier_<?php echo esc_attr( $loop ); ?>">
+				<input type="checkbox" id="addon_wc_booking_block_qty_multiplier_<?php echo esc_attr( $loop ); ?>" name="addon_wc_booking_block_qty_multiplier[<?php echo esc_attr( $loop ); ?>]" <?php checked( ! empty( $addon['wc_booking_block_qty_multiplier'] ), true ); ?> /> <?php esc_html_e( 'Bookings: Multiply cost by block count', 'woocommerce-bookings' ); ?></label>
 			</div>
 		</div>
 		<?php
@@ -119,11 +119,11 @@ class WC_Bookings_Addons {
 	/**
 	 * Adjust the final booking cost
 	 */
-	public function adjust_booking_cost( $booking_cost, $booking_form, $posted ) {
-		$addons = $GLOBALS['Product_Addon_Cart']->add_cart_item_data( array(), $booking_form->product->get_id(), $posted, true );
+	public function adjust_booking_cost( $booking_cost, $product, $posted ) {
+		$addons = $GLOBALS['Product_Addon_Cart']->add_cart_item_data( array(), $product->get_id(), $posted, true );
 
 		$addon_costs  = 0;
-		$booking_data = $booking_form->get_posted_data( $posted );
+		$booking_data = wc_bookings_get_posted_data( $posted, $product );
 
 		if ( ! empty( $addons['addons'] ) ) {
 			foreach ( $addons['addons'] as $addon ) {
@@ -175,8 +175,9 @@ class WC_Bookings_Addons {
 	 */
 	public function filter_output_cost( $output, $display_price, $product ) {
 		parse_str( $_POST['form'], $posted );
-		$booking_form = new WC_Booking_Form( $product );
-		$cost         = $booking_form->calculate_booking_cost( $posted );
+
+		$booking_data = wc_bookings_get_posted_data( $posted, $product );
+		$cost         = WC_Bookings_Cost_Calculation::calculate_booking_cost( $booking_data, $product );
 
 		wp_send_json( array(
 			'result'    => 'SUCCESS',
@@ -185,4 +186,3 @@ class WC_Bookings_Addons {
 		) );
 	}
 }
-

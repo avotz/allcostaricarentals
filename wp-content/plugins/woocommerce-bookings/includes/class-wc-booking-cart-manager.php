@@ -78,9 +78,8 @@ class WC_Booking_Cart_Manager {
 			return $passed;
 		}
 
-		$booking_form = new WC_Booking_Form( $product );
-		$data         = $booking_form->get_posted_data();
-		$validate     = $booking_form->is_bookable( $data );
+		$data     = wc_bookings_get_posted_data( $_POST, $product );
+		$validate = $product->is_bookable( $data );
 
 		if ( is_wp_error( $validate ) ) {
 			wc_add_notice( $validate->get_error_message(), 'error' );
@@ -251,9 +250,8 @@ class WC_Booking_Cart_Manager {
 			return $cart_item_meta;
 		}
 
-		$booking_form                       = new WC_Booking_Form( $product );
-		$cart_item_meta['booking']          = $booking_form->get_posted_data( $_POST );
-		$cart_item_meta['booking']['_cost'] = $booking_form->calculate_booking_cost( $_POST );
+		$cart_item_meta['booking']          = wc_bookings_get_posted_data( $_POST, $product );
+		$cart_item_meta['booking']['_cost'] = WC_Bookings_Cost_Calculation::calculate_booking_cost( $cart_item_meta['booking'], $product );
 
 		if ( $cart_item_meta['booking']['_cost'] instanceof WP_Error ) {
 			throw new Exception( $cart_item_meta['booking']['_cost']->get_error_message() );

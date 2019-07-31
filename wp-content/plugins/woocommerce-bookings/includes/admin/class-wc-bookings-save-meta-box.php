@@ -57,9 +57,9 @@ class WC_Bookings_Save_Meta_Box {
 		wp_nonce_field( 'wc_bookings_save_booking_meta_box', 'wc_bookings_save_booking_meta_box_nonce' );
 
 		?>
-		<div id="delete-action"><a class="submitdelete deletion" href="<?php echo esc_url( get_delete_post_link( $post->ID ) ); ?>"><?php _e( 'Move to trash', 'woocommerce-bookings' ); ?></a></div>
+		<div id="delete-action"><a class="submitdelete deletion" href="<?php echo esc_url( get_delete_post_link( $post->ID ) ); ?>"><?php esc_html_e( 'Move to trash', 'woocommerce-bookings' ); ?></a></div>
 
-		<input type="submit" class="button save_order button-primary tips" name="save" value="<?php _e( 'Save Booking', 'woocommerce-bookings' ); ?>" data-tip="<?php _e( 'Save/update the booking', 'woocommerce-bookings' ); ?>" />
+		<input type="submit" class="button save_order button-primary tips" name="save" value="<?php esc_attr_e( 'Save Booking', 'woocommerce-bookings' ); ?>" data-tip="<?php esc_attr_e( 'Save/update the booking', 'woocommerce-bookings' ); ?>" />
 		<?php
 	}
 }

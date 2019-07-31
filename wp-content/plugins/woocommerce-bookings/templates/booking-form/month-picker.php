@@ -17,25 +17,28 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 wp_enqueue_script( 'wc-bookings-booking-form' );
-$blocks = $field['blocks'];
-$label  = $field['label'];
-$name   = $field['name'];
-$fully_booked_months = array_keys( $field['fully_booked_months'] );
+extract( $field );
+
+$fully_booked_months = array_keys( $fully_booked_months );
 ?>
 <div class="form-field form-field-wide">
-	<label for="<?php echo $name; ?>"><?php echo $label; ?>:</label>
+	<?php
+	if ( 'always_visible' !== $display ):
+		?>
+	<span class="label"><?php echo $label; ?></span>:
+	<?php endif; ?>
 	<ul class="block-picker">
 		<?php
 		foreach ( $blocks as $block ) {
 			$fully_booked_class = in_array( date( 'Y-n', $block ), $fully_booked_months ) ? 'fully_booked' : '';
-			echo '<li class="' . $fully_booked_class . '" data-block="' . esc_attr( date( 'Ym', $block ) ) . '"><a href="#" data-value="' . date( 'Y-m', $block ) . '">' . date_i18n( 'M y', $block ) . '</a></li>';
+			echo '<li class="' . esc_attr( $fully_booked_class ) . '" data-block="' . esc_attr( date( 'Ym', $block ) ) . '"><a href="#" data-value="' . esc_attr( date( 'Y-m', $block ) ) . '">' . esc_html( date_i18n( 'M y', $block ) ) . '</a></li>';
 		}
 		?>
 	</ul>
-	<input type="hidden" name="<?php echo $name; ?>_yearmonth" id="<?php echo $name; ?>" />
+	<input type="hidden" name="<?php echo esc_attr( $name ); ?>_yearmonth" id="<?php echo esc_attr( $name ); ?>" />
 </div>
 

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WooCommerce - WooCommerce Bookings - Latest package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-03-04 08:10:35+0000\n"
+"PO-Revision-Date: 2019-07-05 22:50:46+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -71,7 +71,7 @@ msgstr ""
 #: includes/wc-bookings-functions.php:181
 #: includes/wc-bookings-functions.php:201
 msgid "Complete"
-msgstr ""
+msgstr "Atlikta"
 
 #: includes/wc-bookings-functions.php:154
 #: includes/wc-bookings-functions.php:180

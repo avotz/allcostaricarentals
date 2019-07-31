@@ -8,10 +8,10 @@ global $wp_version;
 <div class="tablenav">
 	<div class="nav-content">
 		<div class="filters">
-			<span class="bookings-filter-label"><?php _e( 'Filter By', 'woocommerce-bookings' ) ?></span>
+			<span class="bookings-filter-label"><?php esc_html_e( 'Filter By', 'woocommerce-bookings' ); ?></span>
 			<span class="calendar-bookings-filter-container">
 				<select class="wc-enhanced-select" name="filter_bookings_product" style="width: 200px;">
-					<option value=""><?php _e( 'All Products', 'woocommerce-bookings' ); ?></option>
+					<option value=""><?php esc_html_e( 'All Products', 'woocommerce-bookings' ); ?></option>
 					<?php
 						// Get product list with resources excluded.
 						$product_filters = $this->product_filters( false );
@@ -29,7 +29,7 @@ global $wp_version;
 			</span>
 			<span class="calendar-bookings-filter-container">
 				<select class="wc-enhanced-select" name="filter_bookings_resource" style="width: 200px;">
-					<option value=""><?php _e( 'All Resources', 'woocommerce-bookings' ); ?></option>
+					<option value=""><?php esc_html_e( 'All Resources', 'woocommerce-bookings' ); ?></option>
 					<?php
 					$resource_filters = $this->resources_filters();
 					if ( $resource_filters ) {
@@ -45,15 +45,7 @@ global $wp_version;
 				</select>
 		</div>
 	</div>
-	<div class="views">
-		<a class="view-select <?php echo ( 'month' === $view ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'view', 'month' ) ); ?>">
-			<?php esc_html_e( 'Month', 'woocommerce-bookings' ); ?>
-		</a>
-		<a class="view-select <?php echo ( 'day' === $view ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'view', 'day' ) ); ?>">
-			<?php esc_html_e( 'Day', 'woocommerce-bookings' ); ?>
-		</a>
-	</div>
-	<?php if ( 'month' === $view ): ?>
+	<?php if ( in_array( $view, array( 'month', 'schedule' ), true ) ) : ?>
 		<?php if ( ! WC_BOOKINGS_GUTENBERG_EXISTS ) { ?>
 			<div class="date_selector">
 				<div>
@@ -91,11 +83,20 @@ global $wp_version;
 					?>">&larr;</a>
 				</div>
 				<div>
-					<a href="<?php
+					<a class="change-date today" href="<?php
+					if ( 'schedule' === $view ) {
+						echo esc_url( add_query_arg( array(
+							'calendar_day'   => '',
+							'calendar_year'  => date( 'Y' ),
+							'calendar_month' => date( 'm' ),
+							'view'           => 'schedule',
+						) ) );
+					} else {
 						echo esc_url( add_query_arg( array(
 							'calendar_day' => current_time( 'Y-m-d' ),
 							'view'         => 'day',
-							) ) );
+						) ) );
+					}
 					?>"><?php esc_html_e( 'Today', 'woocommerce-bookings' ); ?></a>
 				</div>
 				<div>
@@ -131,11 +132,11 @@ global $wp_version;
 					?>">&larr;</a>
 				</div>
 				<div>
-					<a href="<?php
+					<a class="change-date today" href="<?php
 						echo esc_url( add_query_arg( array(
 							'calendar_day' => current_time( 'Y-m-d' ),
 							'view'         => 'day',
-							) ) );
+						) ) );
 					?>"><?php esc_html_e( 'Today', 'woocommerce-bookings' ); ?></a>
 				</div>
 				<div>
@@ -146,6 +147,17 @@ global $wp_version;
 			</div>
 		<?php } ?>
 	<?php endif;?>
+	<div class="views">
+		<a class="view-select <?php echo ( 'schedule' === $view ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'view', 'schedule' ) ); ?>">
+			<?php esc_html_e( 'Schedule', 'woocommerce-bookings' ); ?>
+		</a>
+		<a class="view-select <?php echo ( 'month' === $view ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'view', 'month' ) ); ?>">
+			<?php esc_html_e( 'Month', 'woocommerce-bookings' ); ?>
+		</a>
+		<a class="view-select <?php echo ( 'day' === $view ) ? 'current' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'view', 'day' ) ); ?>">
+			<?php esc_html_e( 'Day', 'woocommerce-bookings' ); ?>
+		</a>
+	</div>
 </div>
 <script type="text/javascript">
 	jQuery( ".tablenav select, .tablenav input" ).change( function() {

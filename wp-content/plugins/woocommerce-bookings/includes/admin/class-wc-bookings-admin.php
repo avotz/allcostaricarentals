@@ -22,7 +22,7 @@ class WC_Bookings_Admin {
 		add_action( 'admin_init', array( $this, 'include_meta_box_handlers' ) );
 		add_action( 'admin_init', array( $this, 'redirect_new_add_booking_url' ) );
 		add_filter( 'product_type_options', array( $this, 'product_type_options' ) );
-		add_filter( 'product_type_selector' , array( $this, 'product_type_selector' ) );
+		add_filter( 'product_type_selector', array( $this, 'product_type_selector' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'styles_and_scripts' ) );
 		add_action( 'woocommerce_product_options_general_product_data', array( $this, 'booking_data' ) );
 		add_filter( 'product_type_options', array( $this, 'booking_product_type_options' ) );
@@ -80,7 +80,7 @@ class WC_Bookings_Admin {
 		if ( version_compare( WC_VERSION, '3.0', '>=' ) || 'booking' !== sanitize_title( stripslashes( $_POST['product-type'] ) ) ) {
 			return;
 		}
-		$product = new WC_Product_Booking( $post_id );
+		$product = get_wc_product_booking( $post_id );
 		$this->set_props( $product );
 		$product->save();
 	}
@@ -499,7 +499,7 @@ class WC_Bookings_Admin {
 		$bookable_products = array();
 
 		foreach ( $ids as $id ) {
-			$bookable_products[] = new WC_Product_Booking( $id );
+			$bookable_products[] = get_wc_product_booking( $id );
 		}
 		return $bookable_products;
 	}
@@ -551,7 +551,7 @@ class WC_Bookings_Admin {
 		global $post, $bookable_product;
 
 		if ( empty( $bookable_product ) || $bookable_product->get_id() !== $post->ID ) {
-			$bookable_product = new WC_Product_Booking( $post->ID );
+			$bookable_product = get_wc_product_booking( $post->ID );
 		}
 
 		include 'views/html-booking-data.php';
@@ -564,7 +564,7 @@ class WC_Bookings_Admin {
 		global $post, $bookable_product;
 
 		if ( empty( $bookable_product ) || $bookable_product->get_id() !== $post->ID ) {
-			$bookable_product = new WC_Product_Booking( $post->ID );
+			$bookable_product = get_wc_product_booking( $post->ID );
 		}
 
 		$restricted_meta = $bookable_product->get_restricted_days();
@@ -608,7 +608,7 @@ class WC_Bookings_Admin {
 
 		if ( 'wc_booking_page_booking_calendar' === $screen->id ) {
 			if ( WC_BOOKINGS_GUTENBERG_EXISTS ) {
-				wp_register_script( 'wc_bookings_admin_calendar_gutenberg_js', WC_BOOKINGS_PLUGIN_URL . '/dist/admin-calendar-gutenberg.js', array( 'wp-components', 'wp-element' ), WC_BOOKINGS_VERSION, true );
+				wp_register_script( 'wc_bookings_admin_calendar_gutenberg_js', WC_BOOKINGS_PLUGIN_URL . '/dist/admin-calendar-gutenberg.js', array( 'wc_bookings_admin_js', 'wp-components', 'wp-element' ), WC_BOOKINGS_VERSION, true );
 				wp_enqueue_style( 'wc_bookings_admin_calendar_css', WC_BOOKINGS_PLUGIN_URL . '/dist/css/admin-calendar-gutenberg.css', null, WC_BOOKINGS_VERSION );
 			}
 			wp_register_script( 'wc_bookings_admin_calendar_js', WC_BOOKINGS_PLUGIN_URL . '/dist/admin-calendar.js', array(), WC_BOOKINGS_VERSION, true );
@@ -633,6 +633,8 @@ class WC_Bookings_Admin {
 			'i18n_customer'          => esc_js( __( 'Customer', 'woocommerce-bookings' ) ),
 			'i18n_resource'          => esc_js( __( 'Resource', 'woocommerce-bookings' ) ),
 			'i18n_persons'           => esc_js( __( 'Persons', 'woocommerce-bookings' ) ),
+			'bookings_version'       => WC_BOOKINGS_VERSION,
+			'bookings_db_version'    => WC_BOOKINGS_DB_VERSION,
 		);
 
 		wp_localize_script( 'wc_bookings_admin_js', 'wc_bookings_admin_js_params', $params );

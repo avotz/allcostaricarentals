@@ -44,9 +44,9 @@ class WC_Bookings_WC_Ajax {
 		$page                         = isset( $_GET['page'] ) ? absint( $_GET['page'] ) : false;
 		$records_per_page             = 10;
 		$transient_name               = 'booking_slots_' . md5( http_build_query( array( $product_ids, $category_ids, $resource_ids, $min_date, $max_date, $intervals, $timezone_offset ) ) );
-		$booking_slots_transient_keys = array_filter( (array) get_transient( 'booking_slots_transient_keys' ) );
+		$booking_slots_transient_keys = array_filter( (array) WC_Bookings_Cache::get( 'booking_slots_transient_keys' ) );
 
-		$cached_availabilities = get_transient( $transient_name );
+		$cached_availabilities = WC_Bookings_Cache::get( $transient_name );
 
 		if ( $cached_availabilities ) {
 			wp_send_json( wc_bookings_paginated_availability( $cached_availabilities, $page, $records_per_page  ) );
@@ -65,7 +65,7 @@ class WC_Bookings_WC_Ajax {
 			$booking_slots_transient_keys[ $product_id ][] = $transient_name;
 		}
 
-		set_transient( 'booking_slots_transient_keys', $booking_slots_transient_keys, YEAR_IN_SECONDS );
+		WC_Bookings_Cache::set( 'booking_slots_transient_keys', $booking_slots_transient_keys, YEAR_IN_SECONDS );
 
 		$products = array_filter( array_map( function( $product_id ) {
 			return get_wc_product_booking( $product_id );
@@ -144,7 +144,7 @@ class WC_Bookings_WC_Ajax {
 			}, $value['availability'] );
 		}, $booked_data ) );
 
-		set_transient( $transient_name, $cached_availabilities, HOUR_IN_SECONDS );
+		WC_Bookings_Cache::set( $transient_name, $cached_availabilities, HOUR_IN_SECONDS );
 
 		wp_send_json( wc_bookings_paginated_availability( $cached_availabilities, $page, $records_per_page ) );
 	}
@@ -165,7 +165,7 @@ class WC_Bookings_WC_Ajax {
 		try {
 
 			$args                          = array();
-			$product                       = new WC_Product_Booking( $product_id );
+			$product                       = get_wc_product_booking( $product_id );
 			$args['availability_rules']    = array();
 			$args['availability_rules'][0] = $product->get_availability_rules();
 			$args['min_date']              = isset( $_GET['min_date'] ) ? strtotime( $_GET['min_date'] ) : $product->get_min_date();

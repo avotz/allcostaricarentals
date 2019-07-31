@@ -17,7 +17,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 $after = isset( $field['after'] ) ? $field['after'] : null;
@@ -28,15 +28,15 @@ $min   = isset( $field['min'] ) ? $field['min'] : null;
 $name  = $field['name'];
 $step  = isset( $field['step'] ) ? $field['step'] : null;
 ?>
-<p class="form-field form-field-wide <?php echo implode( ' ', $class ); ?>" style="display: none;">
-	<label for="<?php echo $name; ?>"><?php echo $label; ?>:</label>
+<p class="form-field form-field-wide <?php echo esc_attr( implode( ' ', $class ) ); ?>" style="display: none;">
+	<label for="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?>:</label>
 	<input
 		type="hidden"
-		value="<?php echo ( ! empty( $min ) ) ? $min : 0; ?>"
-		step="<?php echo ( isset( $step ) ) ? $step : ''; ?>"
-		min="<?php echo ( isset( $min ) ) ? $min : ''; ?>"
-		max="<?php echo ( isset( $max ) ) ? $max : ''; ?>"
-		name="<?php echo $name; ?>"
-		id="<?php echo $name; ?>"
-		/> <?php echo ( ! empty( $after ) ) ? $after : ''; ?>
+		value="<?php echo ( ! empty( $min ) ) ? esc_attr( $min ) : 0; ?>"
+		step="<?php echo ( isset( $step ) ) ? esc_attr( $step ) : ''; ?>"
+		min="<?php echo ( isset( $min ) ) ? esc_attr( $min ) : ''; ?>"
+		max="<?php echo ( isset( $max ) ) ? esc_attr( $max ) : ''; ?>"
+		name="<?php echo esc_attr( $name ); ?>"
+		id="<?php echo esc_attr( $name ); ?>"
+		/> <?php echo ( ! empty( $after ) ) ? esc_attr( $after ) : ''; ?>
 </p>

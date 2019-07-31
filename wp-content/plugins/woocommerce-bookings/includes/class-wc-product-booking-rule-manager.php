@@ -652,15 +652,18 @@ class WC_Product_Booking_Rule_Manager {
 	 * @return array
 	 */
 	public static function get_rule_minutes_for_rrule( $rule, $check_date ) {
-		$start    = new WC_DateTime( $rule['range']['from'] );
-		$end      = new WC_DateTime( $rule['range']['to'] );
+		$start       = new WC_DateTime( $rule['range']['from'] );
+		$end         = new WC_DateTime( $rule['range']['to'] );
+		$is_all_day  = false === strpos( $rule['range']['from'], ':' );
+		$date_format = $is_all_day ? 'Y-m-d' : 'Y-m-d g:i A';
+
 		$timezone = new DateTimeZone( wc_booking_get_timezone_string() );
 		$start->setTimezone( $timezone );
 		$end->setTimezone( $timezone );
 		$end->modify( get_option( 'gmt_offset' ) . ' hours' );
 		$start->modify( get_option( 'gmt_offset' ) . ' hours' );
 
-		$rset = new \RRule\RSet( $rule['range']['rrule'], $start );
+		$rset = new \RRule\RSet( $rule['range']['rrule'], $is_all_day ? $start->format( $date_format ) : $start );
 
 		$duration = $start->diff( $end, true );
 

@@ -68,6 +68,26 @@
 		
 	</footer>
 
+	<a href="#transfer-popup" class="btn-transfer transfer-popup-link">Transfers</a>
+	<div id="transfer-popup" class="transfer-popup white-popup mfp-hide mfp-with-anim">
+		<?php rewind_posts(); ?>
+		<?php query_posts('post_type=page&page_id=487'); ?>
+		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+				<?php /*the_title('<h2 class="map-title">', '</h2>'); */?>
+				<div class="transfer-container">
+					<?php the_content(); ?>
+				</div>
+
+
+
+			<?php endwhile; ?>
+			<!-- post navigation -->
+
+		<?php endif; ?>
+              
+        
+    </div>
+
 <?php wp_footer(); ?>
 
 </body>

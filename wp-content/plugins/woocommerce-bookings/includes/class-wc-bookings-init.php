@@ -21,8 +21,6 @@ class WC_Bookings_Init {
 
 		// Dynamically add new bookings' capabilities for roles with deprecated manage_bookings cap.
 		add_filter( 'user_has_cap', array( $this, 'add_new_booking_caps' ), 10, 4 );
-
-		$this->init_cache_clearing();
 	}
 
 	/**
@@ -212,118 +210,6 @@ class WC_Bookings_Init {
 		$data_stores['product-booking-person-type'] = 'WC_Product_Booking_Person_Type_Data_Store_CPT';
 		$data_stores['booking-global-availability'] = 'WC_Global_Availability_Data_Store';
 		return $data_stores;
-	}
-
-	public function init_cache_clearing() {
-		add_action( 'woocommerce_booking_cancelled', array( $this, 'clear_cache' ) );
-		add_action( 'before_delete_post', array( $this, 'clear_cache' ) );
-		add_action( 'wp_trash_post', array( $this, 'clear_cache' ) );
-		add_action( 'untrash_post', array( $this, 'clear_cache' ) );
-		add_action( 'save_post', array( $this, 'clear_cache_on_save_post' ) );
-		add_action( 'woocommerce_order_status_changed', array( $this, 'clear_cache' ) );
-		add_action( 'woocommerce_pre_payment_complete', array( $this, 'clear_cache' ) );
-
-		// scheduled events
-		add_action( 'delete_booking_transients', array( $this, 'clear_cache' ) );
-		add_action( 'delete_booking_dr_transients', array( $this, 'clear_cache' ) );
-		add_action( 'delete_booking_ress_transients', array( $this, 'clear_cache' ) );
-		add_action( 'delete_booking_res_transients', array( $this, 'clear_cache' ) );
-	}
-
-	public function clear_cache() {
-		WC_Cache_Helper::get_transient_version( 'bookings', true );
-
-		// It only makes sense to delete transients from the DB if we're not using an external cache.
-		if ( ! wp_using_ext_object_cache() ) {
-			$this->delete_booking_transients();
-			$this->delete_booking_dr_transients();
-			$this->delete_booking_ress_transients();
-			$this->delete_booking_res_transients();
-		}
-	}
-
-	/**
-	 * Clears the transients when booking is edited
-	 *
-	 * @param int $post_id
-	 * @return int $post_id
-	 */
-	public function clear_cache_on_save_post( $post_id ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return $post_id;
-		}
-
-		$post = get_post( $post_id );
-
-		if ( 'wc_booking' !== $post->post_type && 'product' !== $post->post_type ) {
-			return $post_id;
-		}
-
-		$this->clear_cache();
-	}
-
-	/**
-	 * Delete Booking Related Transients
-	 */
-	public function delete_booking_transients() {
-		global $wpdb;
-		$limit = 1000;
-
-		$affected_timeouts   = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_timeout_book_fo_%', $limit ) );
-		$affected_transients = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_book_fo_%', $limit ) );
-
-		// If affected rows is equal to limit, there are more rows to delete. Delete in 10 secs.
-		if ( $affected_transients === $limit ) {
-			wp_schedule_single_event( time() + 10, 'delete_booking_transients', array( time() ) );
-		}
-	}
-
-	/**
-	 * Delete Booking Date Range Related Transients
-	 */
-	public function delete_booking_dr_transients() {
-		global $wpdb;
-		$limit = 1000;
-
-		$affected_timeouts   = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_timeout_book_dr_%', $limit ) );
-		$affected_transients = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_book_dr_%', $limit ) );
-
-		// If affected rows is equal to limit, there are more rows to delete. Delete in 10 secs.
-		if ( $affected_transients === $limit ) {
-			wp_schedule_single_event( time() + 10, 'delete_booking_dr_transients', array( time() ) );
-		}
-	}
-
-	/**
-	 * Delete Booking Product Resources Related Transients
-	 */
-	public function delete_booking_ress_transients() {
-		global $wpdb;
-		$limit = 1000;
-
-		$affected_timeouts   = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_timeout_book_ress_%', $limit ) );
-		$affected_transients = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_book_ress_%', $limit ) );
-
-		// If affected rows is equal to limit, there are more rows to delete. Delete in 10 secs.
-		if ( $affected_transients === $limit ) {
-			wp_schedule_single_event( time() + 10, 'delete_booking_ress_transients', array( time() ) );
-		}
-	}
-
-	/**
-	 * Delete Booking Product Resource Related Transients
-	 */
-	public function delete_booking_res_transients() {
-		global $wpdb;
-		$limit = 1000;
-
-		$affected_timeouts   = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_timeout_book_res_%', $limit ) );
-		$affected_transients = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s LIMIT %d;", '_transient_book_res_%', $limit ) );
-
-		// If affected rows is equal to limit, there are more rows to delete. Delete in 10 secs.
-		if ( $affected_transients === $limit ) {
-			wp_schedule_single_event( time() + 10, 'delete_booking_res_transients', array( time() ) );
-		}
 	}
 
 	/**

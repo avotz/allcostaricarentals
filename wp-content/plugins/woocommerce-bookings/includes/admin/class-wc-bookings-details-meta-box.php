@@ -63,7 +63,7 @@ class WC_Bookings_Details_Meta_Box {
 	 */
 	private function sanity_check_notices( $booking, $product ) {
 		if ( $booking->get_start() && $booking->get_start() > strtotime( '+ 2 year', current_time( 'timestamp' ) ) ) {
-			echo '<div class="notice notice-warning"><p>' . __( 'This booking is scheduled over 2 years into the future. Please ensure this is correct.', 'woocommerce-bookings' ) . '</p></div>';
+			echo '<div class="notice notice-warning"><p>' . esc_html__( 'This booking is scheduled over 2 years into the future. Please ensure this is correct.', 'woocommerce-bookings' ) . '</p></div>';
 		}
 
 		if ( $product && is_callable( array( $product, 'get_max_date' ) ) ) {
@@ -71,22 +71,22 @@ class WC_Bookings_Details_Meta_Box {
 			$max_date = strtotime( "+{$max['value']} {$max['unit']}", current_time( 'timestamp' ) );
 			if ( $booking->get_start() > $max_date || $booking->get_end() > $max_date ) {
 				/* translators: 1: maximum bookable date */
-				echo '<div class="notice notice-warning"><p>' . sprintf( __( 'This booking is scheduled over the product\'s allowed max booking date (%s). Please ensure this is correct.', 'woocommerce-bookings' ), date_i18n( wc_date_format(), $max_date ) ) . '</p></div>';
+				echo '<div class="notice notice-warning"><p>' . sprintf( esc_html__( 'This booking is scheduled over the product\'s allowed max booking date (%s). Please ensure this is correct.', 'woocommerce-bookings' ), esc_html( date_i18n( wc_date_format(), $max_date ) ) ) . '</p></div>';
 			}
 		}
 
 		if ( $booking->get_start() && $booking->get_end() && $booking->get_start() > $booking->get_end() ) {
-			echo '<div class="error"><p>' . __( 'This booking has an end date set before the start date.', 'woocommerce-bookings' ) . '</p></div>';
+			echo '<div class="error"><p>' . esc_html__( 'This booking has an end date set before the start date.', 'woocommerce-bookings' ) . '</p></div>';
 		}
 
 		if ( ! $product || ( $booking->get_product_id() && ! wc_get_product( $booking->get_product_id() ) ) ) {
-			echo '<div class="error"><p>' . __( 'It appears the booking product associated with this booking has been removed.', 'woocommerce-bookings' ) . '</p></div>';
+			echo '<div class="error"><p>' . esc_html__( 'It appears the booking product associated with this booking has been removed.', 'woocommerce-bookings' ) . '</p></div>';
 			return;
 		}
 
 		if ( $product && is_callable( array( $product, 'is_skeleton' ) ) && $product->is_skeleton() ) {
 			/* translators: 1: product type */
-			echo '<div class="error"><p>' . sprintf( __( 'This booking is missing a required add-on (product type: %s). Some information is shown below but might be incomplete. Please install the missing add-on through the plugins screen.', 'woocommerce-bookings' ), $product_check->get_type() ) . '</p></div>';
+			echo '<div class="error"><p>' . esc_html( sprintf( __( 'This booking is missing a required add-on (product type: %s). Some information is shown below but might be incomplete. Please install the missing add-on through the plugins screen.', 'woocommerce-bookings' ), $product->get_type() ) ) . '</p></div>';
 		}
 	}
 
@@ -136,33 +136,33 @@ class WC_Bookings_Details_Meta_Box {
 				<h2>
 				<?php
 				/* translators: 1: booking id */
-				printf( __( 'Booking #%s details', 'woocommerce-bookings' ), esc_html( $post->ID ) );
+				printf( esc_html__( 'Booking #%s details', 'woocommerce-bookings' ), esc_html( $post->ID ) );
 				?>
 				</h2>
 				<p class="booking_number">
 				<?php
 				if ( $order ) {
 					/* translators: 1: href to order id */
-					printf( ' ' . __( 'Linked to order %s.', 'woocommerce-bookings' ), '<a href="' . admin_url( 'post.php?post=' . absint( ( is_callable( array( $order, 'get_id' ) ) ? $order->get_id() : $order->id ) ) . '&action=edit' ) . '">#' . esc_html( $order->get_order_number() ) . '</a>' );
+					printf( ' ' . esc_html__( 'Linked to order %s.', 'woocommerce-bookings' ), '<a href="' . admin_url( 'post.php?post=' . absint( ( is_callable( array( $order, 'get_id' ) ) ? esc_html( $order->get_id() ) : esc_html( $order->id ) ) ) . '&action=edit' ) . '">#' . esc_html( $order->get_order_number() ) . '</a>' );
 				}
 
 				if ( $product && is_callable( array( $product, 'is_bookings_addon' ) ) && $product->is_bookings_addon() ) {
 					/* translators: 1: bookings addon title */
-					printf( ' ' . __( 'Booking type: %s', 'woocommerce-bookings' ), $product->bookings_addon_title() );
+					printf( ' ' . esc_html__( 'Booking type: %s', 'woocommerce-bookings' ), esc_html( $product->bookings_addon_title() ) );
 				}
 				?>
 				</p>
 
 				<div class="booking_data_column_container">
 					<div class="booking_data_column">
-						<h4><?php _e( 'General details', 'woocommerce-bookings' ); ?></h4>
+						<h4><?php esc_html_e( 'General details', 'woocommerce-bookings' ); ?></h4>
 
 						<p class="form-field form-field-wide">
-							<label for="_booking_order_id"><?php _e( 'Order ID:', 'woocommerce-bookings' ); ?></label>
+							<label for="_booking_order_id"><?php esc_html_e( 'Order ID:', 'woocommerce-bookings' ); ?></label>
 							<?php if ( version_compare( WC_VERSION, '3.0', '<' ) ) : ?>
-								<input type="hidden" name="_booking_order_id" id="_booking_order_id" value="<?php echo esc_attr( $booking->get_order_id() ); ?>" data-selected="<?php echo esc_attr( $order ? $order->get_order_number() : '' ); ?>" data-placeholder="<?php _e( 'N/A', 'woocommerce-bookings' ); ?>" data-allow_clear="true" />
+								<input type="hidden" name="_booking_order_id" id="_booking_order_id" value="<?php echo esc_attr( $booking->get_order_id() ); ?>" data-selected="<?php echo esc_attr( $order ? $order->get_order_number() : '' ); ?>" data-placeholder="<?php esc_attr_e( 'N/A', 'woocommerce-bookings' ); ?>" data-allow_clear="true" />
 							<?php else : ?>
-								<select name="_booking_order_id" id="_booking_order_id" data-placeholder="<?php _e( 'N/A', 'woocommerce-bookings' ); ?>" data-allow_clear="true">
+								<select name="_booking_order_id" id="_booking_order_id" data-placeholder="<?php esc_attr_e( 'N/A', 'woocommerce-bookings' ); ?>" data-allow_clear="true">
 									<?php if ( $booking->get_order_id() && $order ) : ?>
 										<option selected="selected" value="<?php echo esc_attr( $booking->get_order_id() ); ?>"><?php echo esc_html( $order->get_order_number() . ' &ndash; ' . date_i18n( wc_date_format(), strtotime( is_callable( array( $order, 'get_date_created' ) ) ? $order->get_date_created() : $order->post_date ) ) ); ?></option>
 									<?php endif; ?>
@@ -170,12 +170,12 @@ class WC_Bookings_Details_Meta_Box {
 							<?php endif; ?>
 						</p>
 
-						<p class="form-field form-field-wide"><label for="booking_date"><?php _e( 'Date created:', 'woocommerce-bookings' ); ?></label>
-							<input type="text" class="date-picker-field" name="booking_date" id="booking_date" maxlength="10" value="<?php echo date_i18n( 'Y-m-d', $booking->get_date_created() ); ?>" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" /> @ <input type="number" class="hour" placeholder="<?php _e( 'h', 'woocommerce-bookings' ); ?>" name="booking_date_hour" id="booking_date_hour" maxlength="2" size="2" value="<?php echo date_i18n( 'H', $booking->get_date_created() ); ?>" pattern="\-?\d+(\.\d{0,})?" />:<input type="number" class="minute" placeholder="<?php _e( 'm', 'woocommerce-bookings' ); ?>" name="booking_date_minute" id="booking_date_minute" maxlength="2" size="2" value="<?php echo date_i18n( 'i', $booking->get_date_created() ); ?>" pattern="\-?\d+(\.\d{0,})?" />
+						<p class="form-field form-field-wide"><label for="booking_date"><?php esc_html_e( 'Date created:', 'woocommerce-bookings' ); ?></label>
+							<input type="text" class="date-picker-field" name="booking_date" id="booking_date" maxlength="10" value="<?php echo esc_attr( date_i18n( 'Y-m-d', $booking->get_date_created() ) ); ?>" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" /> @ <input type="number" class="hour" placeholder="<?php esc_attr_e( 'h', 'woocommerce-bookings' ); ?>" name="booking_date_hour" id="booking_date_hour" maxlength="2" size="2" value="<?php echo esc_attr( date_i18n( 'H', $booking->get_date_created() ) ); ?>" pattern="\-?\d+(\.\d{0,})?" />:<input type="number" class="minute" placeholder="<?php esc_attr_e( 'm', 'woocommerce-bookings' ); ?>" name="booking_date_minute" id="booking_date_minute" maxlength="2" size="2" value="<?php echo esc_attr( date_i18n( 'i', $booking->get_date_created() ) ); ?>" pattern="\-?\d+(\.\d{0,})?" />
 						</p>
 
 						<p class="form-field form-field-wide">
-							<label for="_booking_status"><?php _e( 'Booking status:', 'woocommerce-bookings' ); ?></label>
+							<label for="_booking_status"><?php esc_attr_e( 'Booking status:', 'woocommerce-bookings' ); ?></label>
 							<select id="_booking_status" name="_booking_status" class="wc-enhanced-select">
 							<?php
 							foreach ( $statuses as $key => $value ) {
@@ -187,7 +187,7 @@ class WC_Bookings_Details_Meta_Box {
 						</p>
 
 						<p class="form-field form-field-wide">
-							<label for="_booking_customer_id"><?php _e( 'Customer:', 'woocommerce-bookings' ); ?></label>
+							<label for="_booking_customer_id"><?php esc_html_e( 'Customer:', 'woocommerce-bookings' ); ?></label>
 							<?php
 							$name = ! empty( $customer->name ) ? ' &ndash; ' . $customer->name : '';
 							$guest_placeholder = __( 'Guest', 'woocommerce-bookings' );
@@ -224,7 +224,7 @@ class WC_Bookings_Details_Meta_Box {
 
 					</div>
 					<div class="booking_data_column">
-						<h4><?php _e( 'Booking specification', 'woocommerce-bookings' ); ?></h4>
+						<h4><?php esc_html_e( 'Booking specification', 'woocommerce-bookings' ); ?></h4>
 
 						<?php
 						woocommerce_wp_select( array(
@@ -312,7 +312,7 @@ class WC_Bookings_Details_Meta_Box {
 						?>
 					</div>
 					<div class="booking_data_column">
-						<h4><?php _e( 'Booking date &amp; time', 'woocommerce-bookings' ); ?></h4>
+						<h4><?php esc_html_e( 'Booking date &amp; time', 'woocommerce-bookings' ); ?></h4>
 						<?php
 							woocommerce_wp_text_input( array(
 								'id'          => 'booking_start_date',

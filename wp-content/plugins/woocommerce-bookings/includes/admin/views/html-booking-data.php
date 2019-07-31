@@ -10,17 +10,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$duration_unit = $bookable_product->get_duration_unit( 'edit' );
 	?>
 	<p class="form-field">
-		<label for="_wc_booking_duration_type"><?php _e( 'Booking duration', 'woocommerce-bookings' ); ?></label>
+		<label for="_wc_booking_duration_type"><?php esc_html_e( 'Booking duration', 'woocommerce-bookings' ); ?></label>
 		<select name="_wc_booking_duration_type" id="_wc_booking_duration_type" class="" style="width: auto; margin-right: 7px;">
-			<option value="fixed" <?php selected( $duration_type, 'fixed' ); ?>><?php _e( 'Fixed blocks of', 'woocommerce-bookings' ); ?></option>
-			<option value="customer" <?php selected( $duration_type, 'customer' ); ?>><?php _e( 'Customer defined blocks of', 'woocommerce-bookings' ); ?></option>
+			<option value="fixed" <?php selected( $duration_type, 'fixed' ); ?>><?php esc_html_e( 'Fixed blocks of', 'woocommerce-bookings' ); ?></option>
+			<option value="customer" <?php selected( $duration_type, 'customer' ); ?>><?php esc_html_e( 'Customer defined blocks of', 'woocommerce-bookings' ); ?></option>
 		</select>
-		<input type="number" name="_wc_booking_duration" id="_wc_booking_duration" value="<?php echo $duration; ?>" step="1" min="1" style="margin-right: 7px; width: 4em;">
+		<input type="number" name="_wc_booking_duration" id="_wc_booking_duration" value="<?php echo esc_attr( $duration ); ?>" step="1" min="1" style="margin-right: 7px; width: 4em;">
 		<select name="_wc_booking_duration_unit" id="_wc_booking_duration_unit" class="short" style="width: auto; margin-right: 7px;">
-			<option value="month" <?php selected( $duration_unit, 'month' ); ?>><?php _e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
-			<option value="day" <?php selected( $duration_unit, 'day' ); ?>><?php _e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
-			<option value="hour" <?php selected( $duration_unit, 'hour' ); ?>><?php _e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
-			<option value="minute" <?php selected( $duration_unit, 'minute' ); ?>><?php _e( 'Minute(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="month" <?php selected( $duration_unit, 'month' ); ?>><?php esc_html_e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="day" <?php selected( $duration_unit, 'day' ); ?>><?php esc_html_e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="hour" <?php selected( $duration_unit, 'hour' ); ?>><?php esc_html_e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="minute" <?php selected( $duration_unit, 'minute' ); ?>><?php esc_html_e( 'Minute(s)', 'woocommerce-bookings' ); ?></option>
 		</select>
 	</p>
 
@@ -97,15 +97,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$cancel_limit_unit = $bookable_product->get_cancel_limit_unit( 'edit' );
 	?>
 	<p class="form-field booking-cancel-limit">
-		<label for="_wc_booking_cancel_limit"><?php _e( 'Booking can be cancelled until', 'woocommerce-bookings' ); ?></label>
-		<input type="number" name="_wc_booking_cancel_limit" id="_wc_booking_cancel_limit" value="<?php echo $cancel_limit; ?>" step="1" min="1" style="margin-right: 7px; width: 4em;">
+		<label for="_wc_booking_cancel_limit"><?php esc_html_e( 'Booking can be cancelled until', 'woocommerce-bookings' ); ?></label>
+		<input type="number" name="_wc_booking_cancel_limit" id="_wc_booking_cancel_limit" value="<?php echo esc_attr( $cancel_limit ); ?>" step="1" min="1" style="margin-right: 7px; width: 4em;">
 		<select name="_wc_booking_cancel_limit_unit" id="_wc_booking_cancel_limit_unit" class="short" style="width: auto; margin-right: 7px;">
-			<option value="month" <?php selected( $cancel_limit_unit, 'month' ); ?>><?php _e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
-			<option value="day" <?php selected( $cancel_limit_unit, 'day' ); ?>><?php _e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
-			<option value="hour" <?php selected( $cancel_limit_unit, 'hour' ); ?>><?php _e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
-			<option value="minute" <?php selected( $cancel_limit_unit, 'minute' ); ?>><?php _e( 'Minute(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="month" <?php selected( $cancel_limit_unit, 'month' ); ?>><?php esc_html_e( 'Month(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="day" <?php selected( $cancel_limit_unit, 'day' ); ?>><?php esc_html_e( 'Day(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="hour" <?php selected( $cancel_limit_unit, 'hour' ); ?>><?php esc_html_e( 'Hour(s)', 'woocommerce-bookings' ); ?></option>
+			<option value="minute" <?php selected( $cancel_limit_unit, 'minute' ); ?>><?php esc_html_e( 'Minute(s)', 'woocommerce-bookings' ); ?></option>
 		</select>
-		<span class="description"><?php _e( 'before the start date.', 'woocommerce-bookings' ); ?></span>
+		<span class="description"><?php esc_html_e( 'before the start date.', 'woocommerce-bookings' ); ?></span>
 	</p>
 
 	<script type="text/javascript">

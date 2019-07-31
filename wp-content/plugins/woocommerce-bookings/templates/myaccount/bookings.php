@@ -33,12 +33,12 @@ if ( ! empty( $tables ) ) : ?>
 		<table class="shop_table my_account_bookings">
 			<thead>
 				<tr>
-					<th scope="col" class="booking-id"><?php _e( 'ID', 'woocommerce-bookings' ); ?></th>
-					<th scope="col" class="booked-product"><?php _e( 'Booked', 'woocommerce-bookings' ); ?></th>
-					<th scope="col" class="order-number"><?php _e( 'Order', 'woocommerce-bookings' ); ?></th>
-					<th scope="col" class="booking-start-date"><?php _e( 'Start Date', 'woocommerce-bookings' ); ?></th>
-					<th scope="col" class="booking-end-date"><?php _e( 'End Date', 'woocommerce-bookings' ); ?></th>
-					<th scope="col" class="booking-status"><?php _e( 'Status', 'woocommerce-bookings' ); ?></th>
+					<th scope="col" class="booking-id"><?php esc_html_e( 'ID', 'woocommerce-bookings' ); ?></th>
+					<th scope="col" class="booked-product"><?php esc_html_e( 'Booked', 'woocommerce-bookings' ); ?></th>
+					<th scope="col" class="order-number"><?php esc_html_e( 'Order', 'woocommerce-bookings' ); ?></th>
+					<th scope="col" class="booking-start-date"><?php esc_html_e( 'Start Date', 'woocommerce-bookings' ); ?></th>
+					<th scope="col" class="booking-end-date"><?php esc_html_e( 'End Date', 'woocommerce-bookings' ); ?></th>
+					<th scope="col" class="booking-status"><?php esc_html_e( 'Status', 'woocommerce-bookings' ); ?></th>
 					<th scope="col" class="booking-cancel"></th>
 				</tr>
 			</thead>
@@ -78,11 +78,11 @@ if ( ! empty( $tables ) ) : ?>
 
 		<div class="woocommerce-pagination woocommerce-pagination--without-numbers woocommerce-Pagination">
 			<?php if ( 1 !== $page ) : ?>
-				<a class="woocommerce-button woocommerce-button--previous woocommerce-Button woocommerce-Button--previous button" href="<?php echo esc_url( wc_get_endpoint_url( 'bookings', $page - 1 ) ); ?>"><?php _e( 'Previous', 'woocommerce-bookings' ); ?></a>
+				<a class="woocommerce-button woocommerce-button--previous woocommerce-Button woocommerce-Button--previous button" href="<?php echo esc_url( wc_get_endpoint_url( 'bookings', $page - 1 ) ); ?>"><?php esc_html_e( 'Previous', 'woocommerce-bookings' ); ?></a>
 			<?php endif; ?>
 
 			<?php if ( $count >= $bookings_per_page ) : ?>
-				<a class="woocommerce-button woocommerce-button--next woocommerce-Button woocommerce-Button--next button" href="<?php echo esc_url( wc_get_endpoint_url( 'bookings', $page + 1 ) ); ?>"><?php _e( 'Next', 'woocommerce-bookings' ); ?></a>
+				<a class="woocommerce-button woocommerce-button--next woocommerce-Button woocommerce-Button--next button" href="<?php echo esc_url( wc_get_endpoint_url( 'bookings', $page + 1 ) ); ?>"><?php esc_html_e( 'Next', 'woocommerce-bookings' ); ?></a>
 			<?php endif; ?>
 		</div>
 

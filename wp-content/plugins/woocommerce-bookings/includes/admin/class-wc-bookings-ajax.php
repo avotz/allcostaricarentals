@@ -44,7 +44,7 @@ class WC_Bookings_Ajax {
 		}
 
 		if ( $add_resource_id ) {
-			$product        = new WC_Product_Booking( $post_id );
+			$product        = get_wc_product_booking( $post_id );
 			$resource_ids   = $product->get_resource_ids();
 
 			if ( in_array( $add_resource_name, $resource_ids ) ) {
@@ -74,7 +74,7 @@ class WC_Bookings_Ajax {
 
 		$post_id      = absint( $_POST['post_id'] );
 		$resource_id  = absint( $_POST['resource_id'] );
-		$product      = new WC_Product_Booking( $post_id );
+		$product      = get_wc_product_booking( $post_id );
 		$resource_ids = $product->get_resource_ids();
 		$resource_ids = array_diff( $resource_ids, array( $resource_id ) );
 		$product->set_resource_ids( $resource_ids );
@@ -120,10 +120,10 @@ class WC_Bookings_Ajax {
 	 */
 	public function mark_booking_confirmed() {
 		if ( ! current_user_can( 'edit_wc_bookings' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'woocommerce-bookings' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'woocommerce-bookings' ) );
 		}
 		if ( ! check_admin_referer( 'wc-booking-confirm' ) ) {
-			wp_die( __( 'You have taken too long. Please go back and retry.', 'woocommerce-bookings' ) );
+			wp_die( esc_html__( 'You have taken too long. Please go back and retry.', 'woocommerce-bookings' ) );
 		}
 		$booking_id = isset( $_GET['booking_id'] ) && (int) $_GET['booking_id'] ? (int) $_GET['booking_id'] : '';
 		if ( ! $booking_id ) {
@@ -161,8 +161,8 @@ class WC_Bookings_Ajax {
 			) );
 		}
 
-		$booking_form     = new WC_Booking_Form( $product );
-		$cost             = $booking_form->calculate_booking_cost( $posted );
+		$booking_data = wc_bookings_get_posted_data( $posted, $product );
+		$cost = WC_Bookings_Cost_Calculation::calculate_booking_cost( $booking_data, $product );
 
 		if ( is_wp_error( $cost ) ) {
 			wp_send_json( array(
@@ -217,7 +217,7 @@ class WC_Bookings_Ajax {
 
 		// Product Checking
 		$booking_id   = $posted['add-to-cart'];
-		$product      = new WC_Product_Booking( wc_get_product( $booking_id ) );
+		$product      = get_wc_product_booking( wc_get_product( $booking_id ) );
 		if ( ! $product ) {
 			return false;
 		}
@@ -268,20 +268,21 @@ class WC_Bookings_Ajax {
 
 		if ( $resource_id_to_check && $resource ) {
 			$resource_id_to_check = $resource->ID;
-		} elseif ( $product->has_resources() && $resources && sizeof( $resources ) === 1 ) {
+		} elseif ( $product->has_resources() && $resources && count( $resources ) === 1 ) {
 			$resource_id_to_check = current( $resources )->ID;
 		} else {
 			$resource_id_to_check = 0;
 		}
 
-		$blocks     = $product->get_blocks_in_range( $from, $to, array( $interval, $base_interval ), $resource_id_to_check );
-		$block_html = wc_bookings_get_time_slots_html( $product, $blocks, array( $interval, $base_interval ), $resource_id_to_check, $from, $to );
+		$booking_form = new WC_Booking_Form( $product );
+		$blocks       = $product->get_blocks_in_range( $from, $to, array( $interval, $base_interval ), $resource_id_to_check );
+		$block_html   = $booking_form->get_time_slots_html( $blocks, array( $interval, $base_interval ), $resource_id_to_check, $from, $to );
 
 		if ( empty( $block_html ) ) {
 			$block_html .= '<li>' . __( 'No blocks available.', 'woocommerce-bookings' ) . '</li>';
 		}
 
-		die( $block_html );
+		die( $block_html ); // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
 	/**
@@ -295,17 +296,17 @@ class WC_Bookings_Ajax {
 
 		if ( ! wp_verify_nonce( $nonce, 'get_end_time_html' ) ) {
 			// This nonce is not valid.
-			wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce-bookings' ) );
+			wp_die( esc_html__( 'Cheatin&#8217; huh?', 'woocommerce-bookings' ) );
 		}
 
 		$start_date_time  = wc_clean( $_POST['start_date_time'] );
 		$product_id       = intval( $_POST['product_id'] );
 		$blocks           = wc_clean( $_POST['blocks'] );
 		$bookable_product = wc_get_product( $product_id );
+		$booking_form     = new WC_Booking_Form( $bookable_product );
+		$html             = $booking_form->get_end_time_html( $blocks, $start_date_time );
 
-		$html = wc_bookings_get_end_time_html( $bookable_product, $blocks, $start_date_time );
-
-		echo $html;
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput
 		exit;
 	}
 

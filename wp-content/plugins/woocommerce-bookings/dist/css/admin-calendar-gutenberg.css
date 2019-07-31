@@ -16,6 +16,7 @@
 /**
  * Objects
  */
+/*rtl:begin:ignore*/
 .PresetDateRangePicker_panel {
   padding: 0 22px 11px; }
 
@@ -189,35 +190,53 @@
   outline: 0; }
 
 .DayPickerKeyboardShortcuts_show {
-  width: 22px;
+  width: 33px;
+  height: 26px;
   position: absolute;
   z-index: 2; }
 
+.DayPickerKeyboardShortcuts_show::before {
+  content: "";
+  display: block;
+  position: absolute; }
+
 .DayPickerKeyboardShortcuts_show__bottomRight {
+  bottom: 0;
+  right: 0; }
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
   border-top: 26px solid transparent;
   border-right: 33px solid #00a699;
   bottom: 0;
   right: 0; }
 
-.DayPickerKeyboardShortcuts_show__bottomRight:hover {
+.DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
   border-right: 33px solid #008489; }
 
 .DayPickerKeyboardShortcuts_show__topRight {
+  top: 0;
+  right: 0; }
+
+.DayPickerKeyboardShortcuts_show__topRight::before {
   border-bottom: 26px solid transparent;
   border-right: 33px solid #00a699;
   top: 0;
   right: 0; }
 
-.DayPickerKeyboardShortcuts_show__topRight:hover {
+.DayPickerKeyboardShortcuts_show__topRight:hover::before {
   border-right: 33px solid #008489; }
 
 .DayPickerKeyboardShortcuts_show__topLeft {
+  top: 0;
+  left: 0; }
+
+.DayPickerKeyboardShortcuts_show__topLeft::before {
   border-bottom: 26px solid transparent;
   border-left: 33px solid #00a699;
   top: 0;
   left: 0; }
 
-.DayPickerKeyboardShortcuts_show__topLeft:hover {
+.DayPickerKeyboardShortcuts_show__topLeft:hover::before {
   border-left: 33px solid #008489; }
 
 .DayPickerKeyboardShortcuts_showSpan {
@@ -226,15 +245,15 @@
 
 .DayPickerKeyboardShortcuts_showSpan__bottomRight {
   bottom: 0;
-  right: -28px; }
+  right: 5px; }
 
 .DayPickerKeyboardShortcuts_showSpan__topRight {
   top: 1px;
-  right: -28px; }
+  right: 5px; }
 
 .DayPickerKeyboardShortcuts_showSpan__topLeft {
   top: 1px;
-  left: -28px; }
+  left: 5px; }
 
 .DayPickerKeyboardShortcuts_panel {
   overflow: auto;
@@ -248,7 +267,8 @@
   left: 0;
   z-index: 2;
   padding: 22px;
-  margin: 33px; }
+  margin: 33px;
+  text-align: left; }
 
 .DayPickerKeyboardShortcuts_title {
   font-size: 16px;
@@ -297,7 +317,7 @@
 
 .CalendarDay__default:hover {
   background: #e4e7e7;
-  border: 1px double #e4e7e7;
+  border: 1px solid #e4e7e7;
   color: inherit; }
 
 .CalendarDay__hovered_offset {
@@ -334,34 +354,31 @@
 
 .CalendarDay__selected_span {
   background: #66e2da;
-  border: 1px solid #33dacd;
+  border: 1px double #33dacd;
   color: #fff; }
 
 .CalendarDay__selected_span:active,
 .CalendarDay__selected_span:hover {
   background: #33dacd;
-  border: 1px solid #33dacd;
+  border: 1px double #33dacd;
   color: #fff; }
-
-.CalendarDay__last_in_range {
-  border-right: #00a699; }
 
 .CalendarDay__selected,
 .CalendarDay__selected:active,
 .CalendarDay__selected:hover {
   background: #00a699;
-  border: 1px solid #00a699;
+  border: 1px double #00a699;
   color: #fff; }
 
 .CalendarDay__hovered_span,
 .CalendarDay__hovered_span:hover {
   background: #b2f1ec;
-  border: 1px solid #80e8e0;
+  border: 1px double #80e8e0;
   color: #007a87; }
 
 .CalendarDay__hovered_span:active {
   background: #80e8e0;
-  border: 1px solid #80e8e0;
+  border: 1px double #80e8e0;
   color: #007a87; }
 
 .CalendarDay__blocked_calendar,
@@ -377,6 +394,14 @@
   background: #fff;
   border: 1px solid #e4e7e7;
   color: #cacccd; }
+
+.CalendarDay__hovered_start_first_possible_end {
+  background: #eceeee;
+  border: 1px double #eceeee; }
+
+.CalendarDay__hovered_start_blocked_min_nights {
+  background: #eceeee;
+  border: 1px double #e4e7e7; }
 
 .CalendarMonth {
   background: #fff;
@@ -478,6 +503,17 @@
 .DayPickerNavigation_button__default:active {
   background: #f2f2f2; }
 
+.DayPickerNavigation_button__disabled {
+  cursor: default;
+  border: 1px solid #f2f2f2; }
+
+.DayPickerNavigation_button__disabled:focus,
+.DayPickerNavigation_button__disabled:hover {
+  border: 1px solid #f2f2f2; }
+
+.DayPickerNavigation_button__disabled:active {
+  background: 0 0; }
+
 .DayPickerNavigation_button__horizontalDefault {
   position: absolute;
   top: 18px;
@@ -497,6 +533,7 @@
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
   position: relative;
   display: inline-block;
+  text-align: center;
   height: 100%;
   width: 50%; }
 
@@ -515,8 +552,10 @@
 .DayPickerNavigation_svg__vertical {
   height: 42px;
   width: 42px;
-  fill: #484848;
-  display: block; }
+  fill: #484848; }
+
+.DayPickerNavigation_svg__disabled {
+  fill: #f2f2f2; }
 
 .DayPicker {
   background: #fff;
@@ -839,6 +878,7 @@
   width: 15px;
   fill: #cacccd; }
 
+/*rtl:end:ignore*/
 .components-datetime .components-datetime__calendar-help {
   padding: 8px; }
   .components-datetime .components-datetime__calendar-help h4 {
@@ -869,6 +909,9 @@
   .components-datetime__date .DayPickerNavigation_button__horizontalDefault {
     padding: 2px 8px;
     top: 20px; }
+    .components-datetime__date .DayPickerNavigation_button__horizontalDefault:focus {
+      border-color: #007cba;
+      box-shadow: 0 0 0 1px #007cba; }
   .components-datetime__date .DayPicker_weekHeader {
     top: 50px; }
   .components-datetime__date.is-description-visible .DayPicker,
@@ -895,11 +938,18 @@
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button {
       margin-left: -1px;
       border-radius: 0 3px 3px 0; }
+    .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-am-button:focus,
+    .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button:focus {
+      position: relative;
+      z-index: 1; }
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-am-button.is-toggled,
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button.is-toggled {
       background: #edeff0;
       border-color: #8f98a1;
       box-shadow: inset 0 2px 5px -3px #555d66; }
+      .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-am-button.is-toggled:focus,
+      .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button.is-toggled:focus {
+        box-shadow: inset 0 2px 5px -3px #555d66, 0 0 0 1px #fff, 0 0 0 3px #007cba; }
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-field {
       -ms-grid-row-align: center;
           align-self: center;
@@ -931,8 +981,6 @@
     border-radius: 4px 0 0 4px !important; }
   .components-datetime__time.is-12-hour .components-datetime__time-field-year input {
     border-radius: 0 4px 4px 0 !important; }
-  .components-datetime__time.is-24-hour .components-datetime__time-field-day {
-    order: 0 !important; }
 
 .components-datetime__time-legend {
   font-weight: 600;
@@ -1115,6 +1163,131 @@
 /**
  * Objects
  */
+.wc_bookings_calendar_form {
+  position: relative; }
+
+.daily_view_booking a {
+  outline: 0; }
+  .daily_view_booking a:link {
+    outline: 0; }
+  .daily_view_booking a:visited {
+    outline: 0; }
+  .daily_view_booking a:hover {
+    outline: 0; }
+  .daily_view_booking a:active {
+    outline: 0; }
+
+.wc-bookings-calendar-popover {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  max-width: 260px;
+  z-index: 99999; }
+  .wc-bookings-calendar-popover .components-popover__content {
+    padding: 10px; }
+    .wc-bookings-calendar-popover .components-popover__content .wc-bookings-calendar-popover-close {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 14px; }
+  .wc-bookings-calendar-popover a {
+    color: #000;
+    text-decoration: none; }
+  .wc-bookings-calendar-popover #event_detail_header {
+    padding: 30px 0 10px 0; }
+    .wc-bookings-calendar-popover #event_detail_header h3 {
+      font-weight: 500;
+      font-size: 18px;
+      margin: 0; }
+    .wc-bookings-calendar-popover #event_detail_header span {
+      display: block;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-weight: bold;
+      cursor: pointer; }
+  .wc-bookings-calendar-popover #event_detail_footer {
+    margin: 20px 0;
+    padding-left: 10px; }
+    .wc-bookings-calendar-popover #event_detail_footer a {
+      display: inline;
+      color: #000; }
+      .wc-bookings-calendar-popover #event_detail_footer a:hover {
+        background: none;
+        text-decoration: underline; }
+    .wc-bookings-calendar-popover #event_detail_footer span {
+      padding-left: 8px; }
+  .wc-bookings-calendar-popover #event_detail_body {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc; }
+    .wc-bookings-calendar-popover #event_detail_body ul {
+      margin-left: 28px; }
+    .wc-bookings-calendar-popover #event_detail_body li span:before {
+      font-family: "dashicons";
+      display: block;
+      position: absolute;
+      left: -18px; }
+    .wc-bookings-calendar-popover #event_detail_body li.daily_popover_datetime_icon span:before {
+      content: "\f508"; }
+    .wc-bookings-calendar-popover #event_detail_body li.daily_popover_customer_icon span:before {
+      content: "\f110"; }
+    .wc-bookings-calendar-popover #event_detail_body li.daily_popover_resource_icon span:before {
+      content: "\f180"; }
+    .wc-bookings-calendar-popover #event_detail_body li.daily_popover_persons_icon span:before {
+      content: "\f307"; }
+    .wc-bookings-calendar-popover #event_detail_body li {
+      position: relative;
+      margin: 10px 0 10px 0;
+      font-size: 12px;
+      width: auto;
+      border: none;
+      background: none;
+      border-radius: 0;
+      padding: 0;
+      display: block;
+      overflow: visible; }
+    .wc-bookings-calendar-popover #event_detail_body li strong {
+      display: block;
+      font-weight: bold; }
+
+.wc-bookings-calendar-popover-container {
+  display: inline;
+  width: auto; }
+  .wc-bookings-calendar-popover-container a {
+    outline: 0; }
+    .wc-bookings-calendar-popover-container a:link {
+      outline: 0; }
+    .wc-bookings-calendar-popover-container a:visited {
+      outline: 0; }
+    .wc-bookings-calendar-popover-container a:hover {
+      outline: 0; }
+    .wc-bookings-calendar-popover-container a:active {
+      outline: 0; }
+  .wc-bookings-calendar-popover-container .booking-calendar-booking-title {
+    display: block;
+    color: #000;
+    font-weight: bold; }
+  .wc-bookings-calendar-popover-container .booking-calendar-time-range {
+    color: #000; }
+/**
+ * Colors
+ */
+/**
+ * Often re-used variables
+ */
+/**
+ * Breakpoints & Media Queries
+ */
+.clear {
+  clear: both; }
+
+.nobr {
+  white-space: nowrap; }
+
+/**
+ * Objects
+ */
+/*rtl:begin:ignore*/
 .PresetDateRangePicker_panel {
   padding: 0 22px 11px; }
 
@@ -1288,35 +1461,53 @@
   outline: 0; }
 
 .DayPickerKeyboardShortcuts_show {
-  width: 22px;
+  width: 33px;
+  height: 26px;
   position: absolute;
   z-index: 2; }
 
+.DayPickerKeyboardShortcuts_show::before {
+  content: "";
+  display: block;
+  position: absolute; }
+
 .DayPickerKeyboardShortcuts_show__bottomRight {
+  bottom: 0;
+  right: 0; }
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
   border-top: 26px solid transparent;
   border-right: 33px solid #00a699;
   bottom: 0;
   right: 0; }
 
-.DayPickerKeyboardShortcuts_show__bottomRight:hover {
+.DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
   border-right: 33px solid #008489; }
 
 .DayPickerKeyboardShortcuts_show__topRight {
+  top: 0;
+  right: 0; }
+
+.DayPickerKeyboardShortcuts_show__topRight::before {
   border-bottom: 26px solid transparent;
   border-right: 33px solid #00a699;
   top: 0;
   right: 0; }
 
-.DayPickerKeyboardShortcuts_show__topRight:hover {
+.DayPickerKeyboardShortcuts_show__topRight:hover::before {
   border-right: 33px solid #008489; }
 
 .DayPickerKeyboardShortcuts_show__topLeft {
+  top: 0;
+  left: 0; }
+
+.DayPickerKeyboardShortcuts_show__topLeft::before {
   border-bottom: 26px solid transparent;
   border-left: 33px solid #00a699;
   top: 0;
   left: 0; }
 
-.DayPickerKeyboardShortcuts_show__topLeft:hover {
+.DayPickerKeyboardShortcuts_show__topLeft:hover::before {
   border-left: 33px solid #008489; }
 
 .DayPickerKeyboardShortcuts_showSpan {
@@ -1325,15 +1516,15 @@
 
 .DayPickerKeyboardShortcuts_showSpan__bottomRight {
   bottom: 0;
-  right: -28px; }
+  right: 5px; }
 
 .DayPickerKeyboardShortcuts_showSpan__topRight {
   top: 1px;
-  right: -28px; }
+  right: 5px; }
 
 .DayPickerKeyboardShortcuts_showSpan__topLeft {
   top: 1px;
-  left: -28px; }
+  left: 5px; }
 
 .DayPickerKeyboardShortcuts_panel {
   overflow: auto;
@@ -1347,7 +1538,8 @@
   left: 0;
   z-index: 2;
   padding: 22px;
-  margin: 33px; }
+  margin: 33px;
+  text-align: left; }
 
 .DayPickerKeyboardShortcuts_title {
   font-size: 16px;
@@ -1396,7 +1588,7 @@
 
 .CalendarDay__default:hover {
   background: #e4e7e7;
-  border: 1px double #e4e7e7;
+  border: 1px solid #e4e7e7;
   color: inherit; }
 
 .CalendarDay__hovered_offset {
@@ -1433,34 +1625,31 @@
 
 .CalendarDay__selected_span {
   background: #66e2da;
-  border: 1px solid #33dacd;
+  border: 1px double #33dacd;
   color: #fff; }
 
 .CalendarDay__selected_span:active,
 .CalendarDay__selected_span:hover {
   background: #33dacd;
-  border: 1px solid #33dacd;
+  border: 1px double #33dacd;
   color: #fff; }
-
-.CalendarDay__last_in_range {
-  border-right: #00a699; }
 
 .CalendarDay__selected,
 .CalendarDay__selected:active,
 .CalendarDay__selected:hover {
   background: #00a699;
-  border: 1px solid #00a699;
+  border: 1px double #00a699;
   color: #fff; }
 
 .CalendarDay__hovered_span,
 .CalendarDay__hovered_span:hover {
   background: #b2f1ec;
-  border: 1px solid #80e8e0;
+  border: 1px double #80e8e0;
   color: #007a87; }
 
 .CalendarDay__hovered_span:active {
   background: #80e8e0;
-  border: 1px solid #80e8e0;
+  border: 1px double #80e8e0;
   color: #007a87; }
 
 .CalendarDay__blocked_calendar,
@@ -1476,6 +1665,14 @@
   background: #fff;
   border: 1px solid #e4e7e7;
   color: #cacccd; }
+
+.CalendarDay__hovered_start_first_possible_end {
+  background: #eceeee;
+  border: 1px double #eceeee; }
+
+.CalendarDay__hovered_start_blocked_min_nights {
+  background: #eceeee;
+  border: 1px double #e4e7e7; }
 
 .CalendarMonth {
   background: #fff;
@@ -1577,6 +1774,17 @@
 .DayPickerNavigation_button__default:active {
   background: #f2f2f2; }
 
+.DayPickerNavigation_button__disabled {
+  cursor: default;
+  border: 1px solid #f2f2f2; }
+
+.DayPickerNavigation_button__disabled:focus,
+.DayPickerNavigation_button__disabled:hover {
+  border: 1px solid #f2f2f2; }
+
+.DayPickerNavigation_button__disabled:active {
+  background: 0 0; }
+
 .DayPickerNavigation_button__horizontalDefault {
   position: absolute;
   top: 18px;
@@ -1596,6 +1804,7 @@
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
   position: relative;
   display: inline-block;
+  text-align: center;
   height: 100%;
   width: 50%; }
 
@@ -1614,8 +1823,10 @@
 .DayPickerNavigation_svg__vertical {
   height: 42px;
   width: 42px;
-  fill: #484848;
-  display: block; }
+  fill: #484848; }
+
+.DayPickerNavigation_svg__disabled {
+  fill: #f2f2f2; }
 
 .DayPicker {
   background: #fff;
@@ -1938,6 +2149,7 @@
   width: 15px;
   fill: #cacccd; }
 
+/*rtl:end:ignore*/
 .components-datetime .components-datetime__calendar-help {
   padding: 8px; }
   .components-datetime .components-datetime__calendar-help h4 {
@@ -1968,6 +2180,9 @@
   .components-datetime__date .DayPickerNavigation_button__horizontalDefault {
     padding: 2px 8px;
     top: 20px; }
+    .components-datetime__date .DayPickerNavigation_button__horizontalDefault:focus {
+      border-color: #007cba;
+      box-shadow: 0 0 0 1px #007cba; }
   .components-datetime__date .DayPicker_weekHeader {
     top: 50px; }
   .components-datetime__date.is-description-visible .DayPicker,
@@ -1994,11 +2209,18 @@
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button {
       margin-left: -1px;
       border-radius: 0 3px 3px 0; }
+    .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-am-button:focus,
+    .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button:focus {
+      position: relative;
+      z-index: 1; }
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-am-button.is-toggled,
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button.is-toggled {
       background: #edeff0;
       border-color: #8f98a1;
       box-shadow: inset 0 2px 5px -3px #555d66; }
+      .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-am-button.is-toggled:focus,
+      .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-pm-button.is-toggled:focus {
+        box-shadow: inset 0 2px 5px -3px #555d66, 0 0 0 1px #fff, 0 0 0 3px #007cba; }
     .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-field {
       -ms-grid-row-align: center;
           align-self: center;
@@ -2030,8 +2252,6 @@
     border-radius: 4px 0 0 4px !important; }
   .components-datetime__time.is-12-hour .components-datetime__time-field-year input {
     border-radius: 0 4px 4px 0 !important; }
-  .components-datetime__time.is-24-hour .components-datetime__time-field-day {
-    order: 0 !important; }
 
 .components-datetime__time-legend {
   font-weight: 600;

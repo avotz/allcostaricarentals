@@ -33,14 +33,14 @@
 	<div class="options_group">
 
 		<div class="toolbar">
-			<h3><?php _e( 'Resources', 'woocommerce-bookings' ); ?></h3>
-			<span class="toolbar_links"><a href="#" class="close_all"><?php _e( 'Close all', 'woocommerce-bookings' ); ?></a><a href="#" class="expand_all"><?php _e( 'Expand all', 'woocommerce-bookings' ); ?></a></span>
+			<h3><?php esc_html_e( 'Resources', 'woocommerce-bookings' ); ?></h3>
+			<span class="toolbar_links"><a href="#" class="close_all"><?php esc_html_e( 'Close all', 'woocommerce-bookings' ); ?></a><a href="#" class="expand_all"><?php esc_html_e( 'Expand all', 'woocommerce-bookings' ); ?></a></span>
 		</div>
 
 		<div class="woocommerce_bookable_resources wc-metaboxes">
 
 			<div id="message" class="inline woocommerce-message updated" style="margin: 1em 0;">
-				<p><?php _e( 'Resources are used if you have multiple bookable items, e.g. room types, instructors or ticket types. Availability for resources is global across all bookable products.', 'woocommerce-bookings' ); ?></p>
+				<p><?php esc_html_e( 'Resources are used if you have multiple bookable items, e.g. room types, instructors or ticket types. Availability for resources is global across all bookable products.', 'woocommerce-bookings' ); ?></p>
 			</div>
 
 			<?php
@@ -58,7 +58,7 @@
 					$resource_base_cost  = isset( $resource_base_costs[ $resource_id ] ) ? $resource_base_costs[ $resource_id ] : '';
 					$resource_block_cost = isset( $resource_block_costs[ $resource_id ] ) ? $resource_block_costs[ $resource_id ] : '';
 
-					include( 'html-booking-resource.php' );
+					include 'html-booking-resource.php';
 					$loop++;
 				}
 			}
@@ -66,9 +66,9 @@
 		</div>
 
 		<p class="toolbar">
-			<button type="button" class="button button-primary add_resource"><?php _e( 'Add/link Resource', 'woocommerce-bookings' ); ?></button>
+			<button type="button" class="button button-primary add_resource"><?php esc_html_e( 'Add/link Resource', 'woocommerce-bookings' ); ?></button>
 			<select name="add_resource_id" class="add_resource_id">
-				<option value=""><?php _e( 'New resource', 'woocommerce-bookings' ); ?></option>
+				<option value=""><?php esc_html_e( 'New resource', 'woocommerce-bookings' ); ?></option>
 				<?php
 				if ( $all_resources ) {
 					foreach ( $all_resources as $resource ) {
@@ -80,7 +80,7 @@
 				}
 				?>
 			</select>
-			<a href="<?php echo admin_url( 'edit.php?post_type=bookable_resource' ); ?>" target="_blank"><?php _e( 'Manage Resources', 'woocommerce-bookings' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=bookable_resource' ) ); ?>" target="_blank"><?php esc_html_e( 'Manage Resources', 'woocommerce-bookings' ); ?></a>
 		</p>
 	</div>
 </div>

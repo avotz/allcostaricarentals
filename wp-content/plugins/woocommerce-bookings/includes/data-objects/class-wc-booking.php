@@ -813,7 +813,7 @@ class WC_Booking extends WC_Bookings_Data {
 	public function get_product() {
 		try {
 			if ( $this->get_product_id() ) {
-				return new WC_Product_Booking( $this->get_product_id() );
+				return get_wc_product_booking( $this->get_product_id() );
 			}
 		} catch ( Exception $e ) {
 			return false;

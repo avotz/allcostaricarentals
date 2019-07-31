@@ -25,17 +25,19 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 ?>
 	<ul class="wc-booking-summary-list">
 		<li>
 			<?php echo esc_html( apply_filters( 'wc_bookings_summary_list_date', $booking_date, $booking->get_start(), $booking->get_end() ) ); ?>
-			<?php if ( wc_should_convert_timezone( $booking ) ):
+			<?php
+			if ( wc_should_convert_timezone( $booking ) ) :
 				echo esc_html( sprintf( __( 'in timezone: %s', 'woocommerce-bookings' ), $booking_timezone ) );
-			endif; ?>
-        </li>
+			endif;
+			?>
+		</li>
 
 		<?php if ( $resource ) : ?>
 			<li>

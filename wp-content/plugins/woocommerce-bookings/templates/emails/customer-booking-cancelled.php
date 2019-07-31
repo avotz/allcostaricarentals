@@ -17,7 +17,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 do_action( 'woocommerce_email_header', $email_heading );
@@ -27,22 +27,22 @@ do_action( 'woocommerce_email_header', $email_heading );
 	<p>
 	<?php
 	/* translators: 1: billing first name */
-	printf( __( 'Hello %s', 'woocommerce-bookings' ), ( is_callable( array( $booking->get_order(), 'get_billing_first_name' ) ) ? $booking->get_order()->get_billing_first_name() : $booking->get_order()->billing_first_name ) );
+	echo esc_html( sprintf( __( 'Hello %s', 'woocommerce-bookings' ), ( is_callable( array( $booking->get_order(), 'get_billing_first_name' ) ) ? $booking->get_order()->get_billing_first_name() : $booking->get_order()->billing_first_name ) ) );
 	?>
 	</p>
 <?php endif; ?>
 
-<p><?php _e( 'We are sorry to say that your booking could not be confirmed and has been cancelled. The details of the cancelled booking can be found below.', 'woocommerce-bookings' ); ?></p>
+<p><?php esc_html_e( 'We are sorry to say that your booking could not be confirmed and has been cancelled. The details of the cancelled booking can be found below.', 'woocommerce-bookings' ); ?></p>
 
 <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee;" border="1" bordercolor="#eee">
 	<tbody>
 		<tr>
-			<th scope="row" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Booked Product', 'woocommerce-bookings' ); ?></th>
-			<td style="text-align:left; border: 1px solid #eee;"><?php echo $booking->get_product()->get_title(); ?></td>
+			<th scope="row" style="text-align:left; border: 1px solid #eee;"><?php esc_html_e( 'Booked Product', 'woocommerce-bookings' ); ?></th>
+			<td style="text-align:left; border: 1px solid #eee;"><?php echo esc_html( $booking->get_product()->get_title() ); ?></td>
 		</tr>
 		<tr>
-			<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php _e( 'Booking ID', 'woocommerce-bookings' ); ?></th>
-			<td style="text-align:left; border: 1px solid #eee;"><?php echo $booking->get_id(); ?></td>
+			<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php esc_html_e( 'Booking ID', 'woocommerce-bookings' ); ?></th>
+			<td style="text-align:left; border: 1px solid #eee;"><?php echo esc_html( $booking->get_id() ); ?></td>
 		</tr>
 		<?php
 		$resource = $booking->get_resource();
@@ -50,17 +50,17 @@ do_action( 'woocommerce_email_header', $email_heading );
 		if ( $booking->has_resources() && $resource ) :
 			?>
 			<tr>
-				<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php _e( 'Booking Type', 'woocommerce-bookings' ); ?></th>
-				<td style="text-align:left; border: 1px solid #eee;"><?php echo $resource->post_title; ?></td>
+				<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php esc_html_e( 'Booking Type', 'woocommerce-bookings' ); ?></th>
+				<td style="text-align:left; border: 1px solid #eee;"><?php echo esc_html( $resource->post_title ); ?></td>
 			</tr>
 		<?php endif; ?>
 		<tr>
-			<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php _e( 'Booking Start Date', 'woocommerce-bookings' ); ?></th>
-			<td style="text-align:left; border: 1px solid #eee;"><?php echo $booking->get_start_date( null, null, wc_should_convert_timezone( $booking ) ); ?></td>
+			<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php esc_html_e( 'Booking Start Date', 'woocommerce-bookings' ); ?></th>
+			<td style="text-align:left; border: 1px solid #eee;"><?php echo esc_html( $booking->get_start_date( null, null, wc_should_convert_timezone( $booking ) ) ); ?></td>
 		</tr>
 		<tr>
-			<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php _e( 'Booking End Date', 'woocommerce-bookings' ); ?></th>
-			<td style="text-align:left; border: 1px solid #eee;"><?php echo $booking->get_end_date( null, null, wc_should_convert_timezone( $booking ) ); ?></td>
+			<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php esc_html_e( 'Booking End Date', 'woocommerce-bookings' ); ?></th>
+			<td style="text-align:left; border: 1px solid #eee;"><?php echo esc_html( $booking->get_end_date( null, null, wc_should_convert_timezone( $booking ) ) ); ?></td>
 		</tr>
 		<?php if ( wc_should_convert_timezone( $booking ) ) : ?>
 		<tr>
@@ -78,14 +78,14 @@ do_action( 'woocommerce_email_header', $email_heading );
 				$person_type = ( 0 < $id ) ? get_the_title( $id ) : __( 'Person(s)', 'woocommerce-bookings' );
 				?>
 				<tr>
-					<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php echo $person_type; ?></th>
-					<td style="text-align:left; border: 1px solid #eee;"><?php echo $qty; ?></td>
+					<th style="text-align:left; border: 1px solid #eee;" scope="row"><?php echo esc_html( $person_type ); ?></th>
+					<td style="text-align:left; border: 1px solid #eee;"><?php echo esc_html( $qty ); ?></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</tbody>
 </table>
 
-<p><?php _e( 'Please contact us if you have any questions or concerns.', 'woocommerce-bookings' ); ?></p>
+<p><?php esc_html_e( 'Please contact us if you have any questions or concerns.', 'woocommerce-bookings' ); ?></p>
 
 <?php do_action( 'woocommerce_email_footer' ); ?>

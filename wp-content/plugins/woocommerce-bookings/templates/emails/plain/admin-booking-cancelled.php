@@ -17,35 +17,35 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
-echo '= ' . $email_heading . " =\n\n";
+echo '= ' . esc_html( $email_heading ) . " =\n\n";
 
-echo __( 'The following booking has been cancelled by the customer. The details of the cancelled booking can be found below.', 'woocommerce-bookings' ) . "\n\n";
+echo esc_html( __( 'The following booking has been cancelled by the customer. The details of the cancelled booking can be found below.', 'woocommerce-bookings' ) ) . "\n\n";
 
 echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
 /* translators: 1: booking product title */
-echo sprintf( __( 'Booked: %s', 'woocommerce-bookings' ), $booking->get_product()->get_title() ) . "\n";
+echo esc_html( sprintf( __( 'Booked: %s', 'woocommerce-bookings' ), $booking->get_product()->get_title() ) ) . "\n";
 /* translators: 1: booking id */
-echo sprintf( __( 'Booking ID: %s', 'woocommerce-bookings' ), $booking->get_id() ) . "\n";
+echo esc_html( sprintf( __( 'Booking ID: %s', 'woocommerce-bookings' ), $booking->get_id() ) ) . "\n";
 
 $resource = $booking->get_resource();
 
 if ( $booking->has_resources() && $resource ) {
 	/* translators: 1: booking title */
-	echo sprintf( __( 'Booking Type: %s', 'woocommerce-bookings' ), $resource->post_title ) . "\n";
+	echo esc_html( sprintf( __( 'Booking Type: %s', 'woocommerce-bookings' ), $resource->post_title ) ) . "\n";
 }
 
 /* translators: 1: booking start date */
-echo sprintf( __( 'Booking Start Date: %s', 'woocommerce-bookings' ), $booking->get_start_date( null, null, wc_should_convert_timezone( $booking ) ) ) . "\n";
+echo esc_html( sprintf( __( 'Booking Start Date: %s', 'woocommerce-bookings' ), $booking->get_start_date( null, null, wc_should_convert_timezone( $booking ) ) ) ) . "\n";
 /* translators: 1: booking end date */
-echo sprintf( __( 'Booking End Date: %s', 'woocommerce-bookings' ), $booking->get_end_date( null, null, wc_should_convert_timezone( $booking ) ) ) . "\n";
+echo esc_html( sprintf( __( 'Booking End Date: %s', 'woocommerce-bookings' ), $booking->get_end_date( null, null, wc_should_convert_timezone( $booking ) ) ) ) . "\n";
 
 if ( wc_should_convert_timezone( $booking ) ) {
 	/* translators: 1: time zone */
-	echo sprintf( __( 'Time Zone: %s', 'woocommerce-bookings' ), str_replace( '_', ' ', $booking->get_local_timezone() ) );
+	echo esc_html( sprintf( __( 'Time Zone: %s', 'woocommerce-bookings' ), str_replace( '_', ' ', $booking->get_local_timezone() ) ) );
 }
 
 if ( $booking->has_persons() ) {
@@ -56,13 +56,13 @@ if ( $booking->has_persons() ) {
 
 		$person_type = ( 0 < $id ) ? get_the_title( $id ) : __( 'Person(s)', 'woocommerce-bookings' );
 		/* translators: 1: person type 2: quantity */
-		echo sprintf( __( '%1$s: %2$d', 'woocommerce-bookings' ), $person_type, $qty ) . "\n";
+		echo esc_html( sprintf( __( '%1$s: %2$d', 'woocommerce-bookings' ), $person_type, $qty ) ) . "\n";
 	}
 }
 
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
 /* translators: 1: a href to booking */
-echo make_clickable( sprintf( __( 'You can view and edit this booking in the dashboard here: %s', 'woocommerce-bookings' ), admin_url( 'post.php?post=' . $booking->get_id() . '&action=edit' ) ) );
+echo wp_kses_post( make_clickable( sprintf( __( 'You can view and edit this booking in the dashboard here: %s', 'woocommerce-bookings' ), admin_url( 'post.php?post=' . $booking->get_id() . '&action=edit' ) ) ) );
 
-echo apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) );
+echo esc_html( apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) ) );

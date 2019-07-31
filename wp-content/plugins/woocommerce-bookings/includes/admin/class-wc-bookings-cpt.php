@@ -4,7 +4,6 @@
  * WC_Admin_CPT_Product Class.
  */
 class WC_Bookings_CPT {
-
 	/**
 	 * Constructor.
 	 */
@@ -137,7 +136,7 @@ class WC_Bookings_CPT {
 			if ( 'edit.php' == $pagenow && $this->type == $post_type ) {
 				/* translators: 1: number of booking statuses change */
 				$message = sprintf( _n( '%1$s booking status changed.', '%1$s booking statuses changed.', $number, 'woocommerce-bookings' ), number_format_i18n( $number ) );
-				echo '<div class="updated"><p>' . $message . '</p></div>';
+				echo '<div class="updated"><p>' . esc_html( $message ) . '</p></div>';
 			}
 		}
 	}
@@ -221,7 +220,7 @@ class WC_Bookings_CPT {
 				break;
 			case 'booking_id':
 				/* translators: 1: a href to booking id */
-				printf( '<a href="%s">' . __( 'Booking #%d', 'woocommerce-bookings' ) . '</a>', admin_url( 'post.php?post=' . $post->ID . '&action=edit' ), $post->ID );
+				printf( '<a href="%s">' . esc_html__( 'Booking #%d', 'woocommerce-bookings' ) . '</a>', esc_url( admin_url( 'post.php?post=' . esc_attr( $post->ID ) . '&action=edit' ) ), esc_html( $post->ID ) );
 				break;
 			case 'num_of_persons':
 				if ( ! is_object( $product ) || ! $product->has_persons() ) {
@@ -231,23 +230,23 @@ class WC_Bookings_CPT {
 				echo esc_html( array_sum( $booking->get_person_counts() ) );
 				break;
 			case 'customer':
-				$customer = $booking->get_customer();
+				$customer      = $booking->get_customer();
 				$customer_name = esc_html( $customer->name ?: '-' );
 
 				if ( $customer->email ) {
-					$customer_name = '<a href="mailto:' . esc_attr( $customer->email ) . '">' . $customer_name . '</a>';
+					$customer_name = '<a href="mailto:' . esc_attr( $customer->email ) . '">' . esc_html( $customer_name ) . '</a>';
 				}
 
-				echo $customer_name;
+				echo $customer_name; // phpcs:ignore WordPress.Security.EscapeOutput
 				break;
 			case 'booked_product':
 				$resource = $booking->get_resource();
 
 				if ( $product ) {
-					echo '<a href="' . admin_url( 'post.php?post=' . ( is_callable( array( $product, 'get_id' ) ) ? $product->get_id() : $product->id ) . '&action=edit' ) . '">' . $product->get_title() . '</a>';
+					echo '<a href="' . esc_url( admin_url( 'post.php?post=' . ( is_callable( array( $product, 'get_id' ) ) ? $product->get_id() : $product->id ) . '&action=edit' ) ) . '">' . esc_html( $product->get_title() ) . '</a>';
 
 					if ( $resource ) {
-						echo ' (<a href="' . admin_url( 'post.php?post=' . $resource->get_id() . '&action=edit' ) . '">' . $resource->get_name() . '</a>)';
+						echo ' (<a href="' . esc_url( admin_url( 'post.php?post=' . $resource->get_id() . '&action=edit' ) ) . '">' . esc_html( $resource->get_name() ) . '</a>)';
 					}
 				} else {
 					echo '-';
@@ -256,16 +255,16 @@ class WC_Bookings_CPT {
 			case 'order':
 				$order = $booking->get_order();
 				if ( $order ) {
-					echo '<a href="' . admin_url( 'post.php?post=' . ( is_callable( array( $order, 'get_id' ) ) ? $order->get_id() : $order->id ) . '&action=edit' ) . '">#' . $order->get_order_number() . '</a> - ' . esc_html( wc_get_order_status_name( $order->get_status() ) );
+					echo '<a href="' . esc_url( admin_url( 'post.php?post=' . ( is_callable( array( $order, 'get_id' ) ) ? $order->get_id() : $order->id ) . '&action=edit' ) ) . '">#' . esc_html( $order->get_order_number() ) . '</a> - ' . esc_html( wc_get_order_status_name( $order->get_status() ) );
 				} else {
 					echo '-';
 				}
 				break;
 			case 'start_date':
-				echo $booking->get_start_date();
+				echo esc_html( $booking->get_start_date() );
 				break;
 			case 'end_date':
-				echo $booking->get_end_date();
+				echo esc_html( $booking->get_end_date() );
 				break;
 			case 'booking_actions':
 				echo '<p>';
@@ -306,33 +305,33 @@ class WC_Bookings_CPT {
 	 */
 	public function custom_columns_orderby( $vars ) {
 		if ( isset( $vars['orderby'] ) ) {
-			if ( 'booking_id' == $vars['orderby'] ) {
+			if ( 'booking_id' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
 					'orderby' => 'ID',
 				) );
 			}
 
-			if ( 'booked_product' == $vars['orderby'] ) {
+			if ( 'booked_product' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
 					'meta_key' => '_booking_product_id',
 					'orderby'  => 'meta_value_num',
 				) );
 			}
 
-			if ( 'status' == $vars['orderby'] ) {
+			if ( 'status' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
 					'orderby' => 'post_status',
 				) );
 			}
 
-			if ( 'start_date' == $vars['orderby'] ) {
+			if ( 'start_date' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
 					'meta_key' => '_booking_start',
 					'orderby'  => 'meta_value_num',
 				) );
 			}
 
-			if ( 'end_date' == $vars['orderby'] ) {
+			if ( 'end_date' === $vars['orderby'] ) {
 				$vars = array_merge( $vars, array(
 					'meta_key' => '_booking_end',
 					'orderby'  => 'meta_value_num',
@@ -386,7 +385,7 @@ class WC_Bookings_CPT {
 			$output .= '</select>';
 		}
 
-		echo $output;
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
 	/**
@@ -515,4 +514,3 @@ class WC_Bookings_CPT {
 		return wc_clean( $_GET['s'] );
 	}
 }
-

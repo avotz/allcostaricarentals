@@ -1,5 +1,51 @@
 *** WooCommerce Bookings Changelog ***
 
+2019-07-24 - version 1.15.0
+* Add   - Admin calendar 'Schedule' view.
+* Add   - Google Calendar oAuth setup.
+* Add   - New e-mail template: 'Booking Pending Confirmation'
+* Fix   - Remove 1 hour offset for hour-based minimum block bookable setting.
+* Fix   - Only pass metadata of current booking to Google Calendar.
+* Fix   - Unhandled exceptions from Google Calendar.
+* Fix   - Fatal error when syncing some recurring events from Google Calendar.
+* Fix   - Inclusive/exclusive inconsistency in logic for blocking Google Events' times.
+* Fix   - Show `Date` label for `Display calendar on click` mode.
+* Fix   - Only resources with status publish will be able to be booked.
+* Fix   - One Page Checkout compatibility - endless loading on the product page
+* Fix   - Resources dropdown field showing unexpected HTML in options.
+* Fix   - Show `Date` label for `Display calendar on click` mode.
+* Fix   - Fatal error with Google Calendar when trying to log with debug mode off.
+* Fix   - Some Google Calendar events hidden in admin calendar.
+* Fix   - Timezone settings string formatting.
+* Tweak - Better error handling with Google Calendar authentication
+* Tweak - Admin calendar day/month view to use Gutenberg Popover.
+* Tweak - Update all NPM and Composer packages.
+* Tweak - Consolidated cache logic into single class.
+* Tweak - Cache is disabled when WC_BOOKINGS_DEBUG is true.
+* Tweak - Only show calendar connection settings if there is an active connection.
+* Tweak - Soft deprecated `WC_Bookings_Form::convert_to_moment_format()` replaced with `wc_bookings_convert_to_moment_format()`.
+* Tweak - Soft deprecated `WC_Bookings_Form::get_posted_data()` replaced with `wc_bookings_get_posted_data()`.
+* Tweak - Soft deprecated `WC_Bookings_Form::is_bookable()` replaced with `WC_Product_Booking::is_bookable()`.
+* Tweak - Soft deprecated `WC_Bookings_Form::get_formatted_times()` replaced with `wc_bookings_get_formatted_times()`.
+* Tweak - Soft deprecated `WC_Bookings_Form::calculate_booking_cost()` replaced with `WC_Bookings_Cost_Calculation::calculate_booking_cost()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_bookings_in_date_range()` replaced with `WC_Booking_Data_Store::get_bookings_in_date_range()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_events_in_date_range()` replaced with `WC_Global_Availability_Data_Store::get_events_in_date_range()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_global_availability_in_date_range()` replaced with `WC_Global_Availability_Data_Store::get_global_availability_in_date_range()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_all_existing_bookings()` replaced with `WC_Booking_Data_Store::get_all_existing_bookings()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_bookings_for_objects()` replaced with `WC_Booking_Data_Store::get_bookings_for_objects()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_bookings_for_objects_query()` replaced with `WC_Booking_Data_Store::get_bookings_for_objects_query()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_bookings_for_product()` replaced with `WC_Booking_Data_Store::get_bookings_for_product()`.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_latest_bookings()`. Not used in Bookings.
+* Tweak - Soft deprecated `WC_Bookings_Controller::get_bookings_for_user()` replaced with `WC_Booking_Data_Store::get_bookings_for_user()`.
+* Tweak - Soft deprecated `wc_booking_calculated_base_cost()` replaced with `WC_Bookings_Cost_Calculation::calculated_base_cost()`.
+* Tweak - Soft deprecated `wc_booking_get_product_resources()` replaced with `WC_Product_Booking->get_resources()`.
+* Tweak - Soft deprecated `wc_booking_get_product_resource()` replaced with `WC_Product_Booking->get_resource()`.
+* Tweak - Soft deprecated `wc_bookings_get_start_time_html()` replaced with `WC_Booking_Form::get_start_time_html()`.
+* Tweak - Soft deprecated `wc_bookings_get_end_times()` replaced with `WC_Booking_Form::get_end_times()`.
+* Tweak - Soft deprecated `wc_bookings_get_end_time_html()` replaced with `WC_Booking_Form::get_end_time_html()`.
+* Tweak - Soft deprecated `wc_bookings_get_time_slots_html()` replaced with `WC_Booking_Form::get_time_slots_html()`.
+* Tweak - Soft deprecated `delete_booking_slots_transient()` replaced with `WC_Bookings_Cache::delete_booking_slots_transient()`.
+
 2019-06-10 - version 1.14.5
 * Fix   - Adds accommodation bookings support for WooCommerce Bookings Availability extension
 

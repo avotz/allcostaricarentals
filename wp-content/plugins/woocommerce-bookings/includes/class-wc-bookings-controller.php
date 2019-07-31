@@ -14,16 +14,8 @@ class WC_Bookings_Controller {
 	 * @return array
 	 */
 	public static function get_bookings_in_date_range( $start_date, $end_date, $product_or_resource_ids = 0, $check_in_cart = true ) {
-		$product_or_resources_key = is_array( $product_or_resource_ids ) ? implode( ',', $product_or_resource_ids ) : $product_or_resource_ids;
-		$transient_name = 'book_dr_' . md5( http_build_query( array( $start_date, $end_date, $product_or_resources_key,  $check_in_cart, WC_Cache_Helper::get_transient_version( 'bookings' ) ) ) );
-		$booking_ids    = get_transient( $transient_name );
-
-		if ( false === $booking_ids ) {
-			$booking_ids = self::get_bookings_in_date_range_query( $start_date, $end_date, $product_or_resource_ids, $check_in_cart );
-			set_transient( $transient_name, $booking_ids, DAY_IN_SECONDS * 30 );
-		}
-
-		return array_map( 'get_wc_booking', wp_parse_id_list( $booking_ids ) );
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Booking_Data_Store::get_bookings_in_date_range' );
+		return WC_Booking_Data_Store::get_bookings_in_date_range( $start_date, $end_date, $product_or_resource_ids, $check_in_cart );
 	}
 
 	/**
@@ -36,22 +28,8 @@ class WC_Bookings_Controller {
 	 * @return array
 	 */
 	public static function get_events_in_date_range( $start_date, $end_date, $product_or_resource_ids = 0, $check_in_cart = true ) {
-		$bookings              = self::get_bookings_in_date_range( $start_date, $end_date, $product_or_resource_ids, $check_in_cart );
-		$min_date              = date( 'Y-m-d', $start_date );
-		$max_date              = date( 'Y-m-d', $end_date );
-
-		// Filter only for events synced from Google Calendar.
-		$filters               = array(
-			array(
-				'key'     => 'gcal_event_id',
-				'compare' => '!=',
-				'value'   => '',
-			),
-		);
-
-		$global_availabilities = WC_Data_Store::load( 'booking-global-availability' )->get_all( $filters, $min_date, $max_date );
-
-		return array_merge( $bookings, $global_availabilities );
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Global_Availability_Data_Store::get_events_in_date_range' );
+		return WC_Global_Availability_Data_Store::get_events_in_date_range( $start_date, $end_date, $product_or_resource_ids, $check_in_cart );
 	}
 
 	/**
@@ -64,19 +42,8 @@ class WC_Bookings_Controller {
 	 * @return array Days that are buffer days and therefor should be un-bookable
 	 */
 	public static function get_global_availability_in_date_range( $start_date, $end_date ) {
-
-		// Filter only for events not from Google Calendar.
-		$filters               = array(
-			array(
-				'key'     => 'gcal_event_id',
-				'compare' => '==',
-				'value'   => '',
-			),
-		);
-
-		$min_date = date( 'Y-m-d', $start_date );
-		$max_date = date( 'Y-m-d', $end_date );
-		return WC_Data_Store::load( 'booking-global-availability' )->get_all( $filters, $min_date, $max_date );
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Global_Availability_Data_Store::get_global_availability_in_date_range' );
+		return WC_Global_Availability_Data_Store::get_global_availability_in_date_range( $start_date, $end_date );
 	}
 
 	/**
@@ -156,35 +123,10 @@ class WC_Bookings_Controller {
 	 * @return array
 	 */
 	public static function get_all_existing_bookings( $bookable_product, $min_date = 0, $max_date = 0 ) {
-		$find_bookings_for = array( $bookable_product->get_id() );
-
-		if ( $bookable_product->has_resources() ) {
-			foreach ( $bookable_product->get_resources() as $resource ) {
-				$find_bookings_for[] = $resource->get_id();
-			}
-		}
-
-		if ( empty( $min_date ) ) {
-			// Determine a min and max date
-			$min_date = $bookable_product->get_min_date();
-			$min_date = empty( $min_date ) ? array(
-				'unit' => 'minute',
-				'value' => 1,
-			) : $min_date ;
-			$min_date = strtotime( "midnight +{$min_date['value']} {$min_date['unit']}", current_time( 'timestamp' ) );
-		}
-
-		if ( empty( $max_date ) ) {
-			$max_date = $bookable_product->get_max_date();
-			$max_date = empty( $max_date ) ? array(
-				'unit' => 'month',
-				'value' => 12,
-			) : $max_date;
-			$max_date = strtotime( "+{$max_date['value']} {$max_date['unit']}", current_time( 'timestamp' ) );
-		}
-
-		return self::get_bookings_for_objects( $find_bookings_for, get_wc_booking_statuses( 'fully_booked' ), $min_date, $max_date );
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Booking_Data_Store::get_all_existing_bookings()' );
+		return WC_Booking_Data_Store::get_all_existing_bookings( $bookable_product, $min_date, $max_date );
 	}
+
 	/**
 	 * For hour bookings types check that the booking is past midnight and before start time.
 	 * This only works for the very next day after booking start.
@@ -271,7 +213,7 @@ class WC_Bookings_Controller {
 		}
 
 		// Get existing bookings and go through them to set partial/fully booked days
-		$existing_bookings = self::get_all_existing_bookings( $bookable_product, $min_date, $max_date );
+		$existing_bookings = WC_Booking_Data_Store::get_all_existing_bookings( $bookable_product, $min_date, $max_date );
 
 		if ( empty( $existing_bookings ) ) {
 			return $booked_day_blocks;
@@ -394,23 +336,8 @@ class WC_Bookings_Controller {
 	 * @return array of WC_Booking objects
 	 */
 	public static function get_bookings_for_objects( $ids = array(), $status = array(), $date_from = 0, $date_to = 0 ) {
-		// TODO: We need to round date_from/date_to to something specific.
-		// Otherwise, one might abuse the DB transient cache by calling various combinations from the front-end with min-date/max-date.
-		$transient_name = 'book_fo_' . md5( http_build_query( array( $ids, $status, $date_from, $date_to, WC_Cache_Helper::get_transient_version( 'bookings' ) ) ) );
-		$status         = ! empty( $status ) ? $status : get_wc_booking_statuses( 'fully_booked' );
-		$date_from      = ! empty( $date_from ) ? $date_from : strtotime( 'midnight', current_time( 'timestamp' ) );
-		$date_to        = ! empty( $date_to ) ? $date_to : strtotime( '+12 month', current_time( 'timestamp' ) );
-		$booking_ids    = get_transient( $transient_name );
-
-		if ( false === $booking_ids ) {
-			$booking_ids = self::get_bookings_for_objects_query( $ids, $status, $date_from, $date_to );
-			set_transient( $transient_name, $booking_ids, DAY_IN_SECONDS * 30 );
-		}
-
-		if ( ! empty( $booking_ids ) ) {
-			return array_map( 'get_wc_booking', wp_parse_id_list( $booking_ids ) );
-		}
-		return array();
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Booking_Data_Store::get_bookings_for_objects()' );
+		return WC_Booking_Data_Store::get_bookings_for_objects( $ids, $status, $date_from, $date_to );
 	}
 
 	/**
@@ -422,20 +349,8 @@ class WC_Bookings_Controller {
 	 * @return array of WC_Booking objects
 	 */
 	public static function get_bookings_for_objects_query( $ids, $status, $date_from = 0, $date_to = 0 ) {
-		$status    = ! empty( $status ) ? $status : get_wc_booking_statuses( 'fully_booked' );
-		$date_from = ! empty( $date_from ) ? $date_from : strtotime( 'midnight', current_time( 'timestamp' ) );
-		$date_to   = ! empty( $date_to ) ? $date_to : strtotime( '+12 month', current_time( 'timestamp' ) );
-
-		$booking_ids = WC_Booking_Data_Store::get_booking_ids_by( array(
-			'status'       => $status,
-			'object_id'    => $ids,
-			'object_type'  => 'product_or_resource',
-			'date_between' => array(
-				'start' => $date_from,
-				'end'   => $date_to,
-			),
-		) );
-		return $booking_ids;
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Booking_Data_Store::get_bookings_for_objects_query()' );
+		return WC_Booking_Data_Store::get_bookings_for_objects_query( $ids, $status, $date_from, $date_to );
 	}
 
 	/**
@@ -445,50 +360,8 @@ class WC_Bookings_Controller {
 	 * @return array of WC_Booking objects
 	 */
 	public static function get_bookings_for_product( $product_id, $status = array( 'confirmed', 'paid' ) ) {
-		$booking_ids = WC_Booking_Data_Store::get_booking_ids_by( array(
-			'object_id'   => $product_id,
-			'object_type' => 'product',
-			'status'      => $status,
-		) );
-		return array_map( 'get_wc_booking', $booking_ids );
-	}
-
-	/**
-	 * Return all bookings for a product in a given range - the query part (no cache)
-	 * @param  integer $start_date
-	 * @param  integer $end_date
-	 * @param  mixed   $product_or_resource_ids
-	 * @param  bool    $check_in_cart
-	 * @return array of booking ids
-	 */
-	private static function get_bookings_in_date_range_query( $start_date, $end_date, $product_or_resource_ids = 0, $check_in_cart = true ) {
-		$args = array(
-			'status'       => get_wc_booking_statuses(),
-			'object_id'    => $product_or_resource_ids,
-			'object_type'  => 'product_and_resource',
-			'date_between' => array(
-				'start' => $start_date,
-				'end'   => $end_date,
-			),
-		);
-
-		if ( ! $check_in_cart ) {
-			$args['status'] = array_diff( $args['status'], array( 'in-cart' ) );
-		}
-
-		if ( $product_or_resource_ids ) {
-			$args['product_id'] = array();
-			$args['resource_id'] = array();
-			foreach ( (array)$product_or_resource_ids as $pid ) {
-				if ( 'bookable_resource' === get_post_type( $pid ) ) {
-					$args['resource_id'][] = absint( $pid );
-				} else {
-					$args['product_id'][] = absint( $pid );
-				}
-			}
-		}
-
-		return apply_filters( 'woocommerce_bookings_in_date_range_query', WC_Booking_Data_Store::get_booking_ids_by( $args ) );
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Booking_Data_Store::get_bookings_for_product()' );
+		return WC_Booking_Data_Store::get_bookings_for_product( $product_id, $status );
 	}
 
 	/**
@@ -499,6 +372,7 @@ class WC_Bookings_Controller {
 	 * @return array of WC_Booking objects
 	 */
 	public static function get_latest_bookings( $number_of_items = 10, $offset = 0 ) {
+		wc_deprecated_function( __METHOD__, '1.15.0' );
 
 		$booking_ids = get_posts( array(
 			'numberposts' => $number_of_items,
@@ -521,12 +395,8 @@ class WC_Bookings_Controller {
 	 * @return array             Array of WC_Booking objects
 	 */
 	public static function get_bookings_for_user( $user_id, $query_args = array() ) {
-		$booking_ids = WC_Booking_Data_Store::get_booking_ids_by( array_merge( $query_args, array(
-			'status'      => get_wc_booking_statuses( 'user' ),
-			'object_id'   => $user_id,
-			'object_type' => 'customer',
-		) ) );
-		return array_map( 'get_wc_booking', $booking_ids );
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Booking_Data_Store::get_bookings_for_user()' );
+		return WC_Booking_Data_Store::get_bookings_for_user( $user_id, $query_args );
 	}
 
 	/*
@@ -545,7 +415,7 @@ class WC_Bookings_Controller {
 	 * @return array
 	 */
 	public static function get_bookings_star_and_end_times( $bookings_objects, $resource_id = 0 ) {
-		_deprecated_function( __METHOD__, '1.12.2' );
+		wc_deprecated_function( __METHOD__, '1.12.2' );
 
 		$bookings_start_and_end = array();
 		foreach ( $bookings_objects as $booking ) {
@@ -566,7 +436,7 @@ class WC_Bookings_Controller {
 	 * @return array of WC_Booking objects
 	 */
 	public static function get_bookings_for_resource( $resource_id, $status = array( 'confirmed', 'paid' ) ) {
-		_deprecated_function( __METHOD__, '1.12.2' );
+		wc_deprecated_function( __METHOD__, '1.12.2' );
 
 		$booking_ids = WC_Booking_Data_Store::get_booking_ids_by( array(
 			'object_id'   => $resource_id,
@@ -586,7 +456,7 @@ class WC_Bookings_Controller {
 	 * @return array of booking ids
 	 */
 	public static function filter_bookings_on_date( $bookings, $date ) {
-		_deprecated_function( __METHOD__, '1.12.2' );
+		wc_deprecated_function( __METHOD__, '1.12.2' );
 
 		$bookings_on_date = array();
 		$date_start       = strtotime( 'midnight', $date ); // Midnight today.

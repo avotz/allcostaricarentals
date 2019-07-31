@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "aos": "^2.3.4",
+        "flatpickr": "^4.6.2",
         "hoverintent": "^2.2.0",
         "slick-carousel": "^1.8.1"
     }

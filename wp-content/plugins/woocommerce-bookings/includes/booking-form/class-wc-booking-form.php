@@ -97,7 +97,7 @@ class WC_Booking_Form {
 			'timezone_conversion'        => wc_should_convert_timezone(),
 			'client_firstday'            => 'yes' === WC_Bookings_Timezone_Settings::get( 'use_client_firstday' ),
 			'server_timezone'            => wc_booking_get_timezone_string(),
-			'server_time_format'         => $this->convert_to_moment_format( get_option( 'time_format' ) ),
+			'server_time_format'         => wc_bookings_convert_to_moment_format( get_option( 'time_format' ) ),
 			'i18n_store_server_time'     => esc_js( __( 'Store server time: ', 'woocommerce-bookings' ) ),
 		);
 
@@ -111,47 +111,9 @@ class WC_Booking_Form {
 	 * @return string
 	 */
 	protected function convert_to_moment_format( $format ) {
-		$replacements = array(
-			'd' => 'DD',
-			'D' => 'ddd',
-			'j' => 'D',
-			'l' => 'dddd',
-			'N' => 'E',
-			'S' => 'o',
-			'w' => 'e',
-			'z' => 'DDD',
-			'W' => 'W',
-			'F' => 'MMMM',
-			'm' => 'MM',
-			'M' => 'MMM',
-			'n' => 'M',
-			't' => '', // no equivalent
-			'L' => '', // no equivalent
-			'o' => 'YYYY',
-			'Y' => 'YYYY',
-			'y' => 'YY',
-			'a' => 'a',
-			'A' => 'A',
-			'B' => '', // no equivalent
-			'g' => 'h',
-			'G' => 'H',
-			'h' => 'hh',
-			'H' => 'HH',
-			'i' => 'mm',
-			's' => 'ss',
-			'u' => 'SSS',
-			'e' => 'zz', // deprecated since version 1.6.0 of moment.js
-			'I' => '', // no equivalent
-			'O' => '', // no equivalent
-			'P' => '', // no equivalent
-			'T' => '', // no equivalent
-			'Z' => '', // no equivalent
-			'c' => '', // no equivalent
-			'r' => '', // no equivalent
-			'U' => 'X',
-		);
+		wc_deprecated_function( __METHOD__, '1.15.0', 'wc_bookings_convert_to_moment_format' );
 
-		return strtr( $format, $replacements );
+		return wc_bookings_convert_to_moment_format( $format );
 	}
 
 	/**
@@ -315,9 +277,9 @@ class WC_Booking_Form {
 			if ( $resource->get_base_cost() && $this->product->get_block_cost() < $cost_plus_base ) {
 				// if display cost price is set, don't calculate the difference
 				if ( '' !== $this->product->get_display_cost() ) {
-					$additional_cost[] = '+' . wc_price( $cost_plus_base );
+					$additional_cost[] = '+' . wp_strip_all_tags( wc_price( $cost_plus_base ) );
 				} else {
-					$additional_cost[] = '+' . wc_price( (float) $resource->get_base_cost() );
+					$additional_cost[] = '+' . wp_strip_all_tags( wc_price( (float) $resource->get_base_cost() ) );
 				}
 			}
 
@@ -339,7 +301,7 @@ class WC_Booking_Form {
 				}
 
 				/* translators: 1: block cost 2: duration unit */
-				$additional_cost[] = sprintf( __( '+%1$1s per %2$2s', 'woocommerce-bookings' ), wc_price( $resource->get_block_cost() ), $duration_display );
+				$additional_cost[] = sprintf( __( '+%1$1s per %2$2s', 'woocommerce-bookings' ), wp_strip_all_tags( wc_price( $resource->get_block_cost() ) ), $duration_display );
 			}
 
 			if ( $additional_cost ) {
@@ -370,17 +332,17 @@ class WC_Booking_Form {
 		// Get date picker specific to the duration unit for this product
 		switch ( $this->product->get_duration_unit() ) {
 			case 'month':
-				include_once( 'class-wc-booking-form-month-picker.php' );
+				include_once 'class-wc-booking-form-month-picker.php';
 				$picker = new WC_Booking_Form_Month_Picker( $this );
 				break;
 			case 'day':
 			case 'night':
-				include_once( 'class-wc-booking-form-date-picker.php' );
+				include_once 'class-wc-booking-form-date-picker.php';
 				$picker = new WC_Booking_Form_Date_Picker( $this );
 				break;
 			case 'minute':
 			case 'hour':
-				include_once( 'class-wc-booking-form-datetime-picker.php' );
+				include_once 'class-wc-booking-form-datetime-picker.php';
 				$picker = new WC_Booking_Form_Datetime_Picker( $this );
 				break;
 			default:
@@ -441,160 +403,9 @@ class WC_Booking_Form {
 	 * @return array
 	 */
 	public function get_posted_data( $posted = array() ) {
-		if ( empty( $posted ) ) {
-			$posted = $_POST;
-		}
+		wc_deprecated_function( __METHOD__, '1.15.0', 'wc_bookings_get_posted_data()' );
 
-		$data = array(
-			'_year'    => '',
-			'_month'   => '',
-			'_day'     => '',
-			'_persons' => array(),
-		);
-
-		// Get date fields (y, m, d)
-		if ( ! empty( $posted['wc_bookings_field_start_date_year'] ) && ! empty( $posted['wc_bookings_field_start_date_month'] ) && ! empty( $posted['wc_bookings_field_start_date_day'] ) ) {
-			$data['_year']  = absint( $posted['wc_bookings_field_start_date_year'] );
-			$data['_year']  = $data['_year'] ? $data['_year'] : date( 'Y' );
-			$data['_month'] = absint( $posted['wc_bookings_field_start_date_month'] );
-			$data['_day']   = absint( $posted['wc_bookings_field_start_date_day'] );
-			$data['_date']  = $data['_year'] . '-' . $data['_month'] . '-' . $data['_day'];
-			$data['date']   = date_i18n( wc_date_format(), strtotime( $data['_date'] ) );
-		}
-
-		// Get year month field
-		if ( ! empty( $posted['wc_bookings_field_start_date_yearmonth'] ) ) {
-			$yearmonth      = strtotime( $posted['wc_bookings_field_start_date_yearmonth'] . '-01' );
-			$data['_year']  = absint( date( 'Y', $yearmonth ) );
-			$data['_month'] = absint( date( 'm', $yearmonth ) );
-			$data['_day']   = 1;
-			$data['_date']  = $data['_year'] . '-' . $data['_month'] . '-' . $data['_day'];
-			$data['date']   = date_i18n( 'F Y', $yearmonth );
-		}
-
-		// Get time field
-		if ( ! empty( $posted['wc_bookings_field_start_date_time'] ) ) {
-			$date_time      = new DateTime( $posted['wc_bookings_field_start_date_time'] ); // Contains ISO 8061 formatted datetime
-			$data['_year']  = $date_time->format( 'Y' );
-			$data['_month'] = $date_time->format( 'm' );
-			$data['_day']   = $date_time->format( 'd' );
-			$data['_date']  = $data['_year'] . '-' . $data['_month'] . '-' . $data['_day'];
-			$data['date']   = date_i18n( wc_date_format(), strtotime( $data['_date'] ) );
-			$data['_time']  = $date_time->format( 'G:i' );
-			$data['time']   = date_i18n( get_option( 'time_format' ), strtotime( "{$data['_year']}-{$data['_month']}-{$data['_day']} {$data['_time']}" ) );
-		} else {
-			$data['_time']  = '';
-		}
-
-		// Quantity being booked
-		$data['_qty'] = 1;
-
-		// Work out persons
-		if ( $this->product->has_persons() ) {
-			if ( $this->product->has_person_types() ) {
-				$person_types = $this->product->get_person_types();
-
-				foreach ( $person_types as $person_type ) {
-					if ( isset( $posted[ 'wc_bookings_field_persons_' . $person_type->ID ] )
-						&& absint( $posted[ 'wc_bookings_field_persons_' . $person_type->ID ] ) > 0 ) {
-						$data[ $person_type->post_title ]     = absint( $posted[ 'wc_bookings_field_persons_' . $person_type->ID ] );
-						$data['_persons'][ $person_type->ID ] = $data[ $person_type->post_title ];
-					}
-				}
-			} elseif ( isset( $posted['wc_bookings_field_persons'] ) ) {
-				$data[ __( 'Persons', 'woocommerce-bookings' ) ] = absint( $posted['wc_bookings_field_persons'] );
-				$data['_persons'][0]                             = absint( $posted['wc_bookings_field_persons'] );
-			}
-
-			if ( $this->product->get_has_person_qty_multiplier() ) {
-				$data['_qty'] = array_sum( $data['_persons'] );
-			}
-		}
-
-		// Duration
-		if ( 'customer' == $this->product->get_duration_type() ) {
-			$booking_duration       = isset( $posted['wc_bookings_field_duration'] ) ? max( 0, absint( $posted['wc_bookings_field_duration'] ) ) : 0;
-			$booking_duration_unit  = $this->product->get_duration_unit();
-
-			$data['_duration_unit'] = $booking_duration_unit;
-			$data['_duration']      = $booking_duration;
-
-			// Get the duration * block duration
-			$total_duration = $booking_duration * $this->product->get_duration();
-
-			// Nice formatted version
-			switch ( $booking_duration_unit ) {
-				case 'month':
-					$data['duration'] = $total_duration . ' ' . _n( 'month', 'months', $total_duration, 'woocommerce-bookings' );
-					break;
-				case 'day':
-					if ( $total_duration % 7 ) {
-						$data['duration']  = $total_duration . ' ' . _n( 'day', 'days', $total_duration, 'woocommerce-bookings' );
-					} else {
-						$duration_in_weeks = ( $total_duration / 7 );
-						$data['duration']  = $duration_in_weeks . ' ' . _n( 'week', 'weeks', $duration_in_weeks, 'woocommerce-bookings' );
-					}
-					break;
-				case 'hour':
-					$data['duration'] = $total_duration . ' ' . _n( 'hour', 'hours', $total_duration, 'woocommerce-bookings' );
-					break;
-				case 'minute':
-					$data['duration'] = $total_duration . ' ' . _n( 'minute', 'minutes', $total_duration, 'woocommerce-bookings' );
-					break;
-				case 'night':
-					$data['duration'] = $total_duration . ' ' . _n( 'night', 'nights', $total_duration, 'woocommerce-bookings' );
-					break;
-				default:
-					$data['duration'] = $total_duration;
-					break;
-			}
-		} else {
-			// Fixed duration
-			$booking_duration      = $this->product->get_duration();
-			$booking_duration_unit = $this->product->get_duration_unit();
-			$total_duration        = $booking_duration;
-		}
-
-		// Work out start and end dates/times
-		if ( ! empty( $data['_time'] ) ) {
-			$data['_start_date'] = strtotime( "{$data['_year']}-{$data['_month']}-{$data['_day']} {$data['_time']}" );
-			$data['_end_date']   = strtotime( "+{$total_duration} {$booking_duration_unit}", $data['_start_date'] );
-			$data['_all_day']    = 0;
-		} else {
-			$data['_start_date'] = strtotime( "{$data['_year']}-{$data['_month']}-{$data['_day']}" );
-			// We need the following calculation to not add extra days (see #2147)
-			$data['_end_date']   = strtotime( "+{$total_duration} {$booking_duration_unit} - 1 second", $data['_start_date'] );
-			$data['_all_day']    = 1;
-		}
-
-		// Get posted resource or assign one for the date range
-		if ( $this->product->has_resources() ) {
-			if ( $this->product->is_resource_assignment_type( 'customer' ) ) {
-				$resource = $this->product->get_resource( absint( $posted['wc_bookings_field_resource'] ) );
-
-				if ( ! empty( $posted['wc_bookings_field_resource'] ) && $resource ) {
-					$data['_resource_id'] = $resource->ID;
-					$data['type']         = $resource->post_title;
-				} else {
-					$data['_resource_id'] = 0;
-				}
-			} else {
-				// Assign an available resource automatically
-				$available_bookings = wc_bookings_get_total_available_bookings_for_range( $this->product, $data['_start_date'], $data['_end_date'], 0, $data['_qty'] );
-
-				if ( is_array( $available_bookings ) ) {
-					$data['_resource_id'] = current( array_keys( $available_bookings ) );
-					$data['type']         = get_the_title( current( array_keys( $available_bookings ) ) );
-				}
-			}
-		}
-
-		$data['_local_timezone'] = '';
-		if ( ! empty( $posted['wc_bookings_field_start_date_local_timezone'] ) ) {
-			$data['_local_timezone'] = $posted['wc_bookings_field_start_date_local_timezone'];
-		}
-
-		return apply_filters( 'woocommerce_booking_form_get_posted_data', $data, $this->product, $total_duration );
+		return wc_bookings_get_posted_data( $posted, $this->product );
 	}
 
 	/**
@@ -604,468 +415,249 @@ class WC_Booking_Form {
 	 * @return bool|WP_Error on failure, true on success
 	 */
 	public function is_bookable( $data ) {
-		// Validate resources are set
-		if ( $this->product->has_resources() && $this->product->is_resource_assignment_type( 'customer' ) ) {
-			if ( empty( $data['_resource_id'] ) ) {
-				return new WP_Error( 'Error', __( 'Please choose a resource type', 'woocommerce-bookings' ) );
-			}
-		} elseif ( $this->product->has_resources() && $this->product->is_resource_assignment_type( 'automatic' ) ) {
-			$data['_resource_id'] = 0;
-		} else {
-			$data['_resource_id'] = '';
-		}
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Product_Booking::is_bookable()' );
 
-		// Validate customer set durations
-		if ( $this->product->is_duration_type( 'customer' ) ) {
-			if ( empty( $data['_duration'] ) ) {
-				return new WP_Error( 'Error', __( 'Duration is required - please enter a duration greater than zero', 'woocommerce-bookings' ) );
-			}
-			if ( $data['_duration'] > $this->product->get_max_duration() ) {
-				/* translators: 1: maximum duration */
-				return new WP_Error( 'Error', sprintf( __( 'The maximum duration is %d', 'woocommerce-bookings' ), $this->product->get_max_duration() ) );
-			}
-			if ( $data['_duration'] < $this->product->get_min_duration() ) {
-				/* translators: 1: minimum duration */
-				return new WP_Error( 'Error', sprintf( __( 'The minimum duration is %d', 'woocommerce-bookings' ), $this->product->get_min_duration() ) );
-			}
-		}
-
-		// Validate date and time
-		if ( empty( $data['date'] ) ) {
-			return new WP_Error( 'Error', __( 'Date is required - please choose one above', 'woocommerce-bookings' ) );
-		}
-		if ( in_array( $this->product->get_duration_unit(), array( 'minute', 'hour' ) ) && empty( $data['time'] ) ) {
-			return new WP_Error( 'Error', __( 'Time is required - please choose one above', 'woocommerce-bookings' ) );
-		}
-		if ( $data['_date'] && date( 'Ymd', strtotime( $data['_date'] ) ) < date( 'Ymd', current_time( 'timestamp' ) ) ) {
-			return new WP_Error( 'Error', __( 'You must choose a future date and time.', 'woocommerce-bookings' ) );
-		}
-		if ( $data['_date'] && ! empty( $data['_time'] ) && date( 'YmdHi', strtotime( $data['_date'] . ' ' . $data['_time'] ) ) < date( 'YmdHi', current_time( 'timestamp' ) ) ) {
-			return new WP_Error( 'Error', __( 'You must choose a future date and time.', 'woocommerce-bookings' ) );
-		}
-
-		// Validate min date and max date
-		if ( in_array( $this->product->get_duration_unit(), array( 'minute', 'hour' ) ) ) {
-			$now = current_time( 'timestamp' );
-		} elseif ( 'month' === $this->product->get_duration_unit() ) {
-			$now = strtotime( 'midnight first day of this month', current_time( 'timestamp' ) );
-		} else {
-			$now = strtotime( 'midnight', current_time( 'timestamp' ) );
-		}
-		$min = $this->product->get_min_date();
-
-		if ( $min ) {
-			$min_date = wc_bookings_get_min_timestamp_for_day( strtotime( $data['_date'] ), $min['value'], $min['unit'] );
-
-			if ( strtotime( $data['_date'] . ' ' . $data['_time'] ) < $min_date ) {
-				/* translators: 1: minimum date */
-				return new WP_Error( 'Error', sprintf( __( 'The earliest booking possible is currently %s.', 'woocommerce-bookings' ), date_i18n( wc_date_format() . ' ' . get_option( 'time_format' ), $min_date ) ) );
-			}
-		}
-		$max = $this->product->get_max_date();
-
-		if ( $max ) {
-			$max_date = strtotime( "+{$max['value']} {$max['unit']}", $now );
-			if ( strtotime( $data['_date'] . ' ' . $data['_time'] ) > $max_date ) {
-				/* translators: 1: maximum date */
-				return new WP_Error( 'Error', sprintf( __( 'The latest booking possible is currently %s.', 'woocommerce-bookings' ), date_i18n( wc_date_format() . ' ' . get_option( 'time_format' ), $max_date ) ) );
-			}
-		}
-
-		// Check that the day of the week is not restricted.
-		if ( $this->product->has_restricted_days() ) {
-			$restricted_days = $this->product->get_restricted_days();
-
-			if ( ! in_array( date( 'w', $data['_start_date'] ), $restricted_days ) ) {
-				return new WP_Error( 'Error', __( 'Sorry, bookings cannot start on this day.', 'woocommerce-bookings' ) );
-			}
-		}
-
-		// Validate persons
-		if ( $this->product->has_persons() ) {
-			$persons = array_sum( $data['_persons'] );
-
-			if ( $this->product->get_max_persons() && $persons > $this->product->get_max_persons() ) {
-				/* translators: 1: maximum persons */
-				return new WP_Error( 'Error', sprintf( __( 'The maximum persons per group is %d', 'woocommerce-bookings' ), $this->product->get_max_persons() ) );
-			}
-			if ( $persons < $this->product->get_min_persons() ) {
-				/* translators: 1: minimum persons */
-				return new WP_Error( 'Error', sprintf( __( 'The minimum persons per group is %d', 'woocommerce-bookings' ), $this->product->get_min_persons() ) );
-			}
-
-			if ( $this->product->has_person_types() ) {
-				$person_types = $this->product->get_person_types();
-				foreach ( $person_types as $person ) {
-					$person_max = $person->get_max();
-					if ( is_numeric( $person_max ) && isset( $data['_persons'][ $person->get_id() ] ) && $data['_persons'][ $person->get_id() ] > $person_max ) {
-						/* translators: 1: person name 2: maximum persons */
-						return new WP_Error( 'Error', sprintf( __( 'The maximum %1$s per group is %2$d', 'woocommerce-bookings' ), $person->post_title, $person_max ) );
-					}
-
-					$person_min = $person->get_min();
-					if ( is_numeric( $person_min ) && isset( $data['_persons'][ $person->get_id() ] ) && $data['_persons'][ $person->get_id() ] < $person_min ) {
-						/* translators: 1: person name 2: minimum persons */
-						return new WP_Error( 'Error', sprintf( __( 'The minimum %1$s per group is %2$d', 'woocommerce-bookings' ), $person->post_title, $person_min ) );
-					}
-				}
-			}
-		}
-
-		$base_interval = 'hour' === $this->product->get_duration_unit() ? $this->product->get_duration() * 60 : $this->product->get_duration();
-		$interval      = $base_interval;
-		if ( ! empty( $data['_duration'] ) ) {
-			$interval = $base_interval * absint( $data['_duration'] );
-		}
-		$intervals = array( $interval, $base_interval );
-
-		// Get availability for the dates
-		$available_bookings = wc_bookings_get_total_available_bookings_for_range( $this->product, $data['_start_date'], $data['_end_date'], $data['_resource_id'], $data['_qty'], $intervals );
-
-		if ( is_array( $available_bookings ) ) {
-			$this->auto_assigned_resource_id = current( array_keys( $available_bookings ) );
-		}
-
-		if ( is_wp_error( $available_bookings ) ) {
-			return $available_bookings;
-		} elseif ( ! $available_bookings ) {
-			return new WP_Error( 'Error', __( 'Sorry, the selected block is not available', 'woocommerce-bookings' ) );
-		}
-
-		return true;
+		return $this->product->is_bookable( $data );
 	}
 
 	/**
-	 * Get an array of formatted time values
+	 * Get an array of formatted time values.
+	 *
+	 * @since 1.15.0
 	 * @param  string $timestamp
 	 * @return array
 	 */
 	public function get_formatted_times( $timestamp ) {
-		return array(
-			'timestamp'   => $timestamp,
-			'year'        => intval( date( 'Y', $timestamp ) ),
-			'month'       => intval( date( 'n', $timestamp ) ),
-			'day'         => intval( date( 'j', $timestamp ) ),
-			'week'        => intval( date( 'W', $timestamp ) ),
-			'day_of_week' => intval( date( 'N', $timestamp ) ),
-			'time'        => date( 'YmdHi', $timestamp ),
-		);
+		wc_deprecated_function( __METHOD__, '1.15.0', 'wc_bookings_get_formatted_times()' );
+
+		return wc_bookings_get_formatted_times( $timestamp );
 	}
 
 	/**
-	 * Calculate costs from posted values
+	 * Calculate costs from posted values.
+	 *
+	 * @since 1.15.0
 	 * @param  array $posted
 	 * @return string cost
 	 */
 	public function calculate_booking_cost( $posted ) {
-		if ( ! empty( $this->booking_cost ) ) {
-			return $this->booking_cost;
+		wc_deprecated_function( __METHOD__, '1.15.0', 'WC_Bookings_Cost_Calculation::calculate_booking_cost()' );
+
+		$data = wc_bookings_get_posted_data( $posted, $this->product );
+
+		return apply_filters( 'booking_form_calculated_booking_cost', WC_Bookings_Cost_Calculation::calculate_booking_cost( $data, $this->product ), $this, $posted );
+	}
+
+	/**
+	 * Builds the HTML to display the start time for hours/minutes.
+	 *
+	 * @since 1.13.0
+	 * @param  array  $blocks
+	 * @param  array  $intervals
+	 * @param  integer $resource_id
+	 * @param  integer $from The starting date for the set of blocks
+	 * @param  integer $to
+	 * @param  array $available_blocks
+	 * @return string
+	 *
+	 */
+	public function get_start_time_html( $blocks, $intervals = array(), $resource_id = 0, $from = 0, $to = 0 ) {
+		$transient_name   = 'book_st_' . md5( http_build_query( array( $from, $to, $this->product->get_id(), $resource_id ) ) );
+		$st_block_html    = WC_Bookings_Cache::get( $transient_name );
+		$available_blocks = wc_bookings_get_time_slots( $this->product, $blocks, $intervals, $resource_id, $from, $to );
+		$escaped_blocks   = function_exists( 'wc_esc_json' ) ? wc_esc_json( wp_json_encode( $blocks ) ) : _wp_specialchars( wp_json_encode( $blocks ), ENT_QUOTES, 'UTF-8', true );
+		$block_html       = '';
+		$block_html      .= '<div class="wc-bookings-start-time-container" data-product-id="' . esc_attr( $this->product->get_id() ) . '" data-blocks="' . $escaped_blocks . '">';
+		$block_html      .= '<label for="wc-bookings-form-start-time">' . esc_html__( 'Starts', 'woocommerce-bookings' ) . '</label>';
+		$block_html      .= '<select id="wc-bookings-form-start-time" name="start_time">';
+		$block_html      .= '<option value="0">' . esc_html__( 'Start time', 'woocommerce-bookings' ) . '</option>';
+
+		$booking_slots_transient_keys = array_filter( (array) WC_Bookings_Cache::get( 'booking_slots_transient_keys' ) );
+
+		if ( ! isset( $booking_slots_transient_keys[ $this->product->get_id() ] ) ) {
+			$booking_slots_transient_keys[ $this->product->get_id() ] = array();
 		}
 
-		// Get costs
-		$costs              = $this->product->get_costs();
+		$booking_slots_transient_keys[ $this->product->get_id() ][] = $transient_name;
 
-		// Get posted data
-		$data               = $this->get_posted_data( $posted );
-		$validate           = $this->is_bookable( $data );
+		// Give array of keys a long ttl because if it expires we won't be able to flush the keys when needed.
+		// We can't use 0 to never expire because then WordPress will autoload the option on every page.
+		WC_Bookings_Cache::set( 'booking_slots_transient_keys', $booking_slots_transient_keys, YEAR_IN_SECONDS );
 
-		if ( is_wp_error( $validate ) ) {
-			return $validate;
-		}
+		if ( false === $st_block_html ) {
+			$st_block_html = '';
 
-		$base_cost          = max( 0, $this->product->get_cost() );
-		$base_block_cost    = max( 0, $this->product->get_block_cost() );
-		$total_block_cost   = 0;
-		$person_block_costs = 0;
+			foreach ( $available_blocks as $block => $quantity ) {
+				if ( $quantity['available'] > 0 ) {
+					$data = $this->get_end_times( $blocks, get_time_as_iso8601( $block ), $intervals, $resource_id, $from, $to, true );
 
-		// See if we have an auto_assigned_resource_id
-		if ( isset( $this->auto_assigned_resource_id ) ) {
-			$data['_resource_id'] = $this->auto_assigned_resource_id;
-		}
-
-		// Get resource cost
-		if ( isset( $data['_resource_id'] ) ) {
-			$resource        = $this->product->get_resource( $data['_resource_id'] );
-			$base_block_cost += $resource->get_block_cost();
-			$base_cost       += $resource->get_base_cost();
-		}
-
-		// Potentially increase costs if dealing with persons
-		if ( ! empty( $data['_persons'] ) ) {
-			if ( $this->product->has_person_types() ) {
-				foreach ( $data['_persons'] as $person_id => $person_count ) {
-					$person_type       = new WC_Product_Booking_Person_Type( $person_id );
-					$person_cost       = $person_type->get_cost();
-					$person_block_cost = $person_type->get_block_cost();
-
-					// Only a single cost - multiplication comes later if wc_booking_person_cost_multiplier is enabled.
-					if ( $person_count > 0 ) {
-						if ( $person_cost > 0 ) {
-							$base_cost += ( $person_cost * $person_count );
-						}
-						if ( $person_block_cost > 0 ) {
-							$person_block_costs += ( $person_block_cost * $person_count );
-						}
-					}
-				}
-			}
-		}
-
-		$this->applied_cost_rules = array();
-		$block_duration           = $this->product->get_duration();
-		$block_unit               = $this->product->get_duration_unit();
-		$blocks_booked            = isset( $data['_duration'] ) ? absint( $data['_duration'] ) : $block_duration;
-		$block_timestamp          = $data['_start_date'];
-
-		if ( $this->product->is_duration_type( 'fixed' ) ) {
-			$blocks_booked = ceil( $blocks_booked / $block_duration );
-		}
-
-		$buffer_period = $this->product->get_buffer_period();
-		if ( ! empty( $buffer_period ) ) {
-			// handle day buffers
-			if ( ! in_array( $this->product->get_duration_unit(), array( 'minute', 'hour' ) ) ) {
-				$buffer_days = WC_Bookings_Controller::find_buffer_day_blocks( $this->product );
-				$contains_buffer_days = false;
-				// Evaluate costs for each booked block
-				for ( $block = 0; $block < $blocks_booked; $block ++ ) {
-					$block_start_time_offset = $block * $block_duration;
-					$block_end_time_offset   = ( ( $block + 1 ) * $block_duration ) - 1;
-					$block_start_time        = date( 'Y-n-j', strtotime( "+{$block_start_time_offset} {$block_unit}", $block_timestamp ) );
-					$block_end_time          = date( 'Y-n-j', strtotime( "+{$block_end_time_offset} {$block_unit}", $block_timestamp ) );
-
-					if ( in_array( $block_end_time, $buffer_days ) ) {
-						$contains_buffer_days = true;
-					}
-
-					if ( in_array( $block_start_time, $buffer_days ) ) {
-						$contains_buffer_days = true;
-					}
-				}
-
-				if ( $contains_buffer_days ) {
-					$block_duration_string = $block_duration;
-					if ( 'week' === $block_unit ) {
-						$block_duration_string = $block_duration * 7;
-					}
-
-					/* translators: 1: block duration days */
-					return new WP_Error( 'Error', sprintf( __( 'The duration of this booking must be at least %s days.', 'woocommerce-bookings' ), $block_duration_string ) );
-				}
-			}
-		}
-
-		$override_blocks = array();
-		// Evaluate costs for each booked block
-		for ( $block = 0; $block < $blocks_booked; $block ++ ) {
-			$block_cost              = $base_block_cost + $person_block_costs;
-			$block_start_time_offset = $block * $block_duration;
-			$block_end_time_offset   = ( $block + 1 ) * $block_duration;
-			$block_start_time        = $this->get_formatted_times( strtotime( "+{$block_start_time_offset} {$block_unit}", $block_timestamp ) );
-			$block_end_time          = $this->get_formatted_times( strtotime( "+{$block_end_time_offset} {$block_unit}", $block_timestamp ) );
-
-			if ( in_array( $this->product->get_duration_unit(), array( 'night' ) ) ) {
-				$block_start_time        = $this->get_formatted_times( strtotime( "+{$block_start_time_offset} day", $block_timestamp ) );
-				$block_end_time = $this->get_formatted_times( strtotime( "+{$block_end_time_offset} day", $block_timestamp ) );
-			}
-
-			foreach ( $costs as $rule_key => $rule ) {
-				$type  = $rule[0];
-				$rules = $rule[1];
-
-				if ( strrpos( $type, 'time' ) === 0 ) {
-					if ( ! in_array( $this->product->get_duration_unit(), array( 'minute', 'hour' ) ) ) {
+					// If this block does not have any end times, skip rendering the time
+					if ( empty( $data ) ) {
 						continue;
 					}
 
-					if ( 'time:range' === $type ) {
-						$year = date( 'Y', $block_start_time['timestamp'] );
-						$month = date( 'n', $block_start_time['timestamp'] );
-						$day = date( 'j', $block_start_time['timestamp'] );
-
-						if ( ! isset( $rules[ $year ][ $month ][ $day ] ) ) {
-							continue;
-						}
-
-						$rule_val = $rules[ $year ][ $month ][ $day ]['rule'];
-						$from     = $rules[ $year ][ $month ][ $day ]['from'];
-						$to       = $rules[ $year ][ $month ][ $day ]['to'];
+					if ( $quantity['booked'] ) {
+						/* translators: 1: quantity available */
+						$st_block_html .= '<option data-block="' . esc_attr( date( 'Hi', $block ) ) . '" value="' . esc_attr( get_time_as_iso8601( $block ) ) . '">' . date_i18n( get_option( 'time_format' ), $block ) . ' (' . sprintf( _n( '%d left', '%d left', $quantity['available'], 'woocommerce-bookings' ), absint( $quantity['available'] ) ) . ')</option>';
 					} else {
-						if ( ! empty( $rules['day'] ) ) {
-							if ( $rules['day'] != $block_start_time['day_of_week'] ) {
-								continue;
-							}
-						}
-
-						$rule_val = $rules['rule'];
-						$from     = $rules['from'];
-						$to       = $rules['to'];
-					}
-
-					$rule_start_time_hi = date( 'YmdHi', strtotime( str_replace( ':', '', $from ), $block_start_time['timestamp'] ) );
-					$rule_end_time_hi   = date( 'YmdHi', strtotime( str_replace( ':', '', $to ), $block_start_time['timestamp'] ) );
-					$matched            = false;
-
-					// Reverse time rule - The end time is tomorrow e.g. 16:00 today - 12:00 tomorrow
-					if ( $rule_end_time_hi <= $rule_start_time_hi ) {
-
-						if ( $block_end_time['time'] > $rule_start_time_hi ) {
-							$matched = true;
-						}
-						if ( $block_start_time['time'] >= $rule_start_time_hi && $block_end_time['time'] >= $rule_end_time_hi ) {
-							$matched = true;
-						}
-						if ( $block_start_time['time'] <= $rule_start_time_hi && $block_end_time['time'] <= $rule_end_time_hi ) {
-							$matched = true;
-						}
-					} else {
-						// Else Normal rule.
-						if ( $block_start_time['time'] >= $rule_start_time_hi && $block_end_time['time'] <= $rule_end_time_hi ) {
-							$matched = true;
-						}
-					}
-
-					if ( $matched ) {
-						$block_cost = $this->apply_cost( $block_cost, $rule_val['block'][0], $rule_val['block'][1] );
-						$base_cost  = $this->apply_base_cost( $base_cost, $rule_val['base'][0], $rule_val['base'][1], $rule_key );
-					}
-				} else {
-					switch ( $type ) {
-						case 'months':
-						case 'weeks':
-						case 'days':
-							$check_date = $block_start_time['timestamp'];
-
-							while ( $check_date < $block_end_time['timestamp'] ) {
-								$checking_date = $this->get_formatted_times( $check_date );
-								$date_key      = 'days' == $type ? 'day_of_week' : substr( $type, 0, -1 );
-
-								// cater to months beyond this year
-								if ( 'month' === $date_key && intval( $checking_date['year'] ) > intval( date( 'Y' ) ) ) {
-
-									$month_beyond_this_year = intval( $checking_date['month'] ) + 12;
-									$checking_date['month'] = (string) ( $month_beyond_this_year % 12 );
-									if ( '0' === $checking_date['month'] ) {
-										$checking_date['month'] = '12';
-									}
-								}
-
-								if ( isset( $rules[ $checking_date[ $date_key ] ] ) ) {
-									$rule       = $rules[ $checking_date[ $date_key ] ];
-									$block_cost = $this->apply_cost( $block_cost, $rule['block'][0], $rule['block'][1] );
-									$base_cost  = $this->apply_base_cost( $base_cost, $rule['base'][0], $rule['base'][1], $rule_key );
-									if ( $rule['override'] && empty( $override_blocks[ $check_date ] ) ) {
-										$override_blocks[ $check_date ] = $rule['override'];
-									}
-								}
-								$check_date = strtotime( "+1 {$type}", $check_date );
-							}
-							break;
-						case 'custom':
-							$check_date = $block_start_time['timestamp'];
-
-							while ( $check_date < $block_end_time['timestamp'] ) {
-								$checking_date = $this->get_formatted_times( $check_date );
-								if ( isset( $rules[ $checking_date['year'] ][ $checking_date['month'] ][ $checking_date['day'] ] ) ) {
-									$rule       = $rules[ $checking_date['year'] ][ $checking_date['month'] ][ $checking_date['day'] ];
-									$block_cost = $this->apply_cost( $block_cost, $rule['block'][0], $rule['block'][1] );
-									$base_cost  = $this->apply_base_cost( $base_cost, $rule['base'][0], $rule['base'][1], $rule_key );
-									if ( $rule['override'] && empty( $override_blocks[ $check_date ] ) ) {
-										$override_blocks[ $check_date ] = $rule['override'];
-									}
-									/*
-									 * Why do we break?
-									 * See: Applying a cost rule to a booking block
-									 * from the DEVELOPER.md
-									 */
-									break;
-								}
-								$check_date = strtotime( '+1 day', $check_date );
-							}
-							break;
-						case 'persons':
-							if ( ! empty( $data['_persons'] ) ) {
-								if ( $rules['from'] <= array_sum( $data['_persons'] ) && $rules['to'] >= array_sum( $data['_persons'] ) ) {
-									$block_cost = $this->apply_cost( $block_cost, $rules['rule']['block'][0], $rules['rule']['block'][1] );
-									$base_cost  = $this->apply_base_cost( $base_cost, $rules['rule']['base'][0], $rules['rule']['base'][1], $rule_key );
-								}
-							}
-							break;
-						case 'blocks':
-							if ( ! empty( $data['_duration'] ) ) {
-								if ( $rules['from'] <= $data['_duration'] && $rules['to'] >= $data['_duration'] ) {
-									$block_cost = $this->apply_cost( $block_cost, $rules['rule']['block'][0], $rules['rule']['block'][1] );
-									$base_cost  = $this->apply_base_cost( $base_cost, $rules['rule']['base'][0], $rules['rule']['base'][1], $rule_key );
-								}
-							}
-							break;
+						$st_block_html .= '<option data-block="' . esc_attr( date( 'Hi', $block ) ) . '" value="' . esc_attr( get_time_as_iso8601( $block ) ) . '">' . date_i18n( get_option( 'time_format' ), $block ) . '</option>';
 					}
 				}
 			}
-			$total_block_cost += $block_cost;
+
+			WC_Bookings_Cache::set( $transient_name, $st_block_html );
 		}
 
-		foreach ( $override_blocks as $over_cost ) {
-			$total_block_cost = $total_block_cost - $base_block_cost;
-			$total_block_cost += $over_cost;
+		$block_html .= $st_block_html;
+		$block_html .= '</select></div>&nbsp;&nbsp;';
+
+		return $block_html;
+	}
+
+	/**
+	 * Builds the data to display the end time for hours/minutes.
+	 *
+	 * @since 1.13.0
+	 * @param  array  $blocks
+	 * @param  string $start_date_time Date of the start time.
+	 * @param  array  $intervals
+	 * @param  integer $resource_id
+	 * @param  integer $from The starting date for the set of blocks
+	 * @param  integer $to
+	 * @param  bool    $check Whether to just check if there's any data at all.
+	 * @return array
+	 *
+	 */
+	public function get_end_times( $blocks, $start_date_time = '', $intervals = array(), $resource_id = 0, $from = 0, $to = 0, $check = false ) {
+		$min_duration     = ! empty( $this->product->get_min_duration() ) ? $this->product->get_min_duration() : 1;
+		$max_duration     = ! empty( $this->product->get_max_duration() ) ? $this->product->get_max_duration() : 12;
+		$product_duration = ! empty( $this->product->get_duration() ) ? $this->product->get_duration() : 1;
+		$start_time       = ! empty( $start_date_time ) ? strtotime( substr( $start_date_time, 0, 19 ) ) : '';
+		$data             = array();
+
+		if ( empty( $start_time ) ) {
+			return $data;
 		}
 
-		// Person multiplier multiplies all costs
-		$this->booking_cost = max( 0, $total_block_cost + $base_cost );
+		$first_duration_multiple = intval( $product_duration ) * intval( $min_duration );
+		$first_time_slot         = strtotime( '+ ' . $first_duration_multiple . ' ' . $this->product->get_duration_unit(), $start_time );
 
-		if ( ! empty( $data['_persons'] ) ) {
-			if ( $this->product->get_has_person_cost_multiplier() ) {
-				$this->booking_cost = $this->booking_cost * array_sum( $data['_persons'] );
+		if ( ! in_array( $start_time, $blocks ) ) {
+			return $data;
+		}
+
+		$calc_avail    = true;
+		$base_interval = $product_duration * ( 'hour' === $this->product->get_duration_unit() ? 60 : 1 );
+
+		if ( $check ) {
+			$intervals        = array( $min_duration * $base_interval, $base_interval );
+			$available_blocks = wc_bookings_get_total_available_bookings_for_range( $this->product, $start_time, $first_time_slot, $resource_id, 1, $intervals );
+
+			return ! is_wp_error( $available_blocks ) && $available_blocks && in_array( $start_time, $blocks );
+		}
+
+		for ( $duration_index = $max_duration; $duration_index >= $min_duration; $duration_index-- ) {
+			$end_time = strtotime( '+ ' . $duration_index * $product_duration . ' ' . $this->product->get_duration_unit(), $start_time );
+
+			// Just need to calculate availability for max duration. If that is available, anything below it will also be.
+			if ( $calc_avail ) {
+				$intervals        = array( $duration_index * $base_interval, $base_interval );
+				$available_blocks = wc_bookings_get_total_available_bookings_for_range( $this->product, $start_time, $end_time, $resource_id, 1, $intervals );
+
+				// If there are no available blocks, skip this block
+				if ( is_wp_error( $available_blocks ) || ! $available_blocks ) {
+					continue;
+				}
+
+				$calc_avail = false;
+			}
+
+			$duration_units = ( $end_time - $start_time ) / 60;
+
+			$display = ' (' . sprintf( _n( '%d Minute', '%d Minutes', $duration_units, 'woocommerce-bookings' ), $duration_units ) . ')';
+			if ( 'hour' === $this->product->get_duration_unit() ) {
+				$duration_units /= 60;
+				$display = ' (' . sprintf( _n( '%d Hour', '%d Hours', $duration_units, 'woocommerce-bookings' ), $duration_units ) . ')';
+			}
+
+			$data[] = array(
+				'display'  => $display,
+				'end_time' => $end_time,
+				'duration' => $duration_units / $this->product->get_duration(),
+			);
+		}
+
+		return array_reverse( $data );
+	}
+
+	/**
+	 * Renders the HTML to display the end time for hours/minutes.
+	 *
+	 * @since 1.13.0
+	 * @param  array  $blocks
+	 * @param  string $start_date_time Date of the start time.
+	 * @param  array  $intervals
+	 * @param  integer $resource_id
+	 * @param  integer $from The starting date for the set of blocks
+	 * @param  integer $to
+	 * @return string
+	 *
+	 */
+	public function get_end_time_html( $blocks, $start_date_time = '', $intervals = array(), $resource_id = 0, $from = 0, $to = 0 ) {
+		$block_html  = '';
+		$block_html .= '<div class="wc-bookings-end-time-container">';
+		$block_html .= '<label for="wc-bookings-form-end-time">' . esc_html__( 'Ends', 'woocommerce-bookings' ) . '</label>';
+		$block_html .= '<select id="wc-bookings-form-end-time" name="end_time">';
+		$block_html .= '<option value="0">' . esc_html__( 'End time', 'woocommerce-bookings' ) . '</option>';
+
+		$data = $this->get_end_times( $blocks, $start_date_time, $intervals, $resource_id, $from, $to );
+
+		foreach ( $data as $booking_data ) {
+			$display  = $booking_data['display'];
+			$end_time = $booking_data['end_time'];
+			$duration = $booking_data['duration'];
+
+			$block_html .= '<option data-duration-display="' . esc_attr( $display ) . '" data-value="' . get_time_as_iso8601( $end_time ) . '" value="' . esc_attr( $duration ) . '">' . date_i18n( get_option( 'time_format' ), $end_time ) . $display . '</option>';
+		}
+
+		$block_html .= '</select></div>';
+
+		return $block_html;
+	}
+
+	/**
+	 * Find available blocks and return HTML for the user to choose a block. Used in class-wc-bookings-ajax.php.
+	 *
+	 * @param  array  $blocks
+	 * @param  array  $intervals
+	 * @param  integer $resource_id
+	 * @param  integer $from The starting date for the set of blocks
+	 * @param  integer $to
+	 * @return string
+	 *
+	 * @version  1.10.7
+	 */
+	public function get_time_slots_html( $blocks, $intervals = array(), $resource_id = 0, $from = 0, $to = 0 ) {
+		$block_html       = '';
+		$available_blocks = wc_bookings_get_time_slots( $this->product, $blocks, $intervals, $resource_id, $from, $to );
+
+		// If customer defined, we show two dropdowns start/end time.
+		if ( 'customer' === $this->product->get_duration_type() ) {
+			$block_html .= $this->get_start_time_html( $blocks, $intervals, $resource_id, $from, $to, $available_blocks );
+			$block_html .= $this->get_end_time_html( $blocks, '', $intervals, $resource_id, $from, $to );
+		} else {
+			foreach ( $available_blocks as $block => $quantity ) {
+				if ( $quantity['available'] > 0 ) {
+					if ( $quantity['booked'] ) {
+						/* translators: 1: quantity available */
+						$block_html .= '<li class="block" data-block="' . esc_attr( date( 'Hi', $block ) ) . '"><a href="#" data-value="' . get_time_as_iso8601( $block ) . '">' . date_i18n( get_option( 'time_format' ), $block ) . ' <small class="booking-spaces-left">(' . sprintf( _n( '%d left', '%d left', $quantity['available'], 'woocommerce-bookings' ), absint( $quantity['available'] ) ) . ')</small></a></li>';
+					} else {
+						$block_html .= '<li class="block" data-block="' . esc_attr( date( 'Hi', $block ) ) . '"><a href="#" data-value="' . get_time_as_iso8601( $block ) . '">' . date_i18n( get_option( 'time_format' ), $block ) . '</a></li>';
+					}
+				}
 			}
 		}
 
-		return apply_filters( 'booking_form_calculated_booking_cost', $this->booking_cost, $this, $posted );
-	}
-
-	/**
-	 * Apply a cost
-	 * @param  float $base
-	 * @param  string $multiplier
-	 * @param  float $cost
-	 * @return float
-	 */
-	private function apply_cost( $base, $multiplier, $cost ) {
-		$base = floatval( $base );
-		$cost = floatval( $cost );
-
-		switch ( $multiplier ) {
-			case 'times':
-				$new_cost = $base * $cost;
-				break;
-			case 'divide':
-				$new_cost = $base / $cost;
-				break;
-			case 'minus':
-				$new_cost = $base - $cost;
-				break;
-			case 'equals':
-				$new_cost = $cost;
-				break;
-			default:
-				$new_cost = $base + $cost;
-				break;
-		}
-		return $new_cost;
-	}
-
-	/**
-	 * Apply a cost
-	 * @param  float $base
-	 * @param  string $multiplier
-	 * @param  float $cost
-	 * @param  string $rule_key Cost to apply the rule to - used for * and /
-	 * @return float
-	 */
-	private function apply_base_cost( $base, $multiplier, $cost, $rule_key = '' ) {
-		if ( in_array( $rule_key, $this->applied_cost_rules ) ) {
-			return $base;
-		}
-		$this->applied_cost_rules[] = $rule_key;
-		return $this->apply_cost( $base, $multiplier, $cost );
+		return apply_filters( 'wc_bookings_get_time_slots_html', $block_html, $available_blocks, $blocks );
 	}
 }

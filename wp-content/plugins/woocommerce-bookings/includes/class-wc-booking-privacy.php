@@ -27,7 +27,7 @@ class WC_Booking_Privacy extends WC_Abstract_Privacy {
 			return array();
 		}
 
-		return WC_Bookings_Controller::get_bookings_for_user( $user->ID );
+		return WC_Booking_Data_Store::get_bookings_for_user( $user->ID );
 	}
 
 	/**

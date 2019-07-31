@@ -1,5 +1,5 @@
 <div class="wrap woocommerce">
-	<h2><?php _e( 'Calendar', 'woocommerce-bookings' ); ?></h2>
+	<h2><?php esc_html_e( 'Calendar', 'woocommerce-bookings' ); ?></h2>
 
 	<form method="get" id="mainform" enctype="multipart/form-data" class="wc_bookings_calendar_form">
 		<input type="hidden" name="post_type" value="wc_booking" />
@@ -16,7 +16,7 @@
 				jQuery( function() {
 					jQuery( '.calendar_day' ).datepicker( {
 						dateFormat: 'yy-mm-dd',
-						firstDay: <?php echo get_option( 'start_of_week' ); ?>,
+						firstDay: <?php echo esc_attr( get_option( 'start_of_week' ) ); ?>,
 						monthNames: JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( array_values( $wp_locale->month ) ) ); ?>' ) ),
 						monthNamesShort: JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( array_values( $wp_locale->month_abbrev ) ) ); ?>' ) ),
 						dayNames: JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( array_values( $wp_locale->weekday ) ) ); ?>' ) ),
@@ -41,7 +41,7 @@
 					<?php for ( $i = 0; $i < 24; $i ++ ) : ?>
 						<li><label>
 						<?php
-							echo date_i18n( 'ga', strtotime( "midnight +{$i} hour" ) );
+							echo esc_html( date_i18n( 'ga', strtotime( "midnight +{$i} hour" ) ) );
 						?>
 						</label></li>
 					<?php endfor; ?>

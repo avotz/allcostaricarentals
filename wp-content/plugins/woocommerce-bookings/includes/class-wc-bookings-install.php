@@ -5,6 +5,8 @@
  * @package  Installation
  */
 
+define( 'WC_BOOKINGS_DB_VERSION', '1.14.5' );
+
 /**
  * Installation/Migration Class.
  *
@@ -245,7 +247,7 @@ class WC_Bookings_Install {
 						continue;
 					}
 
-					$new_price = wc_booking_calculated_base_cost( new WC_Product_Booking( $product_id ) );
+					$new_price = WC_Bookings_Cost_Calculation::calculated_base_cost( get_wc_product_booking( $product_id ) );
 
 					update_post_meta( $product_id, '_price', $new_price );
 				}

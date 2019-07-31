@@ -57,7 +57,7 @@ class WC_Global_Availability_Data_Store extends WC_Data_Store_WP {
 		$availability->set_id( $wpdb->insert_id );
 		$availability->save_meta_data();
 		WC_Cache_Helper::incr_cache_prefix( self::CACHE_GROUP );
-		delete_booking_slots_transient();
+		WC_Bookings_Cache::delete_booking_slots_transient();
 	}
 
 	/**
@@ -130,7 +130,7 @@ class WC_Global_Availability_Data_Store extends WC_Data_Store_WP {
 
 		wp_cache_delete( $availability->get_id(), self::CACHE_GROUP );
 		WC_Cache_Helper::incr_cache_prefix( self::CACHE_GROUP );
-		delete_booking_slots_transient();
+		WC_Bookings_Cache::delete_booking_slots_transient();
 	}
 
 	/**
@@ -160,7 +160,7 @@ class WC_Global_Availability_Data_Store extends WC_Data_Store_WP {
 		);
 		wp_cache_delete( $availability->get_id(), self::CACHE_GROUP );
 		WC_Cache_Helper::incr_cache_prefix( self::CACHE_GROUP );
-		delete_booking_slots_transient();
+		WC_Bookings_Cache::delete_booking_slots_transient();
 	}
 
 	/**
@@ -320,4 +320,56 @@ class WC_Global_Availability_Data_Store extends WC_Data_Store_WP {
 		return $compare;
 	}
 
+	/**
+	 * Return all bookings and blocked availability for a product in a given range.
+	 * @param integer $start_date
+	 * @param integer $end_date
+	 * @param mixed   $product_or_resource_ids
+	 * @param bool    $check_in_cart
+	 *
+	 * @return array
+	 */
+	public static function get_events_in_date_range( $start_date, $end_date, $product_or_resource_ids = 0, $check_in_cart = true ) {
+		$bookings              = WC_Booking_Data_Store::get_bookings_in_date_range( $start_date, $end_date, $product_or_resource_ids, $check_in_cart );
+		$min_date              = date( 'Y-m-d', $start_date );
+		$max_date              = date( 'Y-m-d', $end_date );
+
+		// Filter only for events synced from Google Calendar.
+		$filters               = array(
+			array(
+				'key'     => 'gcal_event_id',
+				'compare' => '!=',
+				'value'   => '',
+			),
+		);
+
+		$global_availabilities = WC_Data_Store::load( 'booking-global-availability' )->get_all( $filters, $min_date, $max_date );
+
+		return array_merge( $bookings, $global_availabilities );
+	}
+
+	/**
+	 * Return an array global_availability_rules
+	 * @since 1.13.0
+	 *
+	 * @param  int   $start_date
+	 * @param  int . $end_date
+	 *
+	 * @return array Days that are buffer days and therefor should be un-bookable
+	 */
+	public static function get_global_availability_in_date_range( $start_date, $end_date ) {
+
+		// Filter only for events not from Google Calendar.
+		$filters               = array(
+			array(
+				'key'     => 'gcal_event_id',
+				'compare' => '==',
+				'value'   => '',
+			),
+		);
+
+		$min_date = date( 'Y-m-d', $start_date );
+		$max_date = date( 'Y-m-d', $end_date );
+		return WC_Data_Store::load( 'booking-global-availability' )->get_all( $filters, $min_date, $max_date );
+	}
 }

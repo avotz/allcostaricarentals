@@ -25,10 +25,10 @@ class WC_Bookings_Gateway extends WC_Payment_Gateway {
 	public function admin_options() {
 		$title = ( ! empty( $this->method_title ) ) ? $this->method_title : __( 'Settings', 'woocommerce-bookings' );
 
-		echo '<h3>' . $title . '</h3>';
+		echo '<h3>' . esc_html( $title ) . '</h3>';
 
-		echo '<p>' . __( 'This is fictitious payment method used for bookings that requires confirmation.', 'woocommerce-bookings' ) . '</p>';
-		echo '<p>' . __( 'This gateway requires no configuration.', 'woocommerce-bookings' ) . '</p>';
+		echo '<p>' . esc_html__( 'This is fictitious payment method used for bookings that requires confirmation.', 'woocommerce-bookings' ) . '</p>';
+		echo '<p>' . esc_html__( 'This gateway requires no configuration.', 'woocommerce-bookings' ) . '</p>';
 
 		// Hides the save button
 		echo '<style>p.submit input[type="submit"] { display: none }</style>';
@@ -81,9 +81,9 @@ class WC_Bookings_Gateway extends WC_Payment_Gateway {
 		$order = new WC_Order( $order_id );
 
 		if ( 'completed' == $order->get_status() ) {
-			echo '<p>' . __( 'Your booking has been confirmed. Thank you.', 'woocommerce-bookings' ) . '</p>';
+			echo '<p>' . esc_html__( 'Your booking has been confirmed. Thank you.', 'woocommerce-bookings' ) . '</p>';
 		} else {
-			echo '<p>' . __( 'Your booking is awaiting confirmation. You will be notified by email as soon as we\'ve confirmed availability.', 'woocommerce-bookings' ) . '</p>';
+			echo '<p>' . esc_html__( 'Your booking is awaiting confirmation. You will be notified by email as soon as we\'ve confirmed availability.', 'woocommerce-bookings' ) . '</p>';
 		}
 	}
 }

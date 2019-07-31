@@ -76,7 +76,7 @@ class WC_Bookable_Resource_CPT {
 
 		switch ( $column ) {
 			case 'resource_name':
-				printf( '<a href="%s">%s</a>', admin_url( 'post.php?post=' . absint( $post->ID ) . '&action=edit' ), $post->post_title );
+				printf( '<a href="%s">%s</a>', esc_url( admin_url( 'post.php?post=' . absint( $post->ID ) . '&action=edit' ) ), esc_html( $post->post_title ) );
 				break;
 			case 'parents':
 				$parents      = $wpdb->get_col( $wpdb->prepare( "SELECT product_id FROM {$wpdb->prefix}wc_booking_relationships WHERE resource_id = %d ORDER BY sort_order;", $post->ID ) );
@@ -88,7 +88,7 @@ class WC_Bookable_Resource_CPT {
 
 					$parent_posts[] = '<a href="' . admin_url( 'post.php?post=' . $parent_id . '&action=edit' ) . '">' . get_the_title( $parent_id ) . '</a>';
 				}
-				echo $parent_posts ? implode( ', ', $parent_posts ) : __( 'N/A', 'woocommerce-bookings' );
+				echo $parent_posts ? wp_kses_post( implode( ', ', $parent_posts ) ) : esc_html__( 'N/A', 'woocommerce-bookings' );
 				break;
 			case 'resource_actions':
 				echo '<p>';
