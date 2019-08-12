@@ -18996,6 +18996,7 @@ $('.slider-experiences-nav').slick({
   dots: false,
   centerMode: true,
   focusOnSelect: true,
+  arrows: false,
   responsive: [{
     breakpoint: 768,
     settings: {
@@ -19005,16 +19006,6 @@ $('.slider-experiences-nav').slick({
       nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
     }
   }]
-});
-$('.single-product .flex-control-thumbs').slick({
-  dots: false,
-  autoplay: true,
-  autoplaySpeed: 5000,
-  speed: 500,
-  arrows: false,
-  cssEase: 'linear',
-  fade: true,
-  pauseOnHover: false
 });
 $('.slick-slide').mouseover(function () {
   $(this).click();
@@ -19033,6 +19024,19 @@ $('.transfer-popup-link').magnificPopup({
       $('body').removeClass('mfp-open');
     }
   }
+});
+$(window).on("load", function () {
+  console.log('laoded');
+  $('.woocommerce div.product div.images .flex-control-thumbs').slick({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    dots: false,
+    centerMode: true,
+    focusOnSelect: true,
+    arrows: true,
+    prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
+    nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
+  });
 });
 $(window).scroll(function () {
   if ($(this).scrollTop() > 100) {

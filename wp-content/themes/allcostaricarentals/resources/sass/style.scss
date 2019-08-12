@@ -425,7 +425,7 @@ body.mobile{
 		.experiences-nav-slide{
 			a{
 				@apply bg-teal-500;
-				height: 268px;
+				height: 130px;
 				padding: 35px 22px 55px;
 			}
 			.details{
@@ -443,7 +443,25 @@ body.mobile{
 	// 	max-width: 60rem;
 	// }
 }
-
+.flex-control-thumbs{
+	.slick-arrow{
+		position: absolute;
+		top:50%;
+		transform: translate(0, -50%);
+		font-size: 1.5rem;
+		cursor: pointer;
+		z-index: 99;
+		color: white;
+		background: #000;
+		padding: .5rem 0.7rem;
+	}
+	.slick-prev{
+		left: 0;
+	}
+	.slick-next{
+		right: 0;
+	}
+}
 .footer{
 	@apply bg-teal-700;
 	&-social{
@@ -462,6 +480,7 @@ body.mobile{
 	left:-37px;
 	transform: rotate(-90deg);
 	@apply bg-teal-500 text-white border-white;
+	z-index: 900;
 }
 .transfer-container{
 	iframe{

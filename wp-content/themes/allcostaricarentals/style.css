@@ -10229,12 +10229,32 @@ body.mobile .sticky-header {
 
 .experiences .slick-current .experiences-nav-slide a {
   background-color: #38b2ac;
-  height: 268px;
+  height: 130px;
   padding: 35px 22px 55px;
 }
 
 .experiences .slick-current .experiences-nav-slide .details {
   opacity: 1;
+}
+
+.flex-control-thumbs .slick-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 99;
+  color: white;
+  background: #000;
+  padding: 0.5rem 0.7rem;
+}
+
+.flex-control-thumbs .slick-prev {
+  left: 0;
+}
+
+.flex-control-thumbs .slick-next {
+  right: 0;
 }
 
 .footer {
@@ -10253,6 +10273,7 @@ body.mobile .sticky-header {
   background-color: #38b2ac;
   color: #fff;
   border-color: #fff;
+  z-index: 900;
 }
 
 .transfer-container iframe {
