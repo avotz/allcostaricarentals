@@ -82,11 +82,14 @@ function woo_additional_tabs($tabs)
         'callback' => 'woo_book_tab_content'
     );
 
-    $tabs['details'] = array(
-        'title' => 'Details',
-        'priority' => 10,
-        'callback' => 'woo_details_tab_content'
-    );
+    if( rwmb_meta('rw_details') ){
+
+        $tabs['details'] = array(
+            'title' => 'Details',
+            'priority' => 10,
+            'callback' => 'woo_details_tab_content'
+        );
+    }
 
     return $tabs;
 
