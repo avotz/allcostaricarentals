@@ -55,8 +55,20 @@ function allcostaricarentals_redirect_checkout_add_cart($url)
 
 add_filter('woocommerce_add_to_cart_redirect', 'allcostaricarentals_redirect_checkout_add_cart');
 
-add_filter('woocommerce_product_tabs', 'woo_book_tab');
-function woo_book_tab($tabs)
+add_filter('woocommerce_product_tabs', 'woo_remove_product_tabs', 98);
+function woo_remove_product_tabs($tabs)
+{
+
+    //unset( $tabs['description'] );  
+    unset($tabs['accommodation_booking_time']);          // Remove the reviews tab
+    //unset( $tabs['additional_information'] );   // Remove the additional information tab
+
+    return $tabs;
+
+}
+
+add_filter('woocommerce_product_tabs', 'woo_additional_tabs');
+function woo_additional_tabs($tabs)
 {
   
   // Adds the new tab
@@ -68,6 +80,12 @@ function woo_book_tab($tabs)
         'title' => $nameTab,
         'priority' => 5,
         'callback' => 'woo_book_tab_content'
+    );
+
+    $tabs['details'] = array(
+        'title' => 'Details',
+        'priority' => 10,
+        'callback' => 'woo_details_tab_content'
     );
 
     return $tabs;
@@ -83,6 +101,11 @@ function woo_book_tab_content()
     woocommerce_template_single_add_to_cart();
    
 
+
+}
+function woo_details_tab_content()
+{
+    echo rwmb_meta('rw_details');
 
 }
 
