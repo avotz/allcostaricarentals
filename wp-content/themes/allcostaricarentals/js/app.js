@@ -18952,81 +18952,81 @@ var hoverintent = __webpack_require__(/*! hoverintent */ "./node_modules/hoverin
 
 var flatpickr = __webpack_require__(/*! flatpickr */ "./node_modules/flatpickr/dist/flatpickr.js");
 
-AOS.init({
-  once: true
-});
-flatpickr(".date", {});
-$menu = document.querySelectorAll('.menu .menu-item-has-children'), $btnMenu = $('.btn-menu'), $fullMenu = $('.sticky-header .full-menu-nav');
-$menu.forEach(function (element) {
-  hoverintent(element, function () {
-    $(element).find('>.sub-menu').slideDown(200);
-  }, function () {
-    $(element).find('>.sub-menu').slideUp(200);
-  }).options({
-    timeout: 200,
-    interval: 50
+$(document).ready(function () {
+  console.log("ready!");
+  AOS.init({
+    once: true
   });
-});
-$btnMenu.on('click', function (e) {
-  $fullMenu.toggleClass('open');
-});
-$('.banner-slider').slick({
-  dots: false,
-  autoplay: true,
-  autoplaySpeed: 5000,
-  speed: 500,
-  arrows: false,
-  cssEase: 'linear',
-  fade: true,
-  pauseOnHover: false
-});
-$('.slider-experiences').slick({
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: true,
-  fade: true,
-  asNavFor: '.slider-experiences-nav',
-  prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
-  nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
-});
-$('.slider-experiences-nav').slick({
-  slidesToShow: 4,
-  slidesToScroll: 1,
-  asNavFor: '.slider-experiences',
-  dots: false,
-  centerMode: true,
-  focusOnSelect: true,
-  arrows: false,
-  responsive: [{
-    breakpoint: 768,
-    settings: {
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
-      nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
+  flatpickr(".date", {});
+  $menu = document.querySelectorAll('.menu .menu-item-has-children'), $btnMenu = $('.btn-menu'), $fullMenu = $('.sticky-header .full-menu-nav');
+  $menu.forEach(function (element) {
+    hoverintent(element, function () {
+      $(element).find('>.sub-menu').slideDown(200);
+    }, function () {
+      $(element).find('>.sub-menu').slideUp(200);
+    }).options({
+      timeout: 200,
+      interval: 50
+    });
+  });
+  $btnMenu.on('click', function (e) {
+    $fullMenu.toggleClass('open');
+  });
+  $('.banner-slider').slick({
+    dots: false,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    speed: 500,
+    arrows: false,
+    cssEase: 'linear',
+    fade: true,
+    pauseOnHover: false
+  });
+  $('.slider-experiences').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    fade: true,
+    asNavFor: '.slider-experiences-nav',
+    prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
+    nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
+  });
+  $('.slider-experiences-nav').slick({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    asNavFor: '.slider-experiences',
+    dots: false,
+    centerMode: true,
+    focusOnSelect: true,
+    arrows: false,
+    responsive: [{
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
+        nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
+      }
+    }]
+  });
+  $('.slick-slide').mouseover(function () {
+    $(this).click();
+  });
+  $('.transfer-popup-link').magnificPopup({
+    type: 'inline',
+    midClick: true,
+    removalDelay: 500,
+    //delay removal by X to allow out-animation
+    callbacks: {
+      beforeOpen: function beforeOpen() {
+        this.st.mainClass = 'mfp-zoom-out';
+        $('body').addClass('mfp-open');
+      },
+      beforeClose: function beforeClose() {
+        $('body').removeClass('mfp-open');
+      }
     }
-  }]
-});
-$('.slick-slide').mouseover(function () {
-  $(this).click();
-});
-$('.transfer-popup-link').magnificPopup({
-  type: 'inline',
-  midClick: true,
-  removalDelay: 500,
-  //delay removal by X to allow out-animation
-  callbacks: {
-    beforeOpen: function beforeOpen() {
-      this.st.mainClass = 'mfp-zoom-out';
-      $('body').addClass('mfp-open');
-    },
-    beforeClose: function beforeClose() {
-      $('body').removeClass('mfp-open');
-    }
-  }
-});
-$(window).on("load", function () {
-  console.log('laoded');
+  });
   $('.woocommerce div.product div.images .flex-control-thumbs').slick({
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -19037,34 +19037,33 @@ $(window).on("load", function () {
     prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><i class="fas fa-angle-left"></i></button>',
     nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button"><i class="fas fa-angle-right"></i></button>'
   });
-});
-$(window).scroll(function () {
-  if ($(this).scrollTop() > 100) {
-    $('.sticky-header').addClass("open");
-  } else {
-    $('.sticky-header').removeClass("open");
-  }
-});
-resizes();
-$(window).resize(resizes);
-
-function resizes() {
-  console.log('disparo resize');
-  responsive();
-}
-
-function responsive() {
-  var isResponsive = $('body').hasClass('mobile');
-
-  if (getWindowWidth() < 768) {
-    if (!isResponsive) {
-      $('body').addClass('mobile');
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+      $('.sticky-header').addClass("open");
+    } else {
+      $('.sticky-header').removeClass("open");
     }
-  } else if (isResponsive) {
-    $('body').removeClass('mobile');
-  }
-}
+  });
+  resizes();
+  $(window).resize(resizes);
 
+  function resizes() {
+    console.log('disparo resize');
+    responsive();
+  }
+
+  function responsive() {
+    var isResponsive = $('body').hasClass('mobile');
+
+    if (getWindowWidth() < 768) {
+      if (!isResponsive) {
+        $('body').addClass('mobile');
+      }
+    } else if (isResponsive) {
+      $('body').removeClass('mobile');
+    }
+  }
+});
 console.log('cargado');
 
 function getScrollerWidth() {
