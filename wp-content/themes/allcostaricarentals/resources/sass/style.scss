@@ -491,5 +491,16 @@ body.mobile{
 		font-family: 'Francois One', cursive;
 	}
 }
+.waves1{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 0;
+}
+.waves2{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
 @import "wc";
 @import "blog";

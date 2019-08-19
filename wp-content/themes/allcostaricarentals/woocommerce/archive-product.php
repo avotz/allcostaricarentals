@@ -89,7 +89,7 @@ get_header( 'shop' );
 												<?php if (function_exists("kk_star_ratings")) : echo kk_star_ratings($pid);
 												endif; ?>
 											</div>
-											<?php /*if (!has_term('Real Estate', 'product_cat')) :*/ ?>
+											<?php if (!has_term('Real Estate', 'product_cat')) : ?>
 											<div class="price">
 												<span class="from">From</span><span>
 													<?php
@@ -110,7 +110,7 @@ get_header( 'shop' );
 														?>
 												</span>
 											</div>
-											<?php /*endif;*/ ?>
+											<?php endif; ?>
 										</div>
 
 									</div>

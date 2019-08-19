@@ -11,8 +11,10 @@
 
 ?>
 
-<footer class="footer text-white text-sm">
-		<div class="container mx-auto pt-16 pb-8">
+<footer class="footer text-white text-sm relative">
+		<div class="waves1" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/waves1.png')"> <img src="<?php echo get_template_directory_uri(); ?>/img/waves1.png" alt=""></div>
+		<!-- <div class="waves2" style="background-image: url('<?php echo get_template_directory_uri(); ?>/img/waves2.png')"> <img src="<?php echo get_template_directory_uri(); ?>/img/waves2.png" alt=""></div> -->
+		<div class="container mx-auto pt-16 pb-8 relative ">
 			<div class="footer-columns flex flex-wrap">
 				<div class="footer-column w-full md:flex-1 text-center md:text-left leading-loose mb-8">
 					<a href="#" class="footer-logo w-32 inline-block">ALL COSTA RICA RENTALS</a>
