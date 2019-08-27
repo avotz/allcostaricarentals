@@ -16,10 +16,13 @@
 		
 		
 	
-	<ul class="bannerIcons z-10 list-reset absolute hidden md:flex ">
-		<li class="px-2 py-2 m-2"><a href="#" class="block text-white no-underline"><i class="fas fa-phone"></i> Call</a></li>
-		<li class="px-2 py-2 m-2"><a href="<?php echo esc_url( home_url( '/cart' ) ); ?>" class="block text-white no-underline"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-		<li class="px-2 py-2 m-2"><a href="<?php echo esc_url( home_url( '/contact-us' ) ); ?>" class="block text-white no-underline"><i class="fas fa-envelope"></i> Contact</a></li>
+	<ul class="bannerIcons z-10 list-reset absolute hidden md:flex text-2xl">
+		<li class="px-2 py-2 m-2"><a href="https://wa.me/50687194024" target="_blank" class="block text-white no-underline"><i class="fab fa-whatsapp"></i> </a></li>
+		<li class="px-2 py-2 m-2"><a href="<?php echo esc_url( home_url( '/cart' ) ); ?>" class="block text-white no-underline"><i class="fas fa-shopping-cart"></i></a></li>
+		<li class="px-2 py-2 m-2"><a href="<?php echo esc_url( home_url( '/contact-us' ) ); ?>" class="block text-white no-underline"><i class="fas fa-envelope"></i></a></li>
+		<li class="px-2 py-2 m-2"><a href="https://www.facebook.com/guanacastevacationrentals/" target="_blank" class="block text-white"><i class="fab fa-facebook"></i></a></li>
+		<li class="px-2 py-2 m-2"><a href="https://www.instagram.com/guanacastevacation/" target="_blank" class="block text-white"><i class="fab fa-instagram"></i></a></li>
+		
 	</ul>
 	
 	<div class="btn-menu absolute md:hidden text-white z-10 cursor-pointer">

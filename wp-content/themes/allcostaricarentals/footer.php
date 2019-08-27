@@ -60,9 +60,9 @@
 				<div class="footer-column w-full md:flex-1 text-center md:text-right mb-8">
 					<h5 class="mb-6 text-lg">Follow Us</h5>
 					<ul class="footer-social list-reset flex justify-center md:justify-end text-2xl">
-						<li class="px-2 py-2 m-2"><a href="#" class="block text-white"><i class="fab fa-facebook"></i></a></li>
-						<li class="px-2 py-2 m-2"><a href="#" class="block text-white"><i class="fab fa-instagram"></i></a></li>
-						<li class="px-2 py-2 m-2 mr-0 pr-0"><a href="#" class="block text-white"><i class="fab fa-twitter"></i></a></li>
+						<li class="px-2 py-2 m-2"><a href="https://www.facebook.com/guanacastevacationrentals/" target="_blank" class="block text-white"><i class="fab fa-facebook"></i></a></li>
+						<li class="px-2 py-2 m-2"><a href="https://www.instagram.com/guanacastevacation/" target="_blank" class="block text-white"><i class="fab fa-instagram"></i></a></li>
+						<li class="px-2 py-2 m-2 mr-0 pr-0"><a href="https://wa.me/50687194024" target="_blank" class="block text-white"><i class="fab fa-whatsapp"></i></a></li>
 					</ul>
 				</div>
 			</div>
