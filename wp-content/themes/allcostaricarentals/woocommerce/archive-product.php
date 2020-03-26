@@ -65,7 +65,7 @@ get_header( 'shop' );
 											<div class="more-detail">More Details</div>
 											<?php if (has_post_thumbnail()) :
 
-												$id = get_post_thumbnail_id($post->ID);
+												$id = get_post_thumbnail_id(get_the_ID());
 												$thumb_url = wp_get_attachment_image_src($id, 'large', true);
 												?>
 
@@ -86,17 +86,17 @@ get_header( 'shop' );
 												</h4>
 											</div>
 											<div class="rating">
-												<?php if (function_exists("kk_star_ratings")) : echo kk_star_ratings($pid);
+												<?php if (function_exists("kk_star_ratings")) : echo kk_star_ratings(get_the_ID());
 												endif; ?>
 											</div>
-											<?php if (!has_term('Real Estate', 'product_cat')) : ?>
+											<?php /*if (!has_term('Real Estate', 'product_cat')) :*/ ?>
 											<div class="price">
 												<span class="from">From</span><span>
 													<?php
 
 													$currency = get_woocommerce_currency_symbol();
 
-													$product = new WC_Product($post->ID);
+													$product = new WC_Product(get_the_ID());
 													/*echo $product->get_price_html();
                                       
                                      woocommerce_template_loop_price(); */
@@ -110,7 +110,7 @@ get_header( 'shop' );
 														?>
 												</span>
 											</div>
-											<?php endif; ?>
+											<?php /*endif;*/ ?>
 										</div>
 
 									</div>
